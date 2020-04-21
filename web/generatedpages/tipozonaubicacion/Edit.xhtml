@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EditTipozonaubicacionTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditTipozonaubicacionLabel_tzuId}" for="tzuId" />
+                    <h:inputText id="tzuId" value="#{tipozonaubicacionController.selected.tzuId}" title="#{bundle.EditTipozonaubicacionTitle_tzuId}" required="true" requiredMessage="#{bundle.EditTipozonaubicacionRequiredMessage_tzuId}"/>
+                    <h:outputLabel value="#{bundle.EditTipozonaubicacionLabel_tzuNombre}" for="tzuNombre" />
+                    <h:inputText id="tzuNombre" value="#{tipozonaubicacionController.selected.tzuNombre}" title="#{bundle.EditTipozonaubicacionTitle_tzuNombre}" required="true" requiredMessage="#{bundle.EditTipozonaubicacionRequiredMessage_tzuNombre}"/>
+                </h:panelGrid>
+                <h:commandLink action="#{tipozonaubicacionController.update}" value="#{bundle.EditTipozonaubicacionSaveLink}"/>
+                <br />
+                <br />
+                <h:link outcome="View" value="#{bundle.EditTipozonaubicacionViewLink}"/>
+                <br />
+                <h:commandLink action="#{tipozonaubicacionController.prepareList}" value="#{bundle.EditTipozonaubicacionShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.EditTipozonaubicacionIndexLink}" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

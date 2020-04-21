@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EditEspecieTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditEspecieLabel_espId}" for="espId" />
+                    <h:inputText id="espId" value="#{especieController.selected.espId}" title="#{bundle.EditEspecieTitle_espId}" required="true" requiredMessage="#{bundle.EditEspecieRequiredMessage_espId}"/>
+                    <h:outputLabel value="#{bundle.EditEspecieLabel_espNombre}" for="espNombre" />
+                    <h:inputText id="espNombre" value="#{especieController.selected.espNombre}" title="#{bundle.EditEspecieTitle_espNombre}" required="true" requiredMessage="#{bundle.EditEspecieRequiredMessage_espNombre}"/>
+                    <h:outputLabel value="#{bundle.EditEspecieLabel_espDescripcion}" for="espDescripcion" />
+                    <h:inputTextarea rows="4" cols="30" id="espDescripcion" value="#{especieController.selected.espDescripcion}" title="#{bundle.EditEspecieTitle_espDescripcion}" required="true" requiredMessage="#{bundle.EditEspecieRequiredMessage_espDescripcion}"/>
+                    <h:outputLabel value="#{bundle.EditEspecieLabel_faId}" for="faId" />
+                    <h:selectOneMenu id="faId" value="#{especieController.selected.faId}" title="#{bundle.EditEspecieTitle_faId}" required="true" requiredMessage="#{bundle.EditEspecieRequiredMessage_faId}">
+                        <f:selectItems value="#{familiaController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <h:commandLink action="#{especieController.update}" value="#{bundle.EditEspecieSaveLink}"/>
+                <br />
+                <br />
+                <h:link outcome="View" value="#{bundle.EditEspecieViewLink}"/>
+                <br />
+                <h:commandLink action="#{especieController.prepareList}" value="#{bundle.EditEspecieShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.EditEspecieIndexLink}" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

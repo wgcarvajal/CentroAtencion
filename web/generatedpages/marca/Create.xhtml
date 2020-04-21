@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateMarcaTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateMarcaLabel_marcId}" for="marcId" />
+                    <h:inputText id="marcId" value="#{marcaController.selected.marcId}" title="#{bundle.CreateMarcaTitle_marcId}" required="true" requiredMessage="#{bundle.CreateMarcaRequiredMessage_marcId}"/>
+                    <h:outputLabel value="#{bundle.CreateMarcaLabel_ingresoId}" for="ingresoId" />
+                    <h:selectOneMenu id="ingresoId" value="#{marcaController.selected.ingresoId}" title="#{bundle.CreateMarcaTitle_ingresoId}" required="true" requiredMessage="#{bundle.CreateMarcaRequiredMessage_ingresoId}">
+                        <f:selectItems value="#{ingresoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateMarcaLabel_tipomarcaid}" for="tipomarcaid" />
+                    <h:selectOneMenu id="tipomarcaid" value="#{marcaController.selected.tipomarcaid}" title="#{bundle.CreateMarcaTitle_tipomarcaid}" required="true" requiredMessage="#{bundle.CreateMarcaRequiredMessage_tipomarcaid}">
+                        <f:selectItems value="#{tipomarcaController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateMarcaLabel_ubicacionmarcaId}" for="ubicacionmarcaId" />
+                    <h:selectOneMenu id="ubicacionmarcaId" value="#{marcaController.selected.ubicacionmarcaId}" title="#{bundle.CreateMarcaTitle_ubicacionmarcaId}" required="true" requiredMessage="#{bundle.CreateMarcaRequiredMessage_ubicacionmarcaId}">
+                        <f:selectItems value="#{ubicacionmarcaController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{marcaController.create}" value="#{bundle.CreateMarcaSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{marcaController.prepareList}" value="#{bundle.CreateMarcaShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateMarcaIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

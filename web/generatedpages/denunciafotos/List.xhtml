@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListDenunciafotosTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <h:outputText escape="false" value="#{bundle.ListDenunciafotosEmpty}" rendered="#{denunciafotosController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{denunciafotosController.items.rowCount > 0}">
+                    <h:outputText value="#{denunciafotosController.pagination.pageFirstItem + 1}..#{denunciafotosController.pagination.pageLastItem + 1}/#{denunciafotosController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{denunciafotosController.previous}" value="#{bundle.Previous} #{denunciafotosController.pagination.pageSize}" rendered="#{denunciafotosController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{denunciafotosController.next}" value="#{bundle.Next} #{denunciafotosController.pagination.pageSize}" rendered="#{denunciafotosController.pagination.hasNextPage}"/>&nbsp;
+                    <h:dataTable value="#{denunciafotosController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListDenunciafotosTitle_dfotId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.dfotId}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListDenunciafotosTitle_dfotNombre}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.dfotNombre}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListDenunciafotosTitle_denId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.denId}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{denunciafotosController.prepareView}" value="#{bundle.ListDenunciafotosViewLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{denunciafotosController.prepareEdit}" value="#{bundle.ListDenunciafotosEditLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{denunciafotosController.destroy}" value="#{bundle.ListDenunciafotosDestroyLink}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+                <br />
+                <h:commandLink action="#{denunciafotosController.prepareCreate}" value="#{bundle.ListDenunciafotosCreateLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ListDenunciafotosIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EditDenunciafotosTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditDenunciafotosLabel_dfotId}" for="dfotId" />
+                    <h:inputText id="dfotId" value="#{denunciafotosController.selected.dfotId}" title="#{bundle.EditDenunciafotosTitle_dfotId}" required="true" requiredMessage="#{bundle.EditDenunciafotosRequiredMessage_dfotId}"/>
+                    <h:outputLabel value="#{bundle.EditDenunciafotosLabel_dfotNombre}" for="dfotNombre" />
+                    <h:inputText id="dfotNombre" value="#{denunciafotosController.selected.dfotNombre}" title="#{bundle.EditDenunciafotosTitle_dfotNombre}" required="true" requiredMessage="#{bundle.EditDenunciafotosRequiredMessage_dfotNombre}"/>
+                    <h:outputLabel value="#{bundle.EditDenunciafotosLabel_denId}" for="denId" />
+                    <h:selectOneMenu id="denId" value="#{denunciafotosController.selected.denId}" title="#{bundle.EditDenunciafotosTitle_denId}" required="true" requiredMessage="#{bundle.EditDenunciafotosRequiredMessage_denId}">
+                        <f:selectItems value="#{denunciaController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <h:commandLink action="#{denunciafotosController.update}" value="#{bundle.EditDenunciafotosSaveLink}"/>
+                <br />
+                <br />
+                <h:link outcome="View" value="#{bundle.EditDenunciafotosViewLink}"/>
+                <br />
+                <h:commandLink action="#{denunciafotosController.prepareList}" value="#{bundle.EditDenunciafotosShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.EditDenunciafotosIndexLink}" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

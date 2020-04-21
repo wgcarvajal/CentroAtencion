@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EditUbicacionmarcaTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditUbicacionmarcaLabel_ubicacionmarcId}" for="ubicacionmarcId" />
+                    <h:inputText id="ubicacionmarcId" value="#{ubicacionmarcaController.selected.ubicacionmarcId}" title="#{bundle.EditUbicacionmarcaTitle_ubicacionmarcId}" required="true" requiredMessage="#{bundle.EditUbicacionmarcaRequiredMessage_ubicacionmarcId}"/>
+                    <h:outputLabel value="#{bundle.EditUbicacionmarcaLabel_ubicacionmarcNombre}" for="ubicacionmarcNombre" />
+                    <h:inputText id="ubicacionmarcNombre" value="#{ubicacionmarcaController.selected.ubicacionmarcNombre}" title="#{bundle.EditUbicacionmarcaTitle_ubicacionmarcNombre}" required="true" requiredMessage="#{bundle.EditUbicacionmarcaRequiredMessage_ubicacionmarcNombre}"/>
+                    <h:outputLabel value="#{bundle.EditUbicacionmarcaLabel_ubicacionmarcAbreviatura}" for="ubicacionmarcAbreviatura" />
+                    <h:inputText id="ubicacionmarcAbreviatura" value="#{ubicacionmarcaController.selected.ubicacionmarcAbreviatura}" title="#{bundle.EditUbicacionmarcaTitle_ubicacionmarcAbreviatura}" required="true" requiredMessage="#{bundle.EditUbicacionmarcaRequiredMessage_ubicacionmarcAbreviatura}"/>
+                </h:panelGrid>
+                <h:commandLink action="#{ubicacionmarcaController.update}" value="#{bundle.EditUbicacionmarcaSaveLink}"/>
+                <br />
+                <br />
+                <h:link outcome="View" value="#{bundle.EditUbicacionmarcaViewLink}"/>
+                <br />
+                <h:commandLink action="#{ubicacionmarcaController.prepareList}" value="#{bundle.EditUbicacionmarcaShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.EditUbicacionmarcaIndexLink}" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

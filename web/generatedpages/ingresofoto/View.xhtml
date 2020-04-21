@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewIngresofotoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewIngresofotoLabel_ingfotoId}"/>
+                    <h:outputText value="#{ingresofotoController.selected.ingfotoId}" title="#{bundle.ViewIngresofotoTitle_ingfotoId}"/>
+                    <h:outputText value="#{bundle.ViewIngresofotoLabel_ingfotoNombre}"/>
+                    <h:outputText value="#{ingresofotoController.selected.ingfotoNombre}" title="#{bundle.ViewIngresofotoTitle_ingfotoNombre}"/>
+                    <h:outputText value="#{bundle.ViewIngresofotoLabel_ingresoId}"/>
+                    <h:outputText value="#{ingresofotoController.selected.ingresoId}" title="#{bundle.ViewIngresofotoTitle_ingresoId}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{ingresofotoController.destroyAndView}" value="#{bundle.ViewIngresofotoDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewIngresofotoEditLink}"/>
+                <br />
+                <h:commandLink action="#{ingresofotoController.prepareCreate}" value="#{bundle.ViewIngresofotoCreateLink}" />
+                <br />
+                <h:commandLink action="#{ingresofotoController.prepareList}" value="#{bundle.ViewIngresofotoShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewIngresofotoIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

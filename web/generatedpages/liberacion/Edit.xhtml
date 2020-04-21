@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EditLiberacionTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditLiberacionLabel_libId}" for="libId" />
+                    <h:inputText id="libId" value="#{liberacionController.selected.libId}" title="#{bundle.EditLiberacionTitle_libId}" required="true" requiredMessage="#{bundle.EditLiberacionRequiredMessage_libId}"/>
+                    <h:outputLabel value="#{bundle.EditLiberacionLabel_veredaId}" for="veredaId" />
+                    <h:inputText id="veredaId" value="#{liberacionController.selected.veredaId}" title="#{bundle.EditLiberacionTitle_veredaId}" />
+                    <h:outputLabel value="#{bundle.EditLiberacionLabel_municipioId}" for="municipioId" />
+                    <h:inputText id="municipioId" value="#{liberacionController.selected.municipioId}" title="#{bundle.EditLiberacionTitle_municipioId}" />
+                    <h:outputLabel value="#{bundle.EditLiberacionLabel_libFecha}" for="libFecha" />
+                    <h:inputText id="libFecha" value="#{liberacionController.selected.libFecha}" title="#{bundle.EditLiberacionTitle_libFecha}" required="true" requiredMessage="#{bundle.EditLiberacionRequiredMessage_libFecha}">
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.EditLiberacionLabel_libUbicacion}" for="libUbicacion" />
+                    <h:inputText id="libUbicacion" value="#{liberacionController.selected.libUbicacion}" title="#{bundle.EditLiberacionTitle_libUbicacion}" />
+                    <h:outputLabel value="#{bundle.EditLiberacionLabel_libObservacion}" for="libObservacion" />
+                    <h:inputTextarea rows="4" cols="30" id="libObservacion" value="#{liberacionController.selected.libObservacion}" title="#{bundle.EditLiberacionTitle_libObservacion}" />
+                </h:panelGrid>
+                <h:commandLink action="#{liberacionController.update}" value="#{bundle.EditLiberacionSaveLink}"/>
+                <br />
+                <br />
+                <h:link outcome="View" value="#{bundle.EditLiberacionViewLink}"/>
+                <br />
+                <h:commandLink action="#{liberacionController.prepareList}" value="#{bundle.EditLiberacionShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.EditLiberacionIndexLink}" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

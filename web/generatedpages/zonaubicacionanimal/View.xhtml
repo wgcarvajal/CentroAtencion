@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewZonaubicacionanimalTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewZonaubicacionanimalLabel_zonubianId}"/>
+                    <h:outputText value="#{zonaubicacionanimalController.selected.zonubianId}" title="#{bundle.ViewZonaubicacionanimalTitle_zonubianId}"/>
+                    <h:outputText value="#{bundle.ViewZonaubicacionanimalLabel_zonubianUbicacion}"/>
+                    <h:outputText value="#{zonaubicacionanimalController.selected.zonubianUbicacion}" title="#{bundle.ViewZonaubicacionanimalTitle_zonubianUbicacion}"/>
+                    <h:outputText value="#{bundle.ViewZonaubicacionanimalLabel_zonaubianArea}"/>
+                    <h:outputText value="#{zonaubicacionanimalController.selected.zonaubianArea}" title="#{bundle.ViewZonaubicacionanimalTitle_zonaubianArea}"/>
+                    <h:outputText value="#{bundle.ViewZonaubicacionanimalLabel_entidadId}"/>
+                    <h:outputText value="#{zonaubicacionanimalController.selected.entidadId}" title="#{bundle.ViewZonaubicacionanimalTitle_entidadId}"/>
+                    <h:outputText value="#{bundle.ViewZonaubicacionanimalLabel_tipozonaubicacionId}"/>
+                    <h:outputText value="#{zonaubicacionanimalController.selected.tipozonaubicacionId}" title="#{bundle.ViewZonaubicacionanimalTitle_tipozonaubicacionId}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{zonaubicacionanimalController.destroyAndView}" value="#{bundle.ViewZonaubicacionanimalDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewZonaubicacionanimalEditLink}"/>
+                <br />
+                <h:commandLink action="#{zonaubicacionanimalController.prepareCreate}" value="#{bundle.ViewZonaubicacionanimalCreateLink}" />
+                <br />
+                <h:commandLink action="#{zonaubicacionanimalController.prepareList}" value="#{bundle.ViewZonaubicacionanimalShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewZonaubicacionanimalIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

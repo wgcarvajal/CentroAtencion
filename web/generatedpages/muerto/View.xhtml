@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewMuertoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewMuertoLabel_mueId}"/>
+                    <h:outputText value="#{muertoController.selected.mueId}" title="#{bundle.ViewMuertoTitle_mueId}"/>
+                    <h:outputText value="#{bundle.ViewMuertoLabel_mueFecha}"/>
+                    <h:outputText value="#{muertoController.selected.mueFecha}" title="#{bundle.ViewMuertoTitle_mueFecha}">
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:outputText>
+                    <h:outputText value="#{bundle.ViewMuertoLabel_mueResultadoNecropsia}"/>
+                    <h:outputText value="#{muertoController.selected.mueResultadoNecropsia}" title="#{bundle.ViewMuertoTitle_mueResultadoNecropsia}"/>
+                    <h:outputText value="#{bundle.ViewMuertoLabel_mueEutanasia}"/>
+                    <h:outputText value="#{muertoController.selected.mueEutanasia}" title="#{bundle.ViewMuertoTitle_mueEutanasia}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{muertoController.destroyAndView}" value="#{bundle.ViewMuertoDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewMuertoEditLink}"/>
+                <br />
+                <h:commandLink action="#{muertoController.prepareCreate}" value="#{bundle.ViewMuertoCreateLink}" />
+                <br />
+                <h:commandLink action="#{muertoController.prepareList}" value="#{bundle.ViewMuertoShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewMuertoIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

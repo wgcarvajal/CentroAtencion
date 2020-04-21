@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListIngresoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <h:outputText escape="false" value="#{bundle.ListIngresoEmpty}" rendered="#{ingresoController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{ingresoController.items.rowCount > 0}">
+                    <h:outputText value="#{ingresoController.pagination.pageFirstItem + 1}..#{ingresoController.pagination.pageLastItem + 1}/#{ingresoController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{ingresoController.previous}" value="#{bundle.Previous} #{ingresoController.pagination.pageSize}" rendered="#{ingresoController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{ingresoController.next}" value="#{bundle.Next} #{ingresoController.pagination.pageSize}" rendered="#{ingresoController.pagination.hasNextPage}"/>&nbsp;
+                    <h:dataTable value="#{ingresoController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListIngresoTitle_ingId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.ingId}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListIngresoTitle_ingNumeroRadicado}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.ingNumeroRadicado}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListIngresoTitle_ingFecha}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.ingFecha}">
+                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                            </h:outputText>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListIngresoTitle_ingFechaFin}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.ingFechaFin}">
+                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                            </h:outputText>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListIngresoTitle_ingNumeroUCTFF}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.ingNumeroUCTFF}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListIngresoTitle_ingresomuerto}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.ingresomuerto}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListIngresoTitle_denunciaId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.denunciaId}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListIngresoTitle_animalId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.animalId}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListIngresoTitle_causaingresoId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.causaingresoId}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListIngresoTitle_desarrollobiologicoId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.desarrollobiologicoId}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListIngresoTitle_entidadId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.entidadId}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListIngresoTitle_funcionarioId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.funcionarioId}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListIngresoTitle_infractordonatanteId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.infractordonatanteId}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListIngresoTitle_ingresoIdOrigen}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.ingresoIdOrigen}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListIngresoTitle_veredaId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.veredaId}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListIngresoTitle_liberacionId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.liberacionId}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListIngresoTitle_lugardecomisoentregavoluntariaId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.lugardecomisoentregavoluntariaId}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListIngresoTitle_muerteId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.muerteId}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListIngresoTitle_sexoId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.sexoId}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListIngresoTitle_municipioId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.municipioId}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListIngresoTitle_marcaId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.marcaId}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{ingresoController.prepareView}" value="#{bundle.ListIngresoViewLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{ingresoController.prepareEdit}" value="#{bundle.ListIngresoEditLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{ingresoController.destroy}" value="#{bundle.ListIngresoDestroyLink}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+                <br />
+                <h:commandLink action="#{ingresoController.prepareCreate}" value="#{bundle.ListIngresoCreateLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ListIngresoIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

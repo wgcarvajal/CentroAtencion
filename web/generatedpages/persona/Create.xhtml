@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreatePersonaTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreatePersonaLabel_perId}" for="perId" />
+                    <h:inputText id="perId" value="#{personaController.selected.perId}" title="#{bundle.CreatePersonaTitle_perId}" required="true" requiredMessage="#{bundle.CreatePersonaRequiredMessage_perId}"/>
+                    <h:outputLabel value="#{bundle.CreatePersonaLabel_perIdentificacion}" for="perIdentificacion" />
+                    <h:inputText id="perIdentificacion" value="#{personaController.selected.perIdentificacion}" title="#{bundle.CreatePersonaTitle_perIdentificacion}" required="true" requiredMessage="#{bundle.CreatePersonaRequiredMessage_perIdentificacion}"/>
+                    <h:outputLabel value="#{bundle.CreatePersonaLabel_perNombres}" for="perNombres" />
+                    <h:inputText id="perNombres" value="#{personaController.selected.perNombres}" title="#{bundle.CreatePersonaTitle_perNombres}" required="true" requiredMessage="#{bundle.CreatePersonaRequiredMessage_perNombres}"/>
+                    <h:outputLabel value="#{bundle.CreatePersonaLabel_perApellidos}" for="perApellidos" />
+                    <h:inputText id="perApellidos" value="#{personaController.selected.perApellidos}" title="#{bundle.CreatePersonaTitle_perApellidos}" required="true" requiredMessage="#{bundle.CreatePersonaRequiredMessage_perApellidos}"/>
+                    <h:outputLabel value="#{bundle.CreatePersonaLabel_tipoidentificacionId}" for="tipoidentificacionId" />
+                    <h:inputText id="tipoidentificacionId" value="#{personaController.selected.tipoidentificacionId}" title="#{bundle.CreatePersonaTitle_tipoidentificacionId}" required="true" requiredMessage="#{bundle.CreatePersonaRequiredMessage_tipoidentificacionId}"/>
+                    <h:outputLabel value="#{bundle.CreatePersonaLabel_perdireccion}" for="perdireccion" />
+                    <h:inputText id="perdireccion" value="#{personaController.selected.perdireccion}" title="#{bundle.CreatePersonaTitle_perdireccion}" />
+                    <h:outputLabel value="#{bundle.CreatePersonaLabel_pertelefono}" for="pertelefono" />
+                    <h:inputText id="pertelefono" value="#{personaController.selected.pertelefono}" title="#{bundle.CreatePersonaTitle_pertelefono}" />
+                    <h:outputLabel value="#{bundle.CreatePersonaLabel_veredaId}" for="veredaId" />
+                    <h:inputText id="veredaId" value="#{personaController.selected.veredaId}" title="#{bundle.CreatePersonaTitle_veredaId}" />
+                    <h:outputLabel value="#{bundle.CreatePersonaLabel_municipioId}" for="municipioId" />
+                    <h:inputText id="municipioId" value="#{personaController.selected.municipioId}" title="#{bundle.CreatePersonaTitle_municipioId}" />
+                    <h:outputLabel value="#{bundle.CreatePersonaLabel_perEmail}" for="perEmail" />
+                    <h:inputText id="perEmail" value="#{personaController.selected.perEmail}" title="#{bundle.CreatePersonaTitle_perEmail}" />
+                    <h:outputLabel value="#{bundle.CreatePersonaLabel_cargoId}" for="cargoId" />
+                    <h:selectOneMenu id="cargoId" value="#{personaController.selected.cargoId}" title="#{bundle.CreatePersonaTitle_cargoId}" >
+                        <f:selectItems value="#{cargoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreatePersonaLabel_usuarioId}" for="usuarioId" />
+                    <h:selectOneMenu id="usuarioId" value="#{personaController.selected.usuarioId}" title="#{bundle.CreatePersonaTitle_usuarioId}" >
+                        <f:selectItems value="#{usuarioController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{personaController.create}" value="#{bundle.CreatePersonaSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{personaController.prepareList}" value="#{bundle.CreatePersonaShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreatePersonaIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

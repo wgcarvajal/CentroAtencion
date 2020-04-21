@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewAsignazonaTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewAsignazonaLabel_azonaId}"/>
+                    <h:outputText value="#{asignazonaController.selected.azonaId}" title="#{bundle.ViewAsignazonaTitle_azonaId}"/>
+                    <h:outputText value="#{bundle.ViewAsignazonaLabel_azonaObservaciones}"/>
+                    <h:outputText value="#{asignazonaController.selected.azonaObservaciones}" title="#{bundle.ViewAsignazonaTitle_azonaObservaciones}"/>
+                    <h:outputText value="#{bundle.ViewAsignazonaLabel_azonafechanicial}"/>
+                    <h:outputText value="#{asignazonaController.selected.azonafechanicial}" title="#{bundle.ViewAsignazonaTitle_azonafechanicial}">
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:outputText>
+                    <h:outputText value="#{bundle.ViewAsignazonaLabel_azonafechafinal}"/>
+                    <h:outputText value="#{asignazonaController.selected.azonafechafinal}" title="#{bundle.ViewAsignazonaTitle_azonafechafinal}">
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:outputText>
+                    <h:outputText value="#{bundle.ViewAsignazonaLabel_entradaid}"/>
+                    <h:outputText value="#{asignazonaController.selected.entradaid}" title="#{bundle.ViewAsignazonaTitle_entradaid}"/>
+                    <h:outputText value="#{bundle.ViewAsignazonaLabel_zonaubicacionanimalId}"/>
+                    <h:outputText value="#{asignazonaController.selected.zonaubicacionanimalId}" title="#{bundle.ViewAsignazonaTitle_zonaubicacionanimalId}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{asignazonaController.destroyAndView}" value="#{bundle.ViewAsignazonaDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewAsignazonaEditLink}"/>
+                <br />
+                <h:commandLink action="#{asignazonaController.prepareCreate}" value="#{bundle.ViewAsignazonaCreateLink}" />
+                <br />
+                <h:commandLink action="#{asignazonaController.prepareList}" value="#{bundle.ViewAsignazonaShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewAsignazonaIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"      
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition>
+        <div class="tituloContenido">                           
+               Animales
+        </div>
+        <h:form id="formTablaAnimales">
+           
+            
+            <p:commandButton  value="Registrar animal" class="botonAzul" style="position: absolute; right:70px;; "
+                                  action="#{agregarAnimalController.abrirVentanaAgregarAnimal()}"
+                                          onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                          update="formTablaAnimales :form:panel"/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <p:panel id="tablaAnimales">                                            
+                <p:dataTable  value="#{anController.listaAnimales}"
+                              var="animal" 
+                              paginator="true" rows="10"  
+                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                              filteredValue="#{anController.listaAnimalesFiltrados}"
+                              >
+                    <p:column filterBy="#{animal.anNombre}"  filterMatchMode="contains" headerText="Nombre" style="text-align: center">
+                        #{animal.anNombre}
+                    </p:column>
+                    <p:column headerText="Descripcion" style="text-align: center">
+                        <div style="width: 200px;white-space:normal;font-size:14px;word-wrap: break-word;">
+                            #{animal.anDescripcion}
+                        </div>
+                    </p:column>
+                    <p:column filterBy="#{animal.espId.espNombre}"  filterMatchMode="contains" headerText="Especie" style="text-align: center">
+                        #{animal.espId.espNombre}
+                    </p:column>
+                    <p:column filterBy="#{animal.grupotaxonomicoId.gruptaxNombre}"  filterMatchMode="contains" headerText="Grupo taxonómico" style="text-align: center">
+                        #{animal.grupotaxonomicoId.gruptaxNombre}
+                    </p:column>
+                    <p:column headerText="Acciones" width="150" style="text-align: center">                               
+                        <p:commandLink update=":formularioTituloVerAnimal :formularioAnimal :formularioFoto :formularioEditarFoto :formClasificacion" title="Ver o Editar"   style="text-decoration: none;" action="#{verEditarAnimalController.animalSeleccionado(animal,anController)}">                                    
+                            <p:graphicImage style="width:25px;margin-left: 5px;" library="imagenesAplicacion/usuarios" name="ver.png"
+                                            />
+                        </p:commandLink>                                
+                        <p:commandLink id="eliminar" style="text-decoration: none;margin-left: 5px; " title="Eliminar" action="#{eliminarAnimalController.ventanaEliminarAnimal(animal, anController)}">                                    
+                            <p:graphicImage style="width:20px; " library="imagenesAplicacion/usuarios" name="eliminar.png"/>
+                        </p:commandLink>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>                   
+           
+        </h:form>
+        <ui:include src="registrarAnimal.xhtml"/>
+        <ui:include src="verEditarAnimal.xhtml"/>
+        <ui:include src="eliminarAnimal.xhtml"/>
+    </ui:composition>
+</html>
+

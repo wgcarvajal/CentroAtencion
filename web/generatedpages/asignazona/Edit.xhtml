@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EditAsignazonaTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditAsignazonaLabel_azonaId}" for="azonaId" />
+                    <h:inputText id="azonaId" value="#{asignazonaController.selected.azonaId}" title="#{bundle.EditAsignazonaTitle_azonaId}" required="true" requiredMessage="#{bundle.EditAsignazonaRequiredMessage_azonaId}"/>
+                    <h:outputLabel value="#{bundle.EditAsignazonaLabel_azonaObservaciones}" for="azonaObservaciones" />
+                    <h:inputTextarea rows="4" cols="30" id="azonaObservaciones" value="#{asignazonaController.selected.azonaObservaciones}" title="#{bundle.EditAsignazonaTitle_azonaObservaciones}" />
+                    <h:outputLabel value="#{bundle.EditAsignazonaLabel_azonafechanicial}" for="azonafechanicial" />
+                    <h:inputText id="azonafechanicial" value="#{asignazonaController.selected.azonafechanicial}" title="#{bundle.EditAsignazonaTitle_azonafechanicial}" required="true" requiredMessage="#{bundle.EditAsignazonaRequiredMessage_azonafechanicial}">
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.EditAsignazonaLabel_azonafechafinal}" for="azonafechafinal" />
+                    <h:inputText id="azonafechafinal" value="#{asignazonaController.selected.azonafechafinal}" title="#{bundle.EditAsignazonaTitle_azonafechafinal}" required="true" requiredMessage="#{bundle.EditAsignazonaRequiredMessage_azonafechafinal}">
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.EditAsignazonaLabel_entradaid}" for="entradaid" />
+                    <h:selectOneMenu id="entradaid" value="#{asignazonaController.selected.entradaid}" title="#{bundle.EditAsignazonaTitle_entradaid}" required="true" requiredMessage="#{bundle.EditAsignazonaRequiredMessage_entradaid}">
+                        <f:selectItems value="#{ingresoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.EditAsignazonaLabel_zonaubicacionanimalId}" for="zonaubicacionanimalId" />
+                    <h:selectOneMenu id="zonaubicacionanimalId" value="#{asignazonaController.selected.zonaubicacionanimalId}" title="#{bundle.EditAsignazonaTitle_zonaubicacionanimalId}" required="true" requiredMessage="#{bundle.EditAsignazonaRequiredMessage_zonaubicacionanimalId}">
+                        <f:selectItems value="#{zonaubicacionanimalController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <h:commandLink action="#{asignazonaController.update}" value="#{bundle.EditAsignazonaSaveLink}"/>
+                <br />
+                <br />
+                <h:link outcome="View" value="#{bundle.EditAsignazonaViewLink}"/>
+                <br />
+                <h:commandLink action="#{asignazonaController.prepareList}" value="#{bundle.EditAsignazonaShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.EditAsignazonaIndexLink}" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

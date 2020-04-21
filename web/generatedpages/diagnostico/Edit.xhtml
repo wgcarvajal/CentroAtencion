@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EditDiagnosticoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditDiagnosticoLabel_diagId}" for="diagId" />
+                    <h:inputText id="diagId" value="#{diagnosticoController.selected.diagId}" title="#{bundle.EditDiagnosticoTitle_diagId}" required="true" requiredMessage="#{bundle.EditDiagnosticoRequiredMessage_diagId}"/>
+                    <h:outputLabel value="#{bundle.EditDiagnosticoLabel_diagFecha}" for="diagFecha" />
+                    <h:inputText id="diagFecha" value="#{diagnosticoController.selected.diagFecha}" title="#{bundle.EditDiagnosticoTitle_diagFecha}" required="true" requiredMessage="#{bundle.EditDiagnosticoRequiredMessage_diagFecha}">
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.EditDiagnosticoLabel_diagPresuntivo}" for="diagPresuntivo" />
+                    <h:inputTextarea rows="4" cols="30" id="diagPresuntivo" value="#{diagnosticoController.selected.diagPresuntivo}" title="#{bundle.EditDiagnosticoTitle_diagPresuntivo}" />
+                    <h:outputLabel value="#{bundle.EditDiagnosticoLabel_diagObervacion}" for="diagObervacion" />
+                    <h:inputTextarea rows="4" cols="30" id="diagObervacion" value="#{diagnosticoController.selected.diagObervacion}" title="#{bundle.EditDiagnosticoTitle_diagObervacion}" required="true" requiredMessage="#{bundle.EditDiagnosticoRequiredMessage_diagObervacion}"/>
+                    <h:outputLabel value="#{bundle.EditDiagnosticoLabel_ingresoId}" for="ingresoId" />
+                    <h:selectOneMenu id="ingresoId" value="#{diagnosticoController.selected.ingresoId}" title="#{bundle.EditDiagnosticoTitle_ingresoId}" required="true" requiredMessage="#{bundle.EditDiagnosticoRequiredMessage_ingresoId}">
+                        <f:selectItems value="#{ingresoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <h:commandLink action="#{diagnosticoController.update}" value="#{bundle.EditDiagnosticoSaveLink}"/>
+                <br />
+                <br />
+                <h:link outcome="View" value="#{bundle.EditDiagnosticoViewLink}"/>
+                <br />
+                <h:commandLink action="#{diagnosticoController.prepareList}" value="#{bundle.EditDiagnosticoShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.EditDiagnosticoIndexLink}" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

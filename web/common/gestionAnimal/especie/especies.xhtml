@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"      
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition>
+        <div class="tituloContenido">                           
+               Especies
+        </div>
+        <br/>
+        <h:form id="seleccionarOrden">
+            <p:panelGrid styleClass="panelgrid"> 
+                <p:column style="width:200px;">
+                    <p:outputLabel styleClass="CampoLabel" value="Seleccione Orden:" />
+                </p:column>   
+                <p:column>
+                    <p:selectOneMenu filter="true" filterMatchMode="startsWith"  id="tipoUsuario" style="width:150px;font-size: 15px;" required="true"
+                                     requiredMessage="Seleccione un Orden."
+                                     valueChangeListener="#{espController.changedOrden}"
+                                     >
+                        <f:selectItem itemLabel="Seleccione.." itemValue="0" />
+                        <f:selectItems value="#{espController.listaOrdens}"
+                                       var="orden" itemLabel="#{orden.orNombre}" itemValue="#{orden.orId}"/>
+                        <p:ajax update=":formSeleccionarFamilia :formTablaEspecies"/>
+                        <p:ajax onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"/>                                        
+                    </p:selectOneMenu>  
+                </p:column>
+
+            </p:panelGrid>
+        </h:form>
+        <br/>
+        <h:form id="formSeleccionarFamilia">
+            <p:panelGrid styleClass="panelgrid" rendered="#{espController.enabledSelectFamilias}">
+                <p:column style="width:200px;">
+                   <p:outputLabel styleClass="CampoLabel" value="Seleccione Familia:" /> 
+                </p:column>
+                <p:column>
+                    <p:selectOneMenu filter="true" filterMatchMode="startsWith"  id="tipoUsuario" 
+                                 style="width:150px;font-size: 15px;" required="true"
+                                 requiredMessage="Seleccione un Familia."
+                                 valueChangeListener="#{espController.changedFamilia}"
+                                 >
+                    <f:selectItem itemLabel="Seleccione.." itemValue="0" />
+                    <f:selectItems value="#{espController.listaFamilias}"
+                                   var="familia" itemLabel="#{familia.faNombre}" itemValue="#{familia.faId}"/>
+                    <p:ajax update=":formTablaEspecies"/>
+                    <p:ajax onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"/>                                        
+                </p:selectOneMenu>  
+                </p:column>                    
+                
+            </p:panelGrid>
+        </h:form>
+        <br/>
+        <br/>
+        <h:form id="formTablaEspecies">
+            <h:panelGrid style="margin-bottom: 10px;" columns="3"
+                         rendered="#{espController.enabledTablaEspecies}">                      
+                <h:outputLabel class="CampoLabel" value="Buscar especie:" />
+                <p:inputText style="width: 240px;" value="#{espController.nombreEspecie}"  >
+                    <p:ajax event="keyup" update="tablaEspecies" listener="#{espController.searchByFamiliaAndNombreEspecie()}" />                                
+                </p:inputText>
+               <p:commandButton  value="Agregar especie" class="botonAzul" style="margin-left: 395px;"
+                                 action="#{agregarEspecieController.abrirVentanaAgregarEspecie(espController.familiaIdSelected)}"
+                                          onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                          update="formTablaEspecies :form:panel"/>
+            </h:panelGrid>
+            <p:panel id="tablaEspecies" rendered="#{espController.enabledTablaEspecies}">                                            
+                <p:dataTable  value="#{espController.listaEspecies}"
+                              var="especie" 
+                              paginator="true" rows="10"  
+                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                              >
+                    <p:column headerText="Nombre" style="text-align: center">
+                        #{especie.espNombre}
+                    </p:column>
+                    <p:column headerText="Descripción" style="text-align: center">
+                        #{especie.espDescripcion}
+                    </p:column>
+                    <p:column headerText="Acciones" width="150" style="text-align: center">                               
+                        <p:commandLink update=":formularioTituloVerEspecie :formularioEspecie" title="Ver o Editar"   style="text-decoration: none;" action="#{verEditarEspecieController.especieSeleccionado(especie,espController)}">                                    
+                            <p:graphicImage style="width:25px;margin-left: 5px;" library="imagenesAplicacion/usuarios" name="ver.png"
+                                            />
+                        </p:commandLink>                           
+                        <p:commandLink id="eliminar" style="text-decoration: none;margin-left: 5px; " title="Eliminar" action="#{eliminarEspecieController.ventanaEliminarEspecie(especie, espController)}">                                    
+                            <p:graphicImage style="width:20px; " library="imagenesAplicacion/usuarios" name="eliminar.png"/>
+                        </p:commandLink>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>                   
+           
+        </h:form>
+        <ui:include src="registrarEspecie.xhtml"/>
+        <ui:include src="verEditarEspecie.xhtml"/>
+        <ui:include src="eliminarEspecie.xhtml"/>
+    </ui:composition>
+</html>

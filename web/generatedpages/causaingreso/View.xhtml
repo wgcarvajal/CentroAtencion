@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewCausaingresoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewCausaingresoLabel_causaingId}"/>
+                    <h:outputText value="#{causaingresoController.selected.causaingId}" title="#{bundle.ViewCausaingresoTitle_causaingId}"/>
+                    <h:outputText value="#{bundle.ViewCausaingresoLabel_causaingNombre}"/>
+                    <h:outputText value="#{causaingresoController.selected.causaingNombre}" title="#{bundle.ViewCausaingresoTitle_causaingNombre}"/>
+                    <h:outputText value="#{bundle.ViewCausaingresoLabel_causaingAbreviatura}"/>
+                    <h:outputText value="#{causaingresoController.selected.causaingAbreviatura}" title="#{bundle.ViewCausaingresoTitle_causaingAbreviatura}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{causaingresoController.destroyAndView}" value="#{bundle.ViewCausaingresoDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewCausaingresoEditLink}"/>
+                <br />
+                <h:commandLink action="#{causaingresoController.prepareCreate}" value="#{bundle.ViewCausaingresoCreateLink}" />
+                <br />
+                <h:commandLink action="#{causaingresoController.prepareList}" value="#{bundle.ViewCausaingresoShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewCausaingresoIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

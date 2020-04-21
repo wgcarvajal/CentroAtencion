@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListDesarrollobiologicoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <h:outputText escape="false" value="#{bundle.ListDesarrollobiologicoEmpty}" rendered="#{desarrollobiologicoController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{desarrollobiologicoController.items.rowCount > 0}">
+                    <h:outputText value="#{desarrollobiologicoController.pagination.pageFirstItem + 1}..#{desarrollobiologicoController.pagination.pageLastItem + 1}/#{desarrollobiologicoController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{desarrollobiologicoController.previous}" value="#{bundle.Previous} #{desarrollobiologicoController.pagination.pageSize}" rendered="#{desarrollobiologicoController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{desarrollobiologicoController.next}" value="#{bundle.Next} #{desarrollobiologicoController.pagination.pageSize}" rendered="#{desarrollobiologicoController.pagination.hasNextPage}"/>&nbsp;
+                    <h:dataTable value="#{desarrollobiologicoController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListDesarrollobiologicoTitle_desbioId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.desbioId}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListDesarrollobiologicoTitle_desbioEstado}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.desbioEstado}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListDesarrollobiologicoTitle_desbioEstadoAbreviatura}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.desbioEstadoAbreviatura}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{desarrollobiologicoController.prepareView}" value="#{bundle.ListDesarrollobiologicoViewLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{desarrollobiologicoController.prepareEdit}" value="#{bundle.ListDesarrollobiologicoEditLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{desarrollobiologicoController.destroy}" value="#{bundle.ListDesarrollobiologicoDestroyLink}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+                <br />
+                <h:commandLink action="#{desarrollobiologicoController.prepareCreate}" value="#{bundle.ListDesarrollobiologicoCreateLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ListDesarrollobiologicoIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateFamiliaTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateFamiliaLabel_faId}" for="faId" />
+                    <h:inputText id="faId" value="#{familiaController.selected.faId}" title="#{bundle.CreateFamiliaTitle_faId}" required="true" requiredMessage="#{bundle.CreateFamiliaRequiredMessage_faId}"/>
+                    <h:outputLabel value="#{bundle.CreateFamiliaLabel_faNombre}" for="faNombre" />
+                    <h:inputText id="faNombre" value="#{familiaController.selected.faNombre}" title="#{bundle.CreateFamiliaTitle_faNombre}" required="true" requiredMessage="#{bundle.CreateFamiliaRequiredMessage_faNombre}"/>
+                    <h:outputLabel value="#{bundle.CreateFamiliaLabel_faDescripcion}" for="faDescripcion" />
+                    <h:inputTextarea rows="4" cols="30" id="faDescripcion" value="#{familiaController.selected.faDescripcion}" title="#{bundle.CreateFamiliaTitle_faDescripcion}" required="true" requiredMessage="#{bundle.CreateFamiliaRequiredMessage_faDescripcion}"/>
+                    <h:outputLabel value="#{bundle.CreateFamiliaLabel_orId}" for="orId" />
+                    <h:selectOneMenu id="orId" value="#{familiaController.selected.orId}" title="#{bundle.CreateFamiliaTitle_orId}" required="true" requiredMessage="#{bundle.CreateFamiliaRequiredMessage_orId}">
+                        <f:selectItems value="#{ordenController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{familiaController.create}" value="#{bundle.CreateFamiliaSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{familiaController.prepareList}" value="#{bundle.CreateFamiliaShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateFamiliaIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

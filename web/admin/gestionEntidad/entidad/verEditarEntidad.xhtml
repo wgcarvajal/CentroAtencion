@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition>
+        <div class="tituloContenido">                           
+               Entidad
+        </div>
+            <br/>
+                <h:form id="formularioEntidad">
+                    <p:messages closable="true"/>
+                    <p:panelGrid styleClass="panelgrid"> 
+                        <p:row rendered="#{verEditarEntidadController.campoNombre}">
+                            <p:column>
+                                <p:outputLabel style="font-size: 15px;" value="Nombre: "/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{verEditarEntidadController.entidad.entNombre}"/>
+                            </p:column>
+                            <p:column>
+                                <p:commandLink update="formularioEntidad" style="color: blue;" value="Modificar" action="#{verEditarEntidadController.mostrarModificarNombre()}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{!verEditarEntidadController.campoNombre}">
+                            <p:column>
+                                <p:outputLabel style="font-size: 15px;" value="Nombre: "/>
+                                <h:outputLabel style="font-style: italic;font-size: 16px;text-align: left; color:red;" 
+                                               value="* "/>
+                            </p:column>
+                            <p:column>
+                                <p:inputText value="#{verEditarEntidadController.nombre}"
+                                             required="true" requiredMessage="campo obligatorio"
+                                             />  
+                            </p:column>
+                            <p:column>
+                                <p:commandLink style="color: blue;" value="Aceptar" action="#{verEditarEntidadController.actualizarNombre()}"
+                                               onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                               update="formularioEntidad"/>
+                                <p:commandLink style="margin-left: 10px;color: blue;" value="Cancelar" 
+                                               action="#{verEditarEntidadController.cancelarActualizarNombre()}"
+                                               onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                               update="formularioEntidad"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{verEditarEntidadController.campoDireccion}">
+                            <p:column>
+                                <p:outputLabel style="font-size: 15px;" value="Dirección: "/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{verEditarEntidadController.entidad.entDireccion}"/>
+                            </p:column>
+                            <p:column>
+                                <p:commandLink update="formularioEntidad" style="color: blue;" value="Modificar" action="#{verEditarEntidadController.mostrarModificarDireccion()}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{!verEditarEntidadController.campoDireccion}">
+                            <p:column>
+                                <p:outputLabel style="font-size: 15px;" value="Dirección: "/>
+                                <h:outputLabel style="font-style: italic;font-size: 16px;text-align: left; color:red;" 
+                                               value="* "/>
+                            </p:column>
+                            <p:column>
+                                <p:inputTextarea value="#{verEditarEntidadController.direccion}"
+                                                 required="true" requiredMessage="campo obligatorio"/>  
+                            </p:column>
+                            <p:column>
+                                <p:commandLink style="color: blue;" value="Aceptar" action="#{verEditarEntidadController.actualizarDireccion()}"
+                                               onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                               update="formularioEntidad"/>
+                                <p:commandLink style="margin-left: 10px;color: blue;" value="Cancelar" 
+                                               action="#{verEditarEntidadController.cancelarActualizarDireccion()}"
+                                               onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                               update="formularioEntidad"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{verEditarEntidadController.campoTelefono}">
+                            <p:column>
+                                <p:outputLabel style="font-size: 15px;" value="Teléfono: "/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{verEditarEntidadController.entidad.entTelefono}"/>
+                            </p:column>
+                            <p:column>
+                                <p:commandLink update="formularioEntidad" style="color: blue;" value="Modificar" action="#{verEditarEntidadController.mostrarModificarTelefono()}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{!verEditarEntidadController.campoTelefono}">
+                            <p:column>
+                                <p:outputLabel style="font-size: 15px;" value="Teléfono: "/>
+                                <h:outputLabel style="font-style: italic;font-size: 16px;text-align: left; color:red;" 
+                                               value="* "/>
+                            </p:column>
+                            <p:column>
+                                <p:inputText value="#{verEditarEntidadController.telefono}"
+                                                 required="true" requiredMessage="campo obligatorio"/>  
+                            </p:column>
+                            <p:column>
+                                <p:commandLink style="color: blue;" value="Aceptar" action="#{verEditarEntidadController.actualizarTelefono()}"
+                                               onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                               update="formularioEntidad"/>
+                                <p:commandLink style="margin-left: 10px;color: blue;" value="Cancelar" 
+                                               action="#{verEditarEntidadController.cancelarActualizarTelefono()}"
+                                               onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                               update="formularioEntidad"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{verEditarEntidadController.campoDeparMunVer}">
+                            <p:column>
+                                <p:outputLabel style="font-size: 15px;" value="Departamento: "/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{verEditarEntidadController.getFormatDepartamento()}"/>
+                            </p:column>
+                            <p:column rowspan="3">
+                                <p:commandLink update="formularioEntidad" style="color: blue;" value="Modificar" action="#{verEditarEntidadController.mostrarModificarDepartamentoMunicipioVereda()}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{verEditarEntidadController.campoDeparMunVer}">
+                            <p:column>
+                                <p:outputLabel style="font-size: 15px;" value="Municipio: "/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{verEditarEntidadController.getFormatMunicipio()}"/>
+                            </p:column>
+                            
+                        </p:row>
+                        <p:row rendered="#{verEditarEntidadController.campoDeparMunVer}">
+                            <p:column>
+                                <p:outputLabel style="font-size: 15px;" value="Vereda: "/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{verEditarEntidadController.getFormatVereda()}"/>
+                            </p:column>
+                            
+                        </p:row>
+                        
+                        <p:row rendered="#{!verEditarEntidadController.campoDeparMunVer}">
+                            <p:column>
+                                <p:outputLabel style="font-size: 15px;" value="Departamento: "/>
+                                <h:outputLabel style="font-style: italic;font-size: 16px;text-align: left; color:red;" 
+                                               value="* "/>
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu filter="true" filterMatchMode="startsWith"  id="departamento" style="width:150px;font-size: 15px;" 
+                                                 value="#{verEditarEntidadController.idDepartamento}"
+                                                 valueChangeListener="#{verEditarEntidadController.changedDepartamento}"
+                                                 >
+                                    <f:selectItem itemLabel="Seleccione.." itemValue="0" />
+                                    <f:selectItems value="#{verEditarEntidadController.listaDepartamentos}"
+                                                   var="departamento" itemLabel="#{departamento.depNombre}" itemValue="#{departamento.depId}"/>
+                                    <p:ajax update="formularioEntidad"/>
+                                    <p:ajax onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"/>                                        
+                                </p:selectOneMenu> 
+                            </p:column>
+                            <p:column rowspan="3">
+                                <p:commandLink style="color: blue;" value="Aceptar" action="#{verEditarEntidadController.actualizarDepartamentoMunicipioVereda()}"
+                                               onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                               update="formularioEntidad"/>
+                                <p:commandLink style="margin-left: 10px;color: blue;" value="Cancelar" 
+                                               action="#{verEditarEntidadController.cancelarActualizarDepartamentoMunicipioVereda()}"
+                                               onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                               update="formularioEntidad"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{!verEditarEntidadController.campoDeparMunVer}">
+                            <p:column>
+                                <p:outputLabel style="font-size: 15px;" value="Municipio: "/>
+                                <h:outputLabel style="font-style: italic;font-size: 16px;text-align: left; color:red;" 
+                                               value="* "/>
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu filter="true" filterMatchMode="startsWith"  id="municipio" style="width:150px;font-size: 15px;" 
+                                                 value="#{verEditarEntidadController.idMunicipio}"
+                                                 valueChangeListener="#{verEditarEntidadController.changedMunicipio}"
+                                                 >
+                                    <f:selectItem itemLabel="Seleccione.." itemValue="0" />
+                                    <f:selectItems value="#{verEditarEntidadController.listaMunicipios}"
+                                                   var="municipio" itemLabel="#{municipio.munNombre}" itemValue="#{municipio.munId}"/>
+                                    <p:ajax update="formularioEntidad"/>
+                                    <p:ajax onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"/>                                        
+                                </p:selectOneMenu> 
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{!verEditarEntidadController.campoDeparMunVer}">
+                            <p:column>
+                                <p:outputLabel style="font-size: 15px;" value="Vereda: "/>
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu filter="true" filterMatchMode="startsWith"  id="vereda" style="width:150px;font-size: 15px;" 
+                                                 value="#{verEditarEntidadController.idVereda}"
+                                                 >
+                                    <f:selectItem itemLabel="Seleccione.." itemValue="0" />
+                                    <f:selectItems value="#{verEditarEntidadController.listaVeredas}"
+                                                   var="vereda" 
+                                                   itemLabel="#{vereda.verNombre}" 
+                                                   itemValue="#{vereda.verId}"/>
+                                                                          
+                                </p:selectOneMenu> 
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{verEditarEntidadController.campoDireccionTerritorial}">
+                            <p:column>
+                                <p:outputLabel style="font-size: 15px;" value="Dirección territorial: "/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{verEditarEntidadController.entidad.direccionterritorialId.dirterNombre}"/>
+                            </p:column>
+                            <p:column>
+                                <p:commandLink update="formularioEntidad" style="color: blue;" value="Modificar" action="#{verEditarEntidadController.mostrarModificarDireccionTerritorial()}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{!verEditarEntidadController.campoDireccionTerritorial}">
+                            <p:column>
+                                <p:outputLabel style="font-size: 15px;" value="Dirección territorial: "/>
+                                <h:outputLabel style="font-style: italic;font-size: 16px;text-align: left; color:red;" 
+                                               value="* "/>
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu filter="true" filterMatchMode="startsWith"  id="direccionTerritorial" style="width:150px;font-size: 15px;" 
+                                                 value="#{verEditarEntidadController.idDireccionTerritorial}"
+                                                 >
+                                    <f:selectItem itemLabel="Seleccione.." itemValue="0" />
+                                    <f:selectItems value="#{verEditarEntidadController.listaDireccionTerritorial}"
+                                                   var="direccionterritorial" 
+                                                   itemLabel="#{direccionterritorial.dirterNombre}" 
+                                                   itemValue="#{direccionterritorial.dirterId}"/>
+                                                                          
+                                </p:selectOneMenu>  
+                            </p:column>
+                            <p:column>
+                                <p:commandLink style="color: blue;" value="Aceptar" action="#{verEditarEntidadController.actualizarDireccionTerritorial()}"
+                                               onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                               update="formularioEntidad"/>
+                                <p:commandLink style="margin-left: 10px;color: blue;" value="Cancelar" 
+                                               action="#{verEditarEntidadController.cancelarActualizarDireccionTerritorial()}"
+                                               onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                               update="formularioEntidad"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+            </h:form>
+            
+                    
+                    <br/>
+                    <br/>
+                    
+            <h:form id="formTablaZonas">
+            <h:panelGrid style="margin-bottom: 10px;" columns="3">                      
+              
+                <p:commandButton  value="Agregar Zona" class="botonAzul" style="margin-left: 595px;"
+                                  action="#{agregarZonaController.abrirVentanaAgregarZona(verEditarEntidadController.entidad)}"
+                                          onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                          update="formTablaZonas :form:panel"/>
+            </h:panelGrid>
+            <p:panel id="formTablaZonas">                                            
+                <p:dataTable  value="#{verEditarEntidadController.listaZonaUbicacionAnimal}"
+                              var="zonaUbicacionAnimal" 
+                              paginator="true" rows="10"  
+                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                              >
+                    <p:column headerText="Nombre" style="text-align: center">
+                        #{zonaUbicacionAnimal.zonubianNombre}
+                    </p:column>
+                    <p:column headerText="Descripción" style="text-align: center">
+                        #{zonaUbicacionAnimal.zonubianDescripcion}
+                    </p:column>
+                    <p:column headerText="Area" style="text-align: center">
+                        #{zonaUbicacionAnimal.zonaubianArea}
+                    </p:column>
+                    <p:column headerText="Tipo" style="text-align: center">
+                        #{zonaUbicacionAnimal.tipozonaubicacionId.tzuNombre}
+                    </p:column>
+                    <p:column headerText="Acciones" width="150" style="text-align: center">                               
+                        <p:commandLink update=":formularioTituloVerZona :formularioZona"  title="Ver o Editar"   style="text-decoration: none;" action="#{verEditarZonaController.zonaSeleccionado(zonaUbicacionAnimal, verEditarEntidadController)}">                                    
+                            <p:graphicImage style="width:25px;margin-left: 5px;" library="imagenesAplicacion/usuarios" name="ver.png"
+                                            />
+                        </p:commandLink>   
+                        <p:commandLink id="eliminar" style="text-decoration: none;margin-left: 5px; " 
+                                       title="Eliminar" 
+                                       action="#{eliminarZonaController.ventanaEliminarZona(zonaUbicacionAnimal, verEditarEntidadController)}">                                    
+                            <p:graphicImage style="width:20px; " library="imagenesAplicacion/usuarios" name="eliminar.png"/>
+                        </p:commandLink>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>                   
+           
+        </h:form>
+                    
+        <ui:include src="registrarZona.xhtml"/>
+        <ui:include src="verEditarZona.xhtml"/>
+        <ui:include src="eliminarZona.xhtml"/>
+           
+    </ui:composition>   
+</html>

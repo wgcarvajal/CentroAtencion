@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewGrupotaxonomicoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewGrupotaxonomicoLabel_gruptaxId}"/>
+                    <h:outputText value="#{grupotaxonomicoController.selected.gruptaxId}" title="#{bundle.ViewGrupotaxonomicoTitle_gruptaxId}"/>
+                    <h:outputText value="#{bundle.ViewGrupotaxonomicoLabel_gruptaxNombre}"/>
+                    <h:outputText value="#{grupotaxonomicoController.selected.gruptaxNombre}" title="#{bundle.ViewGrupotaxonomicoTitle_gruptaxNombre}"/>
+                    <h:outputText value="#{bundle.ViewGrupotaxonomicoLabel_grupotaxAbreviatura}"/>
+                    <h:outputText value="#{grupotaxonomicoController.selected.grupotaxAbreviatura}" title="#{bundle.ViewGrupotaxonomicoTitle_grupotaxAbreviatura}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{grupotaxonomicoController.destroyAndView}" value="#{bundle.ViewGrupotaxonomicoDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewGrupotaxonomicoEditLink}"/>
+                <br />
+                <h:commandLink action="#{grupotaxonomicoController.prepareCreate}" value="#{bundle.ViewGrupotaxonomicoCreateLink}" />
+                <br />
+                <h:commandLink action="#{grupotaxonomicoController.prepareList}" value="#{bundle.ViewGrupotaxonomicoShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewGrupotaxonomicoIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewAnimalTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewAnimalLabel_anId}"/>
+                    <h:outputText value="#{animalController.selected.anId}" title="#{bundle.ViewAnimalTitle_anId}"/>
+                    <h:outputText value="#{bundle.ViewAnimalLabel_anNombre}"/>
+                    <h:outputText value="#{animalController.selected.anNombre}" title="#{bundle.ViewAnimalTitle_anNombre}"/>
+                    <h:outputText value="#{bundle.ViewAnimalLabel_espId}"/>
+                    <h:outputText value="#{animalController.selected.espId}" title="#{bundle.ViewAnimalTitle_espId}"/>
+                    <h:outputText value="#{bundle.ViewAnimalLabel_grupotaxonomicoId}"/>
+                    <h:outputText value="#{animalController.selected.grupotaxonomicoId}" title="#{bundle.ViewAnimalTitle_grupotaxonomicoId}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{animalController.destroyAndView}" value="#{bundle.ViewAnimalDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewAnimalEditLink}"/>
+                <br />
+                <h:commandLink action="#{animalController.prepareCreate}" value="#{bundle.ViewAnimalCreateLink}" />
+                <br />
+                <h:commandLink action="#{animalController.prepareList}" value="#{bundle.ViewAnimalShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewAnimalIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

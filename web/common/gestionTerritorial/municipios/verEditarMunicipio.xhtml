@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition>
+        <p:dialog header="Ver o Editar Municipio" modal="true" resizable="false" position="center"  widgetVar="verEditarMunicipio" closable="true">
+            <br/>
+            <br/>
+            <h:form id="formularioTituloVerMunicipio">
+                <p:outputLabel value="Municipio" style="font-size: 20px;color:#22419A;" 
+                               />
+            </h:form>
+            <br/>
+            <br/>
+                <h:form id="formularioMunicipio">
+                    <p:messages closable="true"/>
+                    <p:panelGrid styleClass="panelgrid"> 
+                        <p:row rendered="#{verEditarMunicipioController.campoNombre}">
+                            <p:column>
+                                <p:outputLabel style="font-size: 15px;" value="Nombre: "/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{verEditarMunicipioController.municipio.munNombre}"/>
+                            </p:column>
+                            <p:column>
+                                <p:commandLink update="formularioMunicipio" style="color: blue;" value="Modificar" action="#{verEditarMunicipioController.mostrarModificarNombre()}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{!verEditarMunicipioController.campoNombre}">
+                            <p:column>
+                                <p:outputLabel style="font-size: 15px;" value="Nombre: "/>
+                                <h:outputLabel style="font-style: italic;font-size: 16px;text-align: left; color:red;" 
+                                               value="* "/>
+                            </p:column>
+                            <p:column>
+                                <p:inputText value="#{verEditarMunicipioController.nombre}"/>  
+                            </p:column>
+                            <p:column>
+                                <p:commandLink style="color: blue;" value="Aceptar" action="#{verEditarMunicipioController.actualizarNombre()}"
+                                               onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                               update="formularioMunicipio :formTablaMunicipios"/>
+                                <p:commandLink style="margin-left: 10px;color: blue;" value="Cancelar" 
+                                               action="#{verEditarMunicipioController.cancelarActualizarNombre()}"
+                                               onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                               update="formularioMunicipio"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+            </h:form>
+            <br/>
+            <br/>
+        </p:dialog>
+    </ui:composition>   
+</html>

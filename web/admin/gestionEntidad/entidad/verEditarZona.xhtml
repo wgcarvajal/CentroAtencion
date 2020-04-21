@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition>
+        <p:dialog header="Ver o editar zona" modal="true" resizable="false" position="center"  widgetVar="verEditarZona" closable="true">
+            <br/>
+            <br/>
+            <h:form id="formularioTituloVerZona">
+                <p:outputLabel value="Zona" style="font-size: 20px;color:#22419A;" 
+                               />
+            </h:form>
+            <br/>
+            <br/>
+                <h:form id="formularioZona">
+                    <p:messages closable="true"/>
+                    <p:panelGrid styleClass="panelgrid">
+                        <p:row rendered="#{verEditarZonaController.campoTipo}">
+                            <p:column>
+                                <p:outputLabel style="font-size: 15px;" value="Tipo: "/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{verEditarZonaController.zonaSelected.tipozonaubicacionId.tzuNombre}"/>
+                            </p:column>
+                            <p:column>
+                                <p:commandLink update="formularioZona" style="color: blue;" value="Modificar" action="#{verEditarZonaController.mostrarModificarTipo()}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{!verEditarZonaController.campoTipo}">
+                            <p:column>
+                                <p:outputLabel style="font-size: 15px;" value="Tipo: "/>
+                                <h:outputLabel style="font-style: italic;font-size: 16px;text-align: left; color:red;" 
+                                               value="* "/>
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu filter="true" filterMatchMode="startsWith" style="width:150px;font-size: 15px;" 
+                                                     value="#{verEditarZonaController.tipozonaubicacionIdSelected}"
+                                                     >
+                                        <f:selectItem itemLabel="Seleccione.." itemValue="0" />
+                                        <f:selectItems value="#{verEditarZonaController.listaTipoZonaubicacion}"
+                                                       var="zona" itemLabel="#{zona.tzuNombre}" itemValue="#{zona.tzuId}"/>
+                                         
+                                    </p:selectOneMenu>
+                            </p:column>
+                            <p:column>
+                                <p:commandLink style="color: blue;" value="Aceptar" action="#{verEditarZonaController.actualizarTipo()}"
+                                               onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                               update="formularioZona :formTablaZonas"/>
+                                <p:commandLink style="margin-left: 10px;color: blue;" value="Cancelar" 
+                                               action="#{verEditarZonaController.cancelarActualizarTipo()}"
+                                               onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                               update="formularioZona"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{verEditarZonaController.campoNombre}">
+                            <p:column>
+                                <p:outputLabel style="font-size: 15px;" value="Nombre: "/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{verEditarZonaController.zonaSelected.zonubianNombre}"/>
+                            </p:column>
+                            <p:column>
+                                <p:commandLink update="formularioZona" style="color: blue;" value="Modificar" action="#{verEditarZonaController.mostrarModificarNombre()}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{!verEditarZonaController.campoNombre}">
+                            <p:column>
+                                <p:outputLabel style="font-size: 15px;" value="Nombre: "/>
+                                <h:outputLabel style="font-style: italic;font-size: 16px;text-align: left; color:red;" 
+                                               value="* "/>
+                            </p:column>
+                            <p:column>
+                                <p:inputText value="#{verEditarZonaController.nombre}"
+                                             required="true" requiredMessage="campo obligatorio"
+                                             />  
+                            </p:column>
+                            <p:column>
+                                <p:commandLink style="color: blue;" value="Aceptar" action="#{verEditarZonaController.actualizarNombre()}"
+                                               onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                               update="formularioZona :formTablaZonas"/>
+                                <p:commandLink style="margin-left: 10px;color: blue;" value="Cancelar" 
+                                               action="#{verEditarZonaController.cancelarActualizarNombre()}"
+                                               onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                               update="formularioZona"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{verEditarZonaController.campoDescripcion}">
+                            <p:column>
+                                <p:outputLabel style="font-size: 15px;" value="Descripción: "/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{verEditarZonaController.zonaSelected.zonubianDescripcion}"/>
+                            </p:column>
+                            <p:column>
+                                <p:commandLink update="formularioZona" style="color: blue;" value="Modificar" action="#{verEditarZonaController.mostrarModificarDescripcion()}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{!verEditarZonaController.campoDescripcion}">
+                            <p:column>
+                                <p:outputLabel style="font-size: 15px;" value="Descripción: "/>
+                                
+                            </p:column>
+                            <p:column>
+                                <p:inputTextarea value="#{verEditarZonaController.descripcion}"
+                                             />  
+                            </p:column>
+                            <p:column>
+                                <p:commandLink style="color: blue;" value="Aceptar" action="#{verEditarZonaController.actualizarDescripcion()}"
+                                               onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                               update="formularioZona :formTablaZonas"/>
+                                <p:commandLink style="margin-left: 10px;color: blue;" value="Cancelar" 
+                                               action="#{verEditarZonaController.cancelarActualizarDescripcion()}"
+                                               onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                               update="formularioZona"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+            </h:form>
+            <br/>
+            <br/>
+        </p:dialog>
+    </ui:composition>   
+</html>

@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"      
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition>
+        <div class="tituloContenido">                           
+               Dirección territorial
+        </div>
+        <h:form id="formTablaDireccionTerritoriales">
+            <h:panelGrid style="margin-bottom: 10px;" columns="3">  
+                <p:commandButton  value="Registrar orden" class="botonAzul" style="margin-left: 695px;"
+                                  action="#{agregarDireccionTerritorialController.abrirVentanaAgregarDireccionTerritorial()}"
+                                          onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                          update="formTablaDireccionTerritoriales :form:panel"/>
+            </h:panelGrid>
+            <p:panel id="tablaDireccionTerritoriales">                                            
+                <p:dataTable  value="#{dTerritorialController.listaDireccionTerritorial}"
+                              var="direccionTerritorial" 
+                              paginator="true" rows="10"  
+                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                              filteredValue="#{dTerritorialController.listaDireccionTerritoriaFiltrados}"
+                              >
+                    <p:column filterBy="#{direccionTerritorial.dirterNombre}" filterMatchMode="contains" headerText="Nombre" style="text-align: center">
+                        #{direccionTerritorial.dirterNombre}
+                    </p:column>
+                    <p:column filterBy="#{direccionTerritorial.dirterAbreviatura}" filterMatchMode="contains" headerText="Abreviatura" style="text-align: center">
+                        #{direccionTerritorial.dirterAbreviatura}
+                    </p:column>
+                    <p:column headerText="Acciones" width="150" style="text-align: center">                               
+                        <p:commandLink update=":formularioTituloVerDireccionTerritorial :formularioDireccionTerritorial" title="Ver o Editar"   style="text-decoration: none;" action="#{verEditarDireccionTerritorialController.direccionTerritorialSeleccionado(direccionTerritorial,dTerritorialController)}">                                    
+                            <p:graphicImage style="width:25px;margin-left: 5px;" library="imagenesAplicacion/usuarios" name="ver.png"
+                                            />
+                        </p:commandLink>                                
+                        <p:commandLink id="eliminar" style="text-decoration: none;margin-left: 5px; " 
+                                       title="Eliminar" 
+                                       action="#{eliminarDireccionTerritorialController.ventanaEliminarDireccionTerritorial(direccionTerritorial, dTerritorialController)}"
+                                       update=":forumularioEliminarDireccionTerritorial"
+                                       >                                    
+                            <p:graphicImage style="width:20px; " library="imagenesAplicacion/usuarios" name="eliminar.png"/>
+                        </p:commandLink>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>                   
+           
+        </h:form>
+        <ui:include src="registrarDireccionTerritorial.xhtml"/>
+        <ui:include src="verEditarDireccionTerritorial.xhtml"/>
+        <ui:include src="eliminarDireccionTerritorial.xhtml"/>
+    </ui:composition>
+</html>
+

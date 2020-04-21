@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewVeredaTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewVeredaLabel_verId}"/>
+                    <h:outputText value="#{veredaController.selected.verId}" title="#{bundle.ViewVeredaTitle_verId}"/>
+                    <h:outputText value="#{bundle.ViewVeredaLabel_verNombre}"/>
+                    <h:outputText value="#{veredaController.selected.verNombre}" title="#{bundle.ViewVeredaTitle_verNombre}"/>
+                    <h:outputText value="#{bundle.ViewVeredaLabel_municipioId}"/>
+                    <h:outputText value="#{veredaController.selected.municipioId}" title="#{bundle.ViewVeredaTitle_municipioId}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{veredaController.destroyAndView}" value="#{bundle.ViewVeredaDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewVeredaEditLink}"/>
+                <br />
+                <h:commandLink action="#{veredaController.prepareCreate}" value="#{bundle.ViewVeredaCreateLink}" />
+                <br />
+                <h:commandLink action="#{veredaController.prepareList}" value="#{bundle.ViewVeredaShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewVeredaIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

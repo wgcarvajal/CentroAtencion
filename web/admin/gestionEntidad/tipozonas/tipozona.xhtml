@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"      
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition>
+        <div class="tituloContenido">                           
+               Tipo de Zonas
+        </div>
+        <br/>
+       
+        <h:form id="formTablaTipoZonaUbicacions">
+            <h:panelGrid style="margin-bottom: 10px;" columns="3">                      
+              
+                <p:commandButton  value="Agregar tipo de Zona" class="botonAzul" style="margin-left: 595px;"
+                                  action="#{agregarTipoZonaController.abrirVentanaAgregarTipoZonaUbicacion()}"
+                                          onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                          update="tablaTipoZonaUbicacions :form:panel"/>
+            </h:panelGrid>
+            <p:panel id="tablaTipoZonaUbicacions">                                            
+                <p:dataTable  value="#{tipZonaController.listaTipoZonaUbicacion}"
+                              var="tipoZonaUbicacion" 
+                              paginator="true" rows="10"  
+                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                              >
+                    <p:column headerText="Nombre" style="text-align: center">
+                        #{tipoZonaUbicacion.tzuNombre}
+                    </p:column>
+                    <p:column headerText="Acciones" width="150" style="text-align: center">                               
+                        <p:commandLink update=":formularioTituloVerTipoZonaUbicacion :formularioTipoZonaUbicacion"  title="Ver o Editar"   style="text-decoration: none;" action="#{verEditarTipoZonaController.tipoZonaUbicacionSeleccionado(tipoZonaUbicacion,tipZonaController)}">                                    
+                            <p:graphicImage style="width:25px;margin-left: 5px;" library="imagenesAplicacion/usuarios" name="ver.png"
+                                            />
+                        </p:commandLink>                             
+                        <p:commandLink id="eliminar" style="text-decoration: none;margin-left: 5px; " title="Eliminar" action="#{eliminarTipoZonaController.ventanaEliminarTipoZonaUbicacion(tipoZonaUbicacion, tipZonaController)}">                                    
+                            <p:graphicImage style="width:20px; " library="imagenesAplicacion/usuarios" name="eliminar.png"/>
+                        </p:commandLink>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>                   
+           
+        </h:form>
+        <ui:include src="registrarTipoZona.xhtml"/>
+        <ui:include src="verEditarTipoZona.xhtml"/>
+        <ui:include src="eliminarTipoZona.xhtml"/>
+    </ui:composition>
+</html>

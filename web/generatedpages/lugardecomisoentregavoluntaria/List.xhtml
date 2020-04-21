@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListLugardecomisoentregavoluntariaTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <h:outputText escape="false" value="#{bundle.ListLugardecomisoentregavoluntariaEmpty}" rendered="#{lugardecomisoentregavoluntariaController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{lugardecomisoentregavoluntariaController.items.rowCount > 0}">
+                    <h:outputText value="#{lugardecomisoentregavoluntariaController.pagination.pageFirstItem + 1}..#{lugardecomisoentregavoluntariaController.pagination.pageLastItem + 1}/#{lugardecomisoentregavoluntariaController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{lugardecomisoentregavoluntariaController.previous}" value="#{bundle.Previous} #{lugardecomisoentregavoluntariaController.pagination.pageSize}" rendered="#{lugardecomisoentregavoluntariaController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{lugardecomisoentregavoluntariaController.next}" value="#{bundle.Next} #{lugardecomisoentregavoluntariaController.pagination.pageSize}" rendered="#{lugardecomisoentregavoluntariaController.pagination.hasNextPage}"/>&nbsp;
+                    <h:dataTable value="#{lugardecomisoentregavoluntariaController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListLugardecomisoentregavoluntariaTitle_ldeId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.ldeId}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListLugardecomisoentregavoluntariaTitle_ldeNombre}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.ldeNombre}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListLugardecomisoentregavoluntariaTitle_ldeAbreviatura}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.ldeAbreviatura}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{lugardecomisoentregavoluntariaController.prepareView}" value="#{bundle.ListLugardecomisoentregavoluntariaViewLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{lugardecomisoentregavoluntariaController.prepareEdit}" value="#{bundle.ListLugardecomisoentregavoluntariaEditLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{lugardecomisoentregavoluntariaController.destroy}" value="#{bundle.ListLugardecomisoentregavoluntariaDestroyLink}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+                <br />
+                <h:commandLink action="#{lugardecomisoentregavoluntariaController.prepareCreate}" value="#{bundle.ListLugardecomisoentregavoluntariaCreateLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ListLugardecomisoentregavoluntariaIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

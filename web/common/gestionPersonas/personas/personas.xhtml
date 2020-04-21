@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"      
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition>
+        <div class="tituloContenido">                           
+               Personas
+        </div>
+        <h:form id="formTablaPersonas">
+            
+            <br/>
+            <br/>
+            <p:panel id="tablaAnimales">                                            
+                <p:dataTable  value="#{perController.listaPersonas}"
+                              var="persona" 
+                              paginator="true" rows="10"  
+                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                              filteredValue="#{perController.listaPersonasFiltradas}"
+                              >
+                  
+                    <p:column filterBy="#{persona.perIdentificacion}"  filterMatchMode="contains" headerText="Identificación" style="text-align: center">
+                        #{persona.perIdentificacion}
+                    </p:column>
+                    <p:column filterBy="#{persona.perNombres}"  filterMatchMode="contains" headerText="Nombre" style="text-align: center">
+                        #{persona.perNombres}
+                    </p:column>
+                    <p:column filterBy="#{persona.perApellidos}"  filterMatchMode="contains" headerText="Apellidos" style="text-align: center">
+                        #{persona.perApellidos}
+                    </p:column>
+                    <p:column headerText="Acciones" width="150" style="text-align: center">                               
+                        
+                    </p:column>
+                </p:dataTable>
+            </p:panel>                   
+           
+        </h:form>
+        <!--<ui:include src="registrarAnimal.xhtml"/>
+        <ui:include src="verEditarAnimal.xhtml"/>
+        <ui:include src="eliminarAnimal.xhtml"/>-->
+    </ui:composition>
+</html>
+

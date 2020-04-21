@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EditDenunciaTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditDenunciaLabel_denId}" for="denId" />
+                    <h:inputText id="denId" value="#{denunciaController.selected.denId}" title="#{bundle.EditDenunciaTitle_denId}" required="true" requiredMessage="#{bundle.EditDenunciaRequiredMessage_denId}"/>
+                    <h:outputLabel value="#{bundle.EditDenunciaLabel_denPersonaNombre}" for="denPersonaNombre" />
+                    <h:inputText id="denPersonaNombre" value="#{denunciaController.selected.denPersonaNombre}" title="#{bundle.EditDenunciaTitle_denPersonaNombre}" required="true" requiredMessage="#{bundle.EditDenunciaRequiredMessage_denPersonaNombre}"/>
+                    <h:outputLabel value="#{bundle.EditDenunciaLabel_denDescripcion}" for="denDescripcion" />
+                    <h:inputTextarea rows="4" cols="30" id="denDescripcion" value="#{denunciaController.selected.denDescripcion}" title="#{bundle.EditDenunciaTitle_denDescripcion}" />
+                    <h:outputLabel value="#{bundle.EditDenunciaLabel_denLugar}" for="denLugar" />
+                    <h:inputTextarea rows="4" cols="30" id="denLugar" value="#{denunciaController.selected.denLugar}" title="#{bundle.EditDenunciaTitle_denLugar}" />
+                    <h:outputLabel value="#{bundle.EditDenunciaLabel_denUbicacion}" for="denUbicacion" />
+                    <h:inputText id="denUbicacion" value="#{denunciaController.selected.denUbicacion}" title="#{bundle.EditDenunciaTitle_denUbicacion}" />
+                    <h:outputLabel value="#{bundle.EditDenunciaLabel_denTelefono}" for="denTelefono" />
+                    <h:inputText id="denTelefono" value="#{denunciaController.selected.denTelefono}" title="#{bundle.EditDenunciaTitle_denTelefono}" required="true" requiredMessage="#{bundle.EditDenunciaRequiredMessage_denTelefono}"/>
+                </h:panelGrid>
+                <h:commandLink action="#{denunciaController.update}" value="#{bundle.EditDenunciaSaveLink}"/>
+                <br />
+                <br />
+                <h:link outcome="View" value="#{bundle.EditDenunciaViewLink}"/>
+                <br />
+                <h:commandLink action="#{denunciaController.prepareList}" value="#{bundle.EditDenunciaShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.EditDenunciaIndexLink}" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

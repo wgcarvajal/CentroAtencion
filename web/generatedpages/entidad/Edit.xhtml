@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EditEntidadTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditEntidadLabel_entId}" for="entId" />
+                    <h:inputText id="entId" value="#{entidadController.selected.entId}" title="#{bundle.EditEntidadTitle_entId}" required="true" requiredMessage="#{bundle.EditEntidadRequiredMessage_entId}"/>
+                    <h:outputLabel value="#{bundle.EditEntidadLabel_entNombre}" for="entNombre" />
+                    <h:inputText id="entNombre" value="#{entidadController.selected.entNombre}" title="#{bundle.EditEntidadTitle_entNombre}" required="true" requiredMessage="#{bundle.EditEntidadRequiredMessage_entNombre}"/>
+                    <h:outputLabel value="#{bundle.EditEntidadLabel_entDireccion}" for="entDireccion" />
+                    <h:inputText id="entDireccion" value="#{entidadController.selected.entDireccion}" title="#{bundle.EditEntidadTitle_entDireccion}" required="true" requiredMessage="#{bundle.EditEntidadRequiredMessage_entDireccion}"/>
+                    <h:outputLabel value="#{bundle.EditEntidadLabel_entTelefono}" for="entTelefono" />
+                    <h:inputText id="entTelefono" value="#{entidadController.selected.entTelefono}" title="#{bundle.EditEntidadTitle_entTelefono}" required="true" requiredMessage="#{bundle.EditEntidadRequiredMessage_entTelefono}"/>
+                    <h:outputLabel value="#{bundle.EditEntidadLabel_direccionterritorialId}" for="direccionterritorialId" />
+                    <h:selectOneMenu id="direccionterritorialId" value="#{entidadController.selected.direccionterritorialId}" title="#{bundle.EditEntidadTitle_direccionterritorialId}" required="true" requiredMessage="#{bundle.EditEntidadRequiredMessage_direccionterritorialId}">
+                        <f:selectItems value="#{direcctionterritorialController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.EditEntidadLabel_municipioId}" for="municipioId" />
+                    <h:selectOneMenu id="municipioId" value="#{entidadController.selected.municipioId}" title="#{bundle.EditEntidadTitle_municipioId}" >
+                        <f:selectItems value="#{municipioController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.EditEntidadLabel_veredaId}" for="veredaId" />
+                    <h:selectOneMenu id="veredaId" value="#{entidadController.selected.veredaId}" title="#{bundle.EditEntidadTitle_veredaId}" >
+                        <f:selectItems value="#{veredaController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <h:commandLink action="#{entidadController.update}" value="#{bundle.EditEntidadSaveLink}"/>
+                <br />
+                <br />
+                <h:link outcome="View" value="#{bundle.EditEntidadViewLink}"/>
+                <br />
+                <h:commandLink action="#{entidadController.prepareList}" value="#{bundle.EditEntidadShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.EditEntidadIndexLink}" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

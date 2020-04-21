@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog resizable="false" header="Información" modal="true"  widgetVar="mensajeRegistroExitoso" closable="false">
+            <p:messages  style="font-size: 15px;"  showDetail="true" autoUpdate="true"/>
+            <h:form>
+                <p:commandButton  value="Aceptar" style="background:#22419A; 
+                                     color: #FFFFFF;margin-left:70px;font-weight: normal;"
+                                  onclick="PF('mensajeRegistroExitoso').hide()"/>
+            </h:form>
+        </p:dialog>
+        <p:dialog position="center" resizable="false"   header="Agregar Entidad" showEffect="scale" modal="true"  widgetVar="AgregarEntidad">
+
+                    <h:form id="form">
+                        <p:panelGrid style="text-align:left;" styleClass="panelgrid"  id="panel">
+                            <p:row>
+                                <p:column>
+                                    <h:outputLabel style="font-style: italic;font-size: 16px;text-align: left; color:red;" 
+                                                   value="*"/>
+                                    <h:outputLabel class="CampoLabelObligatorios" value=" Campos Obligatorios" />
+                                </p:column>                                
+                            </p:row> 
+                            <p:row>
+                                <p:column style="text-align:right">
+                                    <h:outputLabel class="CampoLabel" for="nombre" value="Nombre: " />
+                                    <h:outputLabel style="font-style: italic;font-size: 16px;text-align: left; color:red;" 
+                                                   value="*"/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText  style="width: 140px;font-size:15px" 
+                                                 id="nombre" value="#{agregarEntidadController.nombre}"
+                                                 required="true" requiredMessage="Campo obligatorio.">
+                                        <p:ajax event="keyup" process="form"/>
+                                    </p:inputText>                                
+                                </p:column>
+                                <p:column>
+                                    <p:message for="nombre"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="text-align:right">
+                                    <h:outputLabel class="CampoLabel" for="direccion" value="Dirección: " />
+                                    <h:outputLabel style="font-style: italic;font-size: 16px;text-align: left; color:red;" 
+                                                   value="*"/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText style="width: 140px;font-size:15px" 
+                                                     id="direccion" value="#{agregarEntidadController.direccion}"
+                                                 required="true" requiredMessage="Campo obligatorio.">
+                                        <p:ajax event="keyup" process="form"/>
+                                    </p:inputText>                                
+                                </p:column>
+                                <p:column>
+                                    <p:message for="direccion"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="text-align:right">
+                                    <h:outputLabel class="CampoLabel" for="telefono" value="Teléfono: " />
+                                    <h:outputLabel style="font-style: italic;font-size: 16px;text-align: left; color:red;" 
+                                                   value="*"/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText style="width: 140px;font-size:15px" 
+                                                 id="telefono" value="#{agregarEntidadController.telefono}"
+                                                 required="true" requiredMessage="Campo obligatorio.">
+                                        <p:ajax event="keyup" process="form"/>
+                                    </p:inputText>                                
+                                </p:column>
+                                <p:column>
+                                    <p:message for="telefono"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="text-align:right">
+                                    <h:outputLabel class="CampoLabel" for="direccionTerritorial" value="Dirección territorial: " />
+                                    <h:outputLabel style="font-style: italic;font-size: 16px;text-align: left; color:red;" 
+                                                   value="*"/>
+                                </p:column>
+                                <p:column>
+                                    <p:selectOneMenu filter="true" filterMatchMode="startsWith"  id="direccionTerritorial" style="width:150px;font-size: 15px;" 
+                                                     value="#{agregarEntidadController.direccionTerritorialIdSelected}"
+                                                     >
+                                        <f:selectItem itemLabel="Seleccione.." itemValue="0" />
+                                        <f:selectItems value="#{agregarEntidadController.listaDireccionTerritorial}"
+                                                       var="direccionTerritorial" itemLabel="#{direccionTerritorial.dirterNombre}" itemValue="#{direccionTerritorial.dirterId}"/>
+                                         
+                                    </p:selectOneMenu>                         
+                                </p:column>
+                                <p:column>
+                                    <p:message for="direccionTerritorial" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="text-align:right">
+                                    <h:outputLabel class="CampoLabel" for="municipio" value="Municipio: " />
+                                    <h:outputLabel style="font-style: italic;font-size: 16px;text-align: left; color:red;" 
+                                                   value="*"/>
+                                </p:column>
+                                <p:column>
+                                    <p:selectOneMenu filter="true" filterMatchMode="startsWith"  id="municipio" style="width:150px;font-size: 15px;" required="true"
+                                                     requiredMessage="Seleccione un Municipio."
+                                                     valueChangeListener="#{agregarEntidadController.changedMunicipio}"
+                                                     value="#{agregarEntidadController.municipioSelected}"
+                                                     >
+                                        <f:selectItem itemLabel="Seleccione.." itemValue="0" />
+                                        <f:selectItems value="#{agregarEntidadController.listaMunicipios}"
+                                                       var="municipio" itemLabel="#{municipio.munNombre}" itemValue="#{municipio.munId}"/>
+                                        <p:ajax update="form"/>
+                                        <p:ajax onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"/>                                        
+                                        
+                                    </p:selectOneMenu>                         
+                                </p:column>
+                                <p:column>
+                                    <p:message for="municipio"/>
+                                </p:column>
+                            </p:row>
+                                <p:row rendered="#{agregarEntidadController.enabledListaVeredas}">
+                                <p:column style="text-align:right">
+                                    <h:outputLabel class="CampoLabel" for="vereda" value="Vereda: " />
+                                    
+                                </p:column>
+                                <p:column>
+                                    <p:selectOneMenu filter="true" filterMatchMode="startsWith"  id="vereda" style="width:150px;font-size: 15px;" 
+                                                     value="#{agregarEntidadController.veredaSelected}"
+                                                     >
+                                        <f:selectItem itemLabel="Seleccione.." itemValue="0" />
+                                        <f:selectItems value="#{agregarEntidadController.listaVeredas}"
+                                                       var="vereda" itemLabel="#{vereda.verNombre}" itemValue="#{vereda.verId}"/>
+                                         
+                                    </p:selectOneMenu>                         
+                                </p:column>
+                                <p:column>
+                                    <p:message for="vereda" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+
+                                </p:column>
+                                <p:column>
+                                    <p:commandButton   style="font-style: italic;font-weight: normal;" 
+                                                       action="#{agregarEntidadController.registrarEntidad(entController)}" value="Registrar" ajax="true" 
+                                                       update="panel :formTablaEntidads" id="registrar" onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                                       />
+                                    <p:commandButton   style="font-style: italic;font-weight: normal;" 
+                                                       value="Cancelar" onclick="PF('AgregarEntidad').hide()"
+                                                        id="cancelar" onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                                       />
+                                </p:column>
+                            </p:row>                               
+                        </p:panelGrid>                            
+                    </h:form>       
+                </p:dialog>
+    </ui:composition>
+    
+</html>
+
+

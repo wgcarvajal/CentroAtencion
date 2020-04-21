@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EditAnimalTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditAnimalLabel_anId}" for="anId" />
+                    <h:inputText id="anId" value="#{animalController.selected.anId}" title="#{bundle.EditAnimalTitle_anId}" required="true" requiredMessage="#{bundle.EditAnimalRequiredMessage_anId}"/>
+                    <h:outputLabel value="#{bundle.EditAnimalLabel_anNombre}" for="anNombre" />
+                    <h:inputText id="anNombre" value="#{animalController.selected.anNombre}" title="#{bundle.EditAnimalTitle_anNombre}" required="true" requiredMessage="#{bundle.EditAnimalRequiredMessage_anNombre}"/>
+                    <h:outputLabel value="#{bundle.EditAnimalLabel_espId}" for="espId" />
+                    <h:selectOneMenu id="espId" value="#{animalController.selected.espId}" title="#{bundle.EditAnimalTitle_espId}" >
+                        <f:selectItems value="#{especieController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.EditAnimalLabel_grupotaxonomicoId}" for="grupotaxonomicoId" />
+                    <h:selectOneMenu id="grupotaxonomicoId" value="#{animalController.selected.grupotaxonomicoId}" title="#{bundle.EditAnimalTitle_grupotaxonomicoId}" >
+                        <f:selectItems value="#{grupotaxonomicoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <h:commandLink action="#{animalController.update}" value="#{bundle.EditAnimalSaveLink}"/>
+                <br />
+                <br />
+                <h:link outcome="View" value="#{bundle.EditAnimalViewLink}"/>
+                <br />
+                <h:commandLink action="#{animalController.prepareList}" value="#{bundle.EditAnimalShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.EditAnimalIndexLink}" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition>
+        <p:dialog header="Ver o Editar Animal" modal="true" resizable="false" position="top"  widgetVar="verEditarAnimal" closable="true">
+            <br/>
+            <br/>
+            <h:form id="formularioTituloVerAnimal">
+                <p:outputLabel value="Animal" style="font-size: 20px;color:#22419A;" 
+                               />
+            </h:form>
+            <br/>
+            <p:panel style="min-width: 500px;" header="Imagen representativa del animal" toggleable="true">
+                        <div style="float:left">
+                            <h:form id="formularioFoto">
+                                <p:messages closable="true"/>
+                                <p:panelGrid styleClass="panelgrid" id="panelgridFotoAnimal">                            
+                                    <p:row>
+                                        <p:column>                                
+                                        </p:column>
+                                        <p:column  rendered="#{verEditarAnimalController.campoFoto}">                                
+                                            <p:graphicImage width="150" value="#{verEditarAnimalController.imagenFlujo}" >
+                                                <f:param name="anId" value="#{verEditarAnimalController.animal.anId}" />
+                                            </p:graphicImage>
+                                        </p:column>
+                                        <p:column rendered="#{verEditarAnimalController.campoFoto}">
+                                            <p:commandLink style="color: blue;" action="#{verEditarAnimalController.mostrarSubirFoto()}" value="Cambiar"
+                                                           update="formularioFoto :formularioEditarFoto"/>                                                                 
+                                        </p:column>
+                                        <p:column  rendered="#{!verEditarAnimalController.campoFoto}">
+                                            <p:row>
+                                                <p:column colspan="2">
+                                                    <span style="position: relative"> La imagen que suba será redimensionada automáticamente</span>
+                                                </p:column>
+                                            </p:row>
+                                            
+                                            <p:row>
+                                                <p:column>
+                                                    <p:fileUpload  fileUploadListener="#{verEditarAnimalController.cargarFoto}" mode="advanced" 
+                                                          update=":formularioFoto"
+                                                          auto ="true"
+                                                           label="Seleccione"
+                                                           fileLimit="1"
+                                                           onstart="PF('efectoCarga').show()"  oncomplete="PF('efectoCarga').hide()">
+                                                <f:passThroughAttribute name="accept" value="image/png"/>
+                                                <f:passThroughAttribute name="accept" value="image/JPEG"/>
+                                            </p:fileUpload>
+                                                </p:column>
+                                                <p:column rendered="#{!verEditarAnimalController.campoFoto}">
+                                            <p:outputLabel value="#{verEditarAnimalController.uploadedFileFoto.fileName}"/>
+                                        </p:column>
+                                            </p:row>
+                                            
+                                        </p:column>
+                                        
+                                    </p:row>
+                                </p:panelGrid>            
+                            </h:form> 
+                        </div>
+                        <div style="float:left;margin-top: 50px;">
+                            <h:form id="formularioEditarFoto">
+                                <p:commandLink rendered="#{!verEditarAnimalController.campoFoto}"
+                                               action="#{verEditarAnimalController.actualizarFoto()}"
+                                               style="color:blue;"  value="Aceptar"
+                                               onstart="PF('efectoCarga').show()"  oncomplete="PF('efectoCarga').hide()"
+                                               update="formularioEditarFoto :formularioFoto"
+                                               />
+                                
+                                <p:commandLink rendered="#{!verEditarAnimalController.campoFoto}" 
+                                               style="margin-left:10px; color:blue;"  value="Cancelar" action="#{verEditarAnimalController.cancelarSubirFoto()}"
+                                               onstart="PF('efectoCarga').show()"  oncomplete="PF('efectoCarga').hide()"
+                                               update="formularioEditarFoto :formularioFoto"
+                                               />
+                            </h:form>
+                        </div>            
+                        <div style="clear: both"></div>
+                 </p:panel>
+
+                <h:form id="formularioAnimal">
+                    <p:panel header="Descripción" toggleable="true">
+                        <p:messages id="desc" closable="true"/>
+                        <p:panelGrid styleClass="panelgrid"> 
+                            <p:row rendered="#{verEditarAnimalController.campoNombre}">
+                                <p:column>
+                                    <p:outputLabel style="font-size: 15px;" value="Nombre: "/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel value="#{verEditarAnimalController.animal.anNombre}"/>
+                                </p:column>
+                                <p:column>
+                                    <p:commandLink update="formularioAnimal" style="color: blue;" value="Modificar" action="#{verEditarAnimalController.mostrarModificarNombre()}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row rendered="#{!verEditarAnimalController.campoNombre}">
+                                <p:column>
+                                    <p:outputLabel style="font-size: 15px;" value="Nombre: "/>
+                                    <h:outputLabel style="font-style: italic;font-size: 16px;text-align: left; color:red;" 
+                                                   value="* "/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText value="#{verEditarAnimalController.nombre}" required="true" requiredMessage="Campo requerido"/>  
+                                </p:column>
+                                <p:column>
+                                    <p:commandLink style="color: blue;" value="Aceptar" action="#{verEditarAnimalController.actualizarNombre()}"
+                                                   onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                                   update="formularioAnimal :formTablaAnimales"/>
+                                    <p:commandLink style="margin-left: 10px;color: blue;" value="Cancelar" 
+                                                   action="#{verEditarAnimalController.cancelarActualizarNombre()}"
+                                                   onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                                   update="formularioAnimal"/>
+                                </p:column>
+                            </p:row>
+                            <p:row rendered="#{verEditarAnimalController.campoDescripcion}">
+                                <p:column>
+                                    <p:outputLabel style="font-size: 15px;" value="Descripción: "/>
+                                </p:column>
+                                <p:column>
+                                    <div style="width: 300px;white-space:normal;font-size:14px;word-wrap: break-word;">
+                                        #{verEditarAnimalController.animal.anDescripcion}
+                                    </div>
+                                </p:column>
+                                <p:column>
+                                    <p:commandLink update="formularioAnimal" style="color: blue;" value="Modificar" action="#{verEditarAnimalController.mostrarModificarDescripcion()}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row rendered="#{!verEditarAnimalController.campoDescripcion}">
+                                <p:column>
+                                    <p:outputLabel style="font-size: 15px;" value="Descripción: "/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputTextarea value="#{verEditarAnimalController.descripcion}"/>  
+                                </p:column>
+                                <p:column>
+                                    <p:commandLink  value="Aceptar" action="#{verEditarAnimalController.actualizarDescripcion()}"
+                                                   onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                                   update="formularioAnimal :formTablaAnimales"/>
+                                    <p:commandLink style="margin-left: 10px;" value="Cancelar" 
+                                                   action="#{verEditarAnimalController.cancelarActualizarDescripcion()}"
+                                                   onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                                   update="formularioAnimal"/>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                    </p:panel>
+            </h:form>
+            <h:form id="formClasificacion">
+                <p:panel header="Clasificación" toggleable="true">
+                    <p:messages closable="true"/>
+                    <p:panelGrid styleClass="panelgrid"> 
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel style="font-size: 15px;" value="Orden: "/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{verEditarAnimalController.orden.orNombre}"/>
+                            </p:column>
+                            <p:column>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel style="font-size: 15px;" value="Familia: "/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{verEditarAnimalController.familia.faNombre}"/>
+                            </p:column>
+                            <p:column>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{verEditarAnimalController.campoEspecie}">
+                            <p:column>
+                                <p:outputLabel style="font-size: 15px;" value="Especie: "/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{verEditarAnimalController.especie.espNombre}"/>
+                            </p:column>
+                            <p:column>
+                                <p:commandLink update="formClasificacion" style="color: blue;" value="Modificar" action="#{verEditarAnimalController.mostrarModificarEspecie()}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{!verEditarAnimalController.campoEspecie}">
+                            <p:column>
+                                <p:outputLabel style="font-size: 15px;" value="Especie: "/>
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu filter="true" filterMatchMode="startsWith"  
+                                                 id="especie" style="width:150px;font-size: 15px;" 
+                                                 value="#{verEditarAnimalController.especie}">
+                                                 
+                                                 <f:selectItems value="#{verEditarAnimalController.especies}" 
+                                                       var="especie"
+                                                       itemLabel="#{especie.espNombre}" itemValue="#{especie}"/>
+                                    </p:selectOneMenu> 
+                            </p:column>
+                            <p:column>
+                                <p:commandLink  value="Aceptar" action="#{verEditarAnimalController.actualizarEspecie()}"
+                                                   onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                                   update="formClasificacion"/>
+                                <p:commandLink style="margin-left: 10px;" value="Cancelar" 
+                                               action="#{verEditarAnimalController.cancelarActualizarEspecie()}"
+                                                   onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                                   update="formClasificacion"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{verEditarAnimalController.campoGrupoTaxonomico}">
+                            <p:column>
+                                <p:outputLabel style="font-size: 15px;" value="Grupo Taxonómico: "/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{verEditarAnimalController.grupotaxonomico.gruptaxNombre}"/>
+                            </p:column>
+                            <p:column>
+                                <p:commandLink update="formClasificacion" style="color: blue;" value="Modificar" action="#{verEditarAnimalController.mostrarModificarGrupoTaxonomico()}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{!verEditarAnimalController.campoGrupoTaxonomico}">
+                            <p:column>
+                                <p:outputLabel style="font-size: 15px;" value="Grupo taxonómico: "/>
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu filter="true" filterMatchMode="startsWith"  
+                                                 id="grupoTaxonomico" style="width:150px;font-size: 15px;" 
+                                                 value="#{verEditarAnimalController.grupotaxonomico}">
+                                                 
+                                    <f:selectItems value="#{verEditarAnimalController.gruposTaxonomicos}" 
+                                                       var="grupoTaxonomico"
+                                                       itemLabel="#{grupoTaxonomico.gruptaxNombre}" itemValue="#{grupoTaxonomico}"/>
+                                    </p:selectOneMenu> 
+                            </p:column>
+                            <p:column>
+                                <p:commandLink  value="Aceptar" action="#{verEditarAnimalController.actualizarGrupoTaxonomico()}"
+                                                   onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                                   update="formClasificacion"/>
+                                <p:commandLink style="margin-left: 10px;" value="Cancelar" 
+                                               action="#{verEditarAnimalController.cancelarActualizarGrupoTaxonomico()}"
+                                                   onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                                   update="formClasificacion"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:panel>
+            </h:form>
+            <br/>
+            <br/>
+        </p:dialog>
+    </ui:composition>   
+</html>

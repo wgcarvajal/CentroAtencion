@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EditOrdenTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditOrdenLabel_orId}" for="orId" />
+                    <h:inputText id="orId" value="#{ordenController.selected.orId}" title="#{bundle.EditOrdenTitle_orId}" required="true" requiredMessage="#{bundle.EditOrdenRequiredMessage_orId}"/>
+                    <h:outputLabel value="#{bundle.EditOrdenLabel_orNombre}" for="orNombre" />
+                    <h:inputText id="orNombre" value="#{ordenController.selected.orNombre}" title="#{bundle.EditOrdenTitle_orNombre}" required="true" requiredMessage="#{bundle.EditOrdenRequiredMessage_orNombre}"/>
+                    <h:outputLabel value="#{bundle.EditOrdenLabel_orDescripcion}" for="orDescripcion" />
+                    <h:inputTextarea rows="4" cols="30" id="orDescripcion" value="#{ordenController.selected.orDescripcion}" title="#{bundle.EditOrdenTitle_orDescripcion}" required="true" requiredMessage="#{bundle.EditOrdenRequiredMessage_orDescripcion}"/>
+                </h:panelGrid>
+                <h:commandLink action="#{ordenController.update}" value="#{bundle.EditOrdenSaveLink}"/>
+                <br />
+                <br />
+                <h:link outcome="View" value="#{bundle.EditOrdenViewLink}"/>
+                <br />
+                <h:commandLink action="#{ordenController.prepareList}" value="#{bundle.EditOrdenShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.EditOrdenIndexLink}" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"      
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition>
+        <div class="tituloContenido">                           
+               GrupoTaxonomico animal
+        </div>
+        <h:form id="formTablaGrupoTaxonomicoes">
+            <h:panelGrid style="margin-bottom: 10px;" columns="3">                      
+                <h:outputLabel class="CampoLabel" value="Buscar grupoTaxonomico:" />
+                <p:inputText style="width: 240px;" value="#{grupoTaxonomicoController.grupoTaxonomico}"  >
+                    <p:ajax event="keyup" update="tablaGrupoTaxonomicoes" listener="#{grupoTaxonomicoController.searchByNombreGrupoTaxonomico()}" />                                
+                </p:inputText> 
+                <p:commandButton  value="Registrar grupoTaxonomico" class="botonAzul" style="margin-left: 395px;"
+                                  action="#{agregarGrupoTaxonomicoController.abrirVentanaAgregarGrupoTaxonomico()}"
+                                          onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                          update="formTablaGrupoTaxonomicoes :form:panel"/>
+            </h:panelGrid>
+            
+            <p:panel id="tablaGrupoTaxonomicoes">                                            
+                <p:dataTable  value="#{grupoTaxonomicoController.listaGrupoTaxonomicoes}"
+                              var="grupoTaxonomico" 
+                              paginator="true" rows="10"  
+                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                              >
+                    <p:column headerText="Nombre" style="text-align: center">
+                        #{grupoTaxonomico.gruptaxNombre}
+                    </p:column>
+                    <p:column headerText="Abreviatura" style="text-align: center">
+                        #{grupoTaxonomico.grupotaxAbreviatura}
+                    </p:column>
+                    <p:column headerText="Acciones" width="150" style="text-align: center">                               
+                        <p:commandLink update=":formularioTituloVerGrupoTaxonomico :formularioGrupoTaxonomico" title="Ver o Editar"   style="text-decoration: none;" action="#{verEditarGrupoTaxonomicoController.grupoTaxonomicoSeleccionado(grupoTaxonomico,grupoTaxonomicoController)}">                                    
+                            <p:graphicImage style="width:25px;margin-left: 5px;" library="imagenesAplicacion/usuarios" name="ver.png"
+                                            />
+                        </p:commandLink>                                
+                        <p:commandLink id="eliminar" style="text-decoration: none;margin-left: 5px; " title="Eliminar" action="#{eliminarGrupoTaxonomicoController.ventanaEliminarGrupoTaxonomico(grupoTaxonomico, grupoTaxonomicoController)}">                                    
+                            <p:graphicImage style="width:20px; " library="imagenesAplicacion/usuarios" name="eliminar.png"/>
+                        </p:commandLink>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>                   
+           
+        </h:form>
+        <ui:include src="registrarGrupoTaxonomico.xhtml"/>
+        <ui:include src="verEditarGrupoTaxonomico.xhtml"/>
+        <ui:include src="eliminarGrupoTaxonomico.xhtml"/>
+    </ui:composition>
+</html>
+

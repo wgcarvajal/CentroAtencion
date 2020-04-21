@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateCausaingresoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateCausaingresoLabel_causaingId}" for="causaingId" />
+                    <h:inputText id="causaingId" value="#{causaingresoController.selected.causaingId}" title="#{bundle.CreateCausaingresoTitle_causaingId}" required="true" requiredMessage="#{bundle.CreateCausaingresoRequiredMessage_causaingId}"/>
+                    <h:outputLabel value="#{bundle.CreateCausaingresoLabel_causaingNombre}" for="causaingNombre" />
+                    <h:inputText id="causaingNombre" value="#{causaingresoController.selected.causaingNombre}" title="#{bundle.CreateCausaingresoTitle_causaingNombre}" required="true" requiredMessage="#{bundle.CreateCausaingresoRequiredMessage_causaingNombre}"/>
+                    <h:outputLabel value="#{bundle.CreateCausaingresoLabel_causaingAbreviatura}" for="causaingAbreviatura" />
+                    <h:inputText id="causaingAbreviatura" value="#{causaingresoController.selected.causaingAbreviatura}" title="#{bundle.CreateCausaingresoTitle_causaingAbreviatura}" required="true" requiredMessage="#{bundle.CreateCausaingresoRequiredMessage_causaingAbreviatura}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{causaingresoController.create}" value="#{bundle.CreateCausaingresoSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{causaingresoController.prepareList}" value="#{bundle.CreateCausaingresoShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateCausaingresoIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

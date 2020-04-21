@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateAnimalTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateAnimalLabel_anId}" for="anId" />
+                    <h:inputText id="anId" value="#{animalController.selected.anId}" title="#{bundle.CreateAnimalTitle_anId}" required="true" requiredMessage="#{bundle.CreateAnimalRequiredMessage_anId}"/>
+                    <h:outputLabel value="#{bundle.CreateAnimalLabel_anNombre}" for="anNombre" />
+                    <h:inputText id="anNombre" value="#{animalController.selected.anNombre}" title="#{bundle.CreateAnimalTitle_anNombre}" required="true" requiredMessage="#{bundle.CreateAnimalRequiredMessage_anNombre}"/>
+                    <h:outputLabel value="#{bundle.CreateAnimalLabel_espId}" for="espId" />
+                    <h:selectOneMenu id="espId" value="#{animalController.selected.espId}" title="#{bundle.CreateAnimalTitle_espId}" >
+                        <f:selectItems value="#{especieController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateAnimalLabel_grupotaxonomicoId}" for="grupotaxonomicoId" />
+                    <h:selectOneMenu id="grupotaxonomicoId" value="#{animalController.selected.grupotaxonomicoId}" title="#{bundle.CreateAnimalTitle_grupotaxonomicoId}" >
+                        <f:selectItems value="#{grupotaxonomicoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{animalController.create}" value="#{bundle.CreateAnimalSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{animalController.prepareList}" value="#{bundle.CreateAnimalShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateAnimalIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

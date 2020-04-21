@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateIngresoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateIngresoLabel_ingId}" for="ingId" />
+                    <h:inputText id="ingId" value="#{ingresoController.selected.ingId}" title="#{bundle.CreateIngresoTitle_ingId}" required="true" requiredMessage="#{bundle.CreateIngresoRequiredMessage_ingId}"/>
+                    <h:outputLabel value="#{bundle.CreateIngresoLabel_ingNumeroRadicado}" for="ingNumeroRadicado" />
+                    <h:inputText id="ingNumeroRadicado" value="#{ingresoController.selected.ingNumeroRadicado}" title="#{bundle.CreateIngresoTitle_ingNumeroRadicado}" />
+                    <h:outputLabel value="#{bundle.CreateIngresoLabel_ingFecha}" for="ingFecha" />
+                    <h:inputText id="ingFecha" value="#{ingresoController.selected.ingFecha}" title="#{bundle.CreateIngresoTitle_ingFecha}" required="true" requiredMessage="#{bundle.CreateIngresoRequiredMessage_ingFecha}">
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.CreateIngresoLabel_ingFechaFin}" for="ingFechaFin" />
+                    <h:inputText id="ingFechaFin" value="#{ingresoController.selected.ingFechaFin}" title="#{bundle.CreateIngresoTitle_ingFechaFin}" >
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.CreateIngresoLabel_ingNumeroUCTFF}" for="ingNumeroUCTFF" />
+                    <h:inputText id="ingNumeroUCTFF" value="#{ingresoController.selected.ingNumeroUCTFF}" title="#{bundle.CreateIngresoTitle_ingNumeroUCTFF}" />
+                    <h:outputLabel value="#{bundle.CreateIngresoLabel_ingresomuerto}" for="ingresomuerto" />
+                    <h:inputText id="ingresomuerto" value="#{ingresoController.selected.ingresomuerto}" title="#{bundle.CreateIngresoTitle_ingresomuerto}" required="true" requiredMessage="#{bundle.CreateIngresoRequiredMessage_ingresomuerto}"/>
+                    <h:outputLabel value="#{bundle.CreateIngresoLabel_denunciaId}" for="denunciaId" />
+                    <h:selectOneMenu id="denunciaId" value="#{ingresoController.selected.denunciaId}" title="#{bundle.CreateIngresoTitle_denunciaId}" >
+                        <f:selectItems value="#{denunciaController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateIngresoLabel_animalId}" for="animalId" />
+                    <h:selectOneMenu id="animalId" value="#{ingresoController.selected.animalId}" title="#{bundle.CreateIngresoTitle_animalId}" required="true" requiredMessage="#{bundle.CreateIngresoRequiredMessage_animalId}">
+                        <f:selectItems value="#{animalController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateIngresoLabel_causaingresoId}" for="causaingresoId" />
+                    <h:selectOneMenu id="causaingresoId" value="#{ingresoController.selected.causaingresoId}" title="#{bundle.CreateIngresoTitle_causaingresoId}" required="true" requiredMessage="#{bundle.CreateIngresoRequiredMessage_causaingresoId}">
+                        <f:selectItems value="#{causaingresoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateIngresoLabel_desarrollobiologicoId}" for="desarrollobiologicoId" />
+                    <h:selectOneMenu id="desarrollobiologicoId" value="#{ingresoController.selected.desarrollobiologicoId}" title="#{bundle.CreateIngresoTitle_desarrollobiologicoId}" required="true" requiredMessage="#{bundle.CreateIngresoRequiredMessage_desarrollobiologicoId}">
+                        <f:selectItems value="#{desarrollobiologicoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateIngresoLabel_entidadId}" for="entidadId" />
+                    <h:selectOneMenu id="entidadId" value="#{ingresoController.selected.entidadId}" title="#{bundle.CreateIngresoTitle_entidadId}" required="true" requiredMessage="#{bundle.CreateIngresoRequiredMessage_entidadId}">
+                        <f:selectItems value="#{entidadController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateIngresoLabel_funcionarioId}" for="funcionarioId" />
+                    <h:selectOneMenu id="funcionarioId" value="#{ingresoController.selected.funcionarioId}" title="#{bundle.CreateIngresoTitle_funcionarioId}" required="true" requiredMessage="#{bundle.CreateIngresoRequiredMessage_funcionarioId}">
+                        <f:selectItems value="#{personaController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateIngresoLabel_infractordonatanteId}" for="infractordonatanteId" />
+                    <h:selectOneMenu id="infractordonatanteId" value="#{ingresoController.selected.infractordonatanteId}" title="#{bundle.CreateIngresoTitle_infractordonatanteId}" >
+                        <f:selectItems value="#{personaController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateIngresoLabel_ingresoIdOrigen}" for="ingresoIdOrigen" />
+                    <h:selectOneMenu id="ingresoIdOrigen" value="#{ingresoController.selected.ingresoIdOrigen}" title="#{bundle.CreateIngresoTitle_ingresoIdOrigen}" >
+                        <f:selectItems value="#{ingresoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateIngresoLabel_veredaId}" for="veredaId" />
+                    <h:selectOneMenu id="veredaId" value="#{ingresoController.selected.veredaId}" title="#{bundle.CreateIngresoTitle_veredaId}" >
+                        <f:selectItems value="#{veredaController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateIngresoLabel_liberacionId}" for="liberacionId" />
+                    <h:selectOneMenu id="liberacionId" value="#{ingresoController.selected.liberacionId}" title="#{bundle.CreateIngresoTitle_liberacionId}" >
+                        <f:selectItems value="#{liberacionController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateIngresoLabel_lugardecomisoentregavoluntariaId}" for="lugardecomisoentregavoluntariaId" />
+                    <h:selectOneMenu id="lugardecomisoentregavoluntariaId" value="#{ingresoController.selected.lugardecomisoentregavoluntariaId}" title="#{bundle.CreateIngresoTitle_lugardecomisoentregavoluntariaId}" required="true" requiredMessage="#{bundle.CreateIngresoRequiredMessage_lugardecomisoentregavoluntariaId}">
+                        <f:selectItems value="#{lugardecomisoentregavoluntariaController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateIngresoLabel_muerteId}" for="muerteId" />
+                    <h:selectOneMenu id="muerteId" value="#{ingresoController.selected.muerteId}" title="#{bundle.CreateIngresoTitle_muerteId}" >
+                        <f:selectItems value="#{muertoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateIngresoLabel_sexoId}" for="sexoId" />
+                    <h:selectOneMenu id="sexoId" value="#{ingresoController.selected.sexoId}" title="#{bundle.CreateIngresoTitle_sexoId}" required="true" requiredMessage="#{bundle.CreateIngresoRequiredMessage_sexoId}">
+                        <f:selectItems value="#{sexoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateIngresoLabel_municipioId}" for="municipioId" />
+                    <h:selectOneMenu id="municipioId" value="#{ingresoController.selected.municipioId}" title="#{bundle.CreateIngresoTitle_municipioId}" >
+                        <f:selectItems value="#{municipioController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateIngresoLabel_marcaId}" for="marcaId" />
+                    <h:selectOneMenu id="marcaId" value="#{ingresoController.selected.marcaId}" title="#{bundle.CreateIngresoTitle_marcaId}" >
+                        <f:selectItems value="#{marcaController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{ingresoController.create}" value="#{bundle.CreateIngresoSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{ingresoController.prepareList}" value="#{bundle.CreateIngresoShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateIngresoIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

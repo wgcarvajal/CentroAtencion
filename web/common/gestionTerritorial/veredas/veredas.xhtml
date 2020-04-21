@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"      
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition>
+        <div class="tituloContenido">                           
+               Veredas
+        </div>
+        <br/>
+        <h:form id="seleccionarDepartamento">
+            <p:panelGrid styleClass="panelgrid"> 
+                <p:column style="width:200px;">
+                    <p:outputLabel styleClass="CampoLabel" value="Seleccione Departamento:" />
+                </p:column>   
+                <p:column>
+                    <p:selectOneMenu filter="true" filterMatchMode="startsWith"  id="tipoUsuario" style="width:150px;font-size: 15px;" required="true"
+                                     requiredMessage="Seleccione un Departamento."
+                                     valueChangeListener="#{verController.changedDepartamento}"
+                                     >
+                        <f:selectItem itemLabel="Seleccione.." itemValue="0" />
+                        <f:selectItems value="#{verController.listaDepartamentos}"
+                                       var="departamento" itemLabel="#{departamento.depNombre}" itemValue="#{departamento.depId}"/>
+                        <p:ajax update=":formSeleccionarMunicipio :formTablaVeredas"/>
+                        <p:ajax onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"/>                                        
+                    </p:selectOneMenu>  
+                </p:column>
+
+            </p:panelGrid>
+        </h:form>
+        <br/>
+        <h:form id="formSeleccionarMunicipio">
+            <p:panelGrid styleClass="panelgrid" rendered="#{verController.enabledSelectMunicipios}">
+                <p:column style="width:200px;">
+                   <p:outputLabel styleClass="CampoLabel" value="Seleccione Municipio:" /> 
+                </p:column>
+                <p:column>
+                    <p:selectOneMenu filter="true" filterMatchMode="startsWith"  id="tipoUsuario" 
+                                 style="width:150px;font-size: 15px;" required="true"
+                                 requiredMessage="Seleccione un Municipio."
+                                 valueChangeListener="#{verController.changedMunicipio}"
+                                 >
+                    <f:selectItem itemLabel="Seleccione.." itemValue="0" />
+                    <f:selectItems value="#{verController.listaMunicipios}"
+                                   var="municipio" itemLabel="#{municipio.munNombre}" itemValue="#{municipio.munId}"/>
+                    <p:ajax update=":formTablaVeredas"/>
+                    <p:ajax onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"/>                                        
+                </p:selectOneMenu>  
+                </p:column>                    
+                
+            </p:panelGrid>
+        </h:form>
+        <br/>
+        <br/>
+        <h:form id="formTablaVeredas">
+            <h:panelGrid style="margin-bottom: 10px;" columns="3"
+                         rendered="#{verController.enabledTablaVeredas}">                      
+                <h:outputLabel class="CampoLabel" value="Buscar vereda:" />
+                <p:inputText style="width: 240px;" value="#{verController.nombreVereda}"  >
+                    <p:ajax event="keyup" update="tablaVeredas" listener="#{verController.searchByMunicipioAndNombreVereda()}" />                                
+                </p:inputText>
+               <p:commandButton  value="Agregar vereda" class="botonAzul" style="margin-left: 395px;"
+                                 action="#{agregarVeredaController.abrirVentanaAgregarVereda(verController.municipioIdSelected)}"
+                                          onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                          update="formTablaVeredas :form:panel"/>
+            </h:panelGrid>
+            <p:panel id="tablaVeredas" rendered="#{verController.enabledTablaVeredas}">                                            
+                <p:dataTable  value="#{verController.listaVeredas}"
+                              var="vereda" 
+                              paginator="true" rows="10"  
+                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                              >
+                    <p:column headerText="Nombre" style="text-align: center">
+                        #{vereda.verNombre}
+                    </p:column>
+                    <p:column headerText="Acciones" width="150" style="text-align: center">                               
+                        <p:commandLink update=":formularioTituloVerVereda :formularioVereda" title="Ver o Editar"   style="text-decoration: none;" action="#{verEditarVeredaController.veredaSeleccionado(vereda,verController)}">                                    
+                            <p:graphicImage style="width:25px;margin-left: 5px;" library="imagenesAplicacion/usuarios" name="ver.png"
+                                            />
+                        </p:commandLink>                           
+                        <p:commandLink id="eliminar" style="text-decoration: none;margin-left: 5px; " title="Eliminar" action="#{eliminarVeredaController.ventanaEliminarVereda(vereda, verController)}">                                    
+                            <p:graphicImage style="width:20px; " library="imagenesAplicacion/usuarios" name="eliminar.png"/>
+                        </p:commandLink>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>                   
+           
+        </h:form>
+        <ui:include src="registrarVereda.xhtml"/>
+        <ui:include src="verEditarVereda.xhtml"/>
+        <ui:include src="eliminarVereda.xhtml"/>
+    </ui:composition>
+</html>

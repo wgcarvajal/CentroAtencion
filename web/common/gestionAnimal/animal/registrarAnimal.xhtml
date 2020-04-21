@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog resizable="false" header="Información" modal="true"  widgetVar="mensajeRegistroExitoso" closable="false">
+            <p:messages  style="font-size: 15px;"  showDetail="true" autoUpdate="true"/>
+            <h:form>
+                <p:commandButton  value="Aceptar" style="background:#22419A; 
+                                     color: #FFFFFF;margin-left:70px;font-weight: normal;"
+                                  onclick="PF('mensajeRegistroExitoso').hide()"/>
+            </h:form>
+        </p:dialog>
+        <p:dialog position="center" resizable="false"   header="Agregar Animal" showEffect="scale" modal="true"  widgetVar="AgregarAnimal">
+
+                    <h:form id="form">
+                        <p:panelGrid style="text-align:left;" styleClass="panelgrid"  id="panel">
+                            <p:row>
+                                <p:column>
+                                    <h:outputLabel style="font-style: italic;font-size: 16px;text-align: left; color:red;" 
+                                                   value="*"/>
+                                    <h:outputLabel class="CampoLabelObligatorios" value=" Campos Obligatorios" />
+                                </p:column>                                
+                            </p:row> 
+                            <p:row>
+                                <p:column style="text-align:right">
+                                    <h:outputLabel class="CampoLabel" for="nombre" value="Nombre: " />
+                                    <h:outputLabel style="font-style: italic;font-size: 16px;text-align: left; color:red;" 
+                                                   value="*"/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText style="width: 140px;font-size:15px" 
+                                                 id="nombre" value="#{agregarAnimalController.nombre}"
+                                                 required="true" requiredMessage="Campo obligatorio.">
+                                        
+                                    </p:inputText>                                
+                                </p:column>
+                                <p:column>
+                                    <p:message for="nombre"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="text-align:right">
+                                    <h:outputLabel class="CampoLabel" for="especie" value="Especie: " />
+                                    <h:outputLabel style="font-style: italic;font-size: 16px;text-align: left; color:red;" 
+                                                   value="*"/>
+                                </p:column>
+                                <p:column>
+                                    <p:selectOneMenu filter="true" filterMatchMode="startsWith"  id="especie" style="width:150px;font-size: 15px;" required="true"
+                                                     requiredMessage="Seleccione un Especie."
+                                                     value="#{agregarAnimalController.especieSelected}"
+                                                     >
+                                        <f:selectItem itemLabel="Seleccione.." itemValue="0" />
+                                        <f:selectItems value="#{agregarAnimalController.listaEspecies}" 
+                                                       var="especie"
+                                                       itemLabel="#{especie.espNombre}" itemValue="#{especie}"/>
+                                        <f:validator validatorId="ValidarCamposSeleccionar" />
+                                    </p:selectOneMenu>                                
+                                </p:column>
+                                <p:column>
+                                    <p:message for="especie"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="text-align:right">
+                                    <h:outputLabel class="CampoLabel" for="grupoTaxonomico" value="Grupo taxonómico: " />
+                                    <h:outputLabel style="font-style: italic;font-size: 16px;text-align: left; color:red;" 
+                                                   value="*"/>
+                                </p:column>
+                                <p:column>
+                                    <p:selectOneMenu filter="true" filterMatchMode="startsWith"  id="grupoTaxonomico" style="width:150px;font-size: 15px;" required="true"
+                                                     requiredMessage="Seleccione un grupo taxonómico."
+                                                     value="#{agregarAnimalController.grupotaxonomicoSelected}"
+                                                     >
+                                        <f:selectItem itemLabel="Seleccione.." itemValue="0" />
+                                        <f:selectItems value="#{agregarAnimalController.listaGrupoTaxonomicos}" 
+                                                       var="grupoTaxonomico"
+                                                       itemLabel="#{grupoTaxonomico.gruptaxNombre}" itemValue="#{grupoTaxonomico}"/>
+                                        <f:validator validatorId="ValidarCamposSeleccionar" />
+                                    </p:selectOneMenu>                                
+                                </p:column>
+                                <p:column>
+                                    <p:message for="grupoTaxonomico"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="text-align:right">
+                                    <h:outputLabel class="CampoLabel" for="descripcion" value="Descripción: " />
+                                </p:column>
+                                <p:column>
+                                    <p:inputTextarea style="width: 140px;font-size:15px" 
+                                                     id="descripcion" value="#{agregarAnimalController.descripcion}"
+                                                 />                               
+                                </p:column>
+                                <p:column>
+                                    <p:message for="descripcion"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+
+                                </p:column>
+                                <p:column>
+                                    <p:commandButton   
+                                                       action="#{agregarAnimalController.registrarAnimal(anController)}" value="Registrar" ajax="true" 
+                                                       update="panel :formTablaAnimales" id="registrar" onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                                       />
+                                    <p:commandButton   
+                                                       value="Cancelar" onclick="PF('AgregarAnimal').hide()"
+                                                        id="cancelar" onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                                       />
+                                </p:column>
+                            </p:row>                               
+                        </p:panelGrid>                            
+                    </h:form>       
+                </p:dialog>
+    </ui:composition>
+    
+</html>
+
+

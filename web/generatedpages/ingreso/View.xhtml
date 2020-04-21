@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewIngresoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewIngresoLabel_ingId}"/>
+                    <h:outputText value="#{ingresoController.selected.ingId}" title="#{bundle.ViewIngresoTitle_ingId}"/>
+                    <h:outputText value="#{bundle.ViewIngresoLabel_ingNumeroRadicado}"/>
+                    <h:outputText value="#{ingresoController.selected.ingNumeroRadicado}" title="#{bundle.ViewIngresoTitle_ingNumeroRadicado}"/>
+                    <h:outputText value="#{bundle.ViewIngresoLabel_ingFecha}"/>
+                    <h:outputText value="#{ingresoController.selected.ingFecha}" title="#{bundle.ViewIngresoTitle_ingFecha}">
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:outputText>
+                    <h:outputText value="#{bundle.ViewIngresoLabel_ingFechaFin}"/>
+                    <h:outputText value="#{ingresoController.selected.ingFechaFin}" title="#{bundle.ViewIngresoTitle_ingFechaFin}">
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:outputText>
+                    <h:outputText value="#{bundle.ViewIngresoLabel_ingNumeroUCTFF}"/>
+                    <h:outputText value="#{ingresoController.selected.ingNumeroUCTFF}" title="#{bundle.ViewIngresoTitle_ingNumeroUCTFF}"/>
+                    <h:outputText value="#{bundle.ViewIngresoLabel_ingresomuerto}"/>
+                    <h:outputText value="#{ingresoController.selected.ingresomuerto}" title="#{bundle.ViewIngresoTitle_ingresomuerto}"/>
+                    <h:outputText value="#{bundle.ViewIngresoLabel_denunciaId}"/>
+                    <h:outputText value="#{ingresoController.selected.denunciaId}" title="#{bundle.ViewIngresoTitle_denunciaId}"/>
+                    <h:outputText value="#{bundle.ViewIngresoLabel_animalId}"/>
+                    <h:outputText value="#{ingresoController.selected.animalId}" title="#{bundle.ViewIngresoTitle_animalId}"/>
+                    <h:outputText value="#{bundle.ViewIngresoLabel_causaingresoId}"/>
+                    <h:outputText value="#{ingresoController.selected.causaingresoId}" title="#{bundle.ViewIngresoTitle_causaingresoId}"/>
+                    <h:outputText value="#{bundle.ViewIngresoLabel_desarrollobiologicoId}"/>
+                    <h:outputText value="#{ingresoController.selected.desarrollobiologicoId}" title="#{bundle.ViewIngresoTitle_desarrollobiologicoId}"/>
+                    <h:outputText value="#{bundle.ViewIngresoLabel_entidadId}"/>
+                    <h:outputText value="#{ingresoController.selected.entidadId}" title="#{bundle.ViewIngresoTitle_entidadId}"/>
+                    <h:outputText value="#{bundle.ViewIngresoLabel_funcionarioId}"/>
+                    <h:outputText value="#{ingresoController.selected.funcionarioId}" title="#{bundle.ViewIngresoTitle_funcionarioId}"/>
+                    <h:outputText value="#{bundle.ViewIngresoLabel_infractordonatanteId}"/>
+                    <h:outputText value="#{ingresoController.selected.infractordonatanteId}" title="#{bundle.ViewIngresoTitle_infractordonatanteId}"/>
+                    <h:outputText value="#{bundle.ViewIngresoLabel_ingresoIdOrigen}"/>
+                    <h:outputText value="#{ingresoController.selected.ingresoIdOrigen}" title="#{bundle.ViewIngresoTitle_ingresoIdOrigen}"/>
+                    <h:outputText value="#{bundle.ViewIngresoLabel_veredaId}"/>
+                    <h:outputText value="#{ingresoController.selected.veredaId}" title="#{bundle.ViewIngresoTitle_veredaId}"/>
+                    <h:outputText value="#{bundle.ViewIngresoLabel_liberacionId}"/>
+                    <h:outputText value="#{ingresoController.selected.liberacionId}" title="#{bundle.ViewIngresoTitle_liberacionId}"/>
+                    <h:outputText value="#{bundle.ViewIngresoLabel_lugardecomisoentregavoluntariaId}"/>
+                    <h:outputText value="#{ingresoController.selected.lugardecomisoentregavoluntariaId}" title="#{bundle.ViewIngresoTitle_lugardecomisoentregavoluntariaId}"/>
+                    <h:outputText value="#{bundle.ViewIngresoLabel_muerteId}"/>
+                    <h:outputText value="#{ingresoController.selected.muerteId}" title="#{bundle.ViewIngresoTitle_muerteId}"/>
+                    <h:outputText value="#{bundle.ViewIngresoLabel_sexoId}"/>
+                    <h:outputText value="#{ingresoController.selected.sexoId}" title="#{bundle.ViewIngresoTitle_sexoId}"/>
+                    <h:outputText value="#{bundle.ViewIngresoLabel_municipioId}"/>
+                    <h:outputText value="#{ingresoController.selected.municipioId}" title="#{bundle.ViewIngresoTitle_municipioId}"/>
+                    <h:outputText value="#{bundle.ViewIngresoLabel_marcaId}"/>
+                    <h:outputText value="#{ingresoController.selected.marcaId}" title="#{bundle.ViewIngresoTitle_marcaId}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{ingresoController.destroyAndView}" value="#{bundle.ViewIngresoDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewIngresoEditLink}"/>
+                <br />
+                <h:commandLink action="#{ingresoController.prepareCreate}" value="#{bundle.ViewIngresoCreateLink}" />
+                <br />
+                <h:commandLink action="#{ingresoController.prepareList}" value="#{bundle.ViewIngresoShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewIngresoIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

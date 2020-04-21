@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EditMuertoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditMuertoLabel_mueId}" for="mueId" />
+                    <h:inputText id="mueId" value="#{muertoController.selected.mueId}" title="#{bundle.EditMuertoTitle_mueId}" required="true" requiredMessage="#{bundle.EditMuertoRequiredMessage_mueId}"/>
+                    <h:outputLabel value="#{bundle.EditMuertoLabel_mueFecha}" for="mueFecha" />
+                    <h:inputText id="mueFecha" value="#{muertoController.selected.mueFecha}" title="#{bundle.EditMuertoTitle_mueFecha}" required="true" requiredMessage="#{bundle.EditMuertoRequiredMessage_mueFecha}">
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.EditMuertoLabel_mueResultadoNecropsia}" for="mueResultadoNecropsia" />
+                    <h:inputTextarea rows="4" cols="30" id="mueResultadoNecropsia" value="#{muertoController.selected.mueResultadoNecropsia}" title="#{bundle.EditMuertoTitle_mueResultadoNecropsia}" />
+                    <h:outputLabel value="#{bundle.EditMuertoLabel_mueEutanasia}" for="mueEutanasia" />
+                    <h:inputText id="mueEutanasia" value="#{muertoController.selected.mueEutanasia}" title="#{bundle.EditMuertoTitle_mueEutanasia}" required="true" requiredMessage="#{bundle.EditMuertoRequiredMessage_mueEutanasia}"/>
+                </h:panelGrid>
+                <h:commandLink action="#{muertoController.update}" value="#{bundle.EditMuertoSaveLink}"/>
+                <br />
+                <br />
+                <h:link outcome="View" value="#{bundle.EditMuertoViewLink}"/>
+                <br />
+                <h:commandLink action="#{muertoController.prepareList}" value="#{bundle.EditMuertoShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.EditMuertoIndexLink}" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>
