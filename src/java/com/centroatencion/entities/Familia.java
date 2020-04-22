@@ -34,10 +34,11 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "familia", catalog = "hogardepasobd", schema = "")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Familia.findAll", query = "SELECT f FROM Familia f"),
+    @NamedQuery(name = "Familia.findAll", query = "SELECT f FROM Familia f order by f.faNombre asc"),
     @NamedQuery(name = "Familia.findByFaId", query = "SELECT f FROM Familia f WHERE f.faId = :faId"),
     @NamedQuery(name = "Familia.findByOrden", query = "SELECT f FROM Familia f WHERE f.orId.orId = :orId"),
-    @NamedQuery(name = "Familia.findByOrdenAndNombre", query = "SELECT f FROM Familia f WHERE f.orId.orId = :orId AND LOWER(f.faNombre) LIKE :faNombre"),
+    @NamedQuery(name = "Familia.findByOrdenAndNombre", query = "SELECT f FROM Familia f WHERE f.orId.orId = :orId AND LOWER(f.faNombre) LIKE :faNombre order by f.faNombre asc"),
+    @NamedQuery(name = "Familia.findByFaNombreOrderByFaNombre", query = "SELECT f FROM Familia f WHERE LOWER(f.faNombre) LIKE :faNombre order by f.faNombre asc"),
     @NamedQuery(name = "Familia.findByFaNombre", query = "SELECT f FROM Familia f WHERE f.faNombre = :faNombre")})
 public class Familia implements Serializable {
 

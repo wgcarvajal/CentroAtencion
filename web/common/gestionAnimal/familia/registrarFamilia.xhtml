@@ -75,6 +75,89 @@
                         </p:panelGrid>                            
                     </h:form>       
                 </p:dialog>
+        
+        <p:dialog position="center" resizable="false"   header="Agregar Familia" showEffect="scale" modal="true"  widgetVar="AgregarFamiliaConOrden">
+
+                    <h:form id="formConOrden">
+                        <p:panelGrid style="text-align:left;" styleClass="panelgrid"  id="panelConOrden">
+                            <p:row>
+                                <p:column>
+                                    <h:outputLabel style="font-style: italic;font-size: 16px;text-align: left; color:red;" 
+                                                   value="*"/>
+                                    <h:outputLabel class="CampoLabelObligatorios" value=" Campos Obligatorios" />
+                                </p:column>                                
+                            </p:row>
+                            <p:row>
+                                <p:column style="text-align:right">
+                                    <h:outputLabel class="CampoLabel" for="orden" value="Orden: " />
+                                    <h:outputLabel style="font-style: italic;font-size: 16px;text-align: left; color:red;" 
+                                                   value="*"/>
+                                </p:column>
+                                <p:column>
+                                    <p:selectOneMenu  
+                                        filter="true" filterMatchMode="startsWith"
+                                        id="orden" value="#{agregarFamiliaController.ordenIdSelected}" >
+                                        <f:selectItems
+                                            value="#{agregarFamiliaController.listaOrden}" 
+                                            var="orden" itemLabel="#{orden.orNombre}" itemValue="#{orden.orId}"
+                                            />
+                                    </p:selectOneMenu>                  
+                                </p:column>
+                                <p:column>
+                                    <p:message for="orden"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="text-align:right">
+                                    <h:outputLabel class="CampoLabel" for="nombreConOrden" value="Nombre: " />
+                                    <h:outputLabel style="font-style: italic;font-size: 16px;text-align: left; color:red;" 
+                                                   value="*"/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText style="width: 140px;font-size:15px" 
+                                                 id="nombreConOrden" value="#{agregarFamiliaController.nombre}"
+                                                 required="true" requiredMessage="Campo obligatorio.">
+                                        
+                                    </p:inputText>                                
+                                </p:column>
+                                <p:column>
+                                    <p:message for="nombreConOrden"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="text-align:right">
+                                    <h:outputLabel class="CampoLabel" for="descripcionConOrden" value="Descripción: " />
+                                </p:column>
+                                <p:column>
+                                    <p:inputTextarea style="width: 140px;font-size:15px" 
+                                                 id="descripcionConOrden" value="#{agregarFamiliaController.descripcion}">
+                                        
+                                    </p:inputTextarea>                                
+                                </p:column>
+                                <p:column>
+                                    <p:message for="descripcionConOrden"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+
+                                </p:column>
+                                <p:column>
+                                    <p:commandButton   style="background: #22419A;color:#FFFFFF;font-style: italic;font-weight: normal;" 
+                                                       action="#{agregarFamiliaController.registrarFamiliaConNombre(famController)}" value="Registrar" ajax="true" 
+                                                       update="panelConOrden :formTablaFamilias" id="registrarConNombre"
+                                                       onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                                       />
+                                    <p:commandButton   style="background: #22419A;color:#FFFFFF;font-style: italic;font-weight: normal;" 
+                                                       value="Cancelar" onclick="PF('AgregarFamiliaConOrden').hide()"
+                                                        id="cancelarConNombre" onstart="PF('efectoCarga').show()" 
+                                                        onsuccess="PF('efectoCarga').hide()"
+                                                       />
+                                </p:column>
+                            </p:row>                               
+                        </p:panelGrid>                            
+                    </h:form>       
+                </p:dialog>
     </ui:composition>
     
 </html>

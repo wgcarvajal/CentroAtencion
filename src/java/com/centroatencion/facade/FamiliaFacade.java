@@ -39,10 +39,28 @@ public class FamiliaFacade extends AbstractFacade<Familia> {
     }
     
     public List<Familia> findByOrdenAndNombre(int orId,String faNombre) {
-        Query query = getEntityManager().createNamedQuery("Familia.findByOrdenAndNombre");
-        query.setParameter("orId", orId);
+        Query query;
+        if(orId==0)
+        {
+            query = getEntityManager().createNamedQuery("Familia.findByFaNombreOrderByFaNombre");
+        }
+        else
+        {
+            query = getEntityManager().createNamedQuery("Familia.findByOrdenAndNombre");
+            query.setParameter("orId", orId); 
+        }
+       
         query.setParameter("faNombre", "%" + faNombre + "%");
         List<Familia> resultList = query.getResultList();
         return resultList;
     }
+
+    @Override
+    public List<Familia> findAll() {
+       Query query = getEntityManager().createNamedQuery("Familia.findAll");
+        List<Familia> resultList = query.getResultList();
+        return resultList;
+    }
+    
+    
 }

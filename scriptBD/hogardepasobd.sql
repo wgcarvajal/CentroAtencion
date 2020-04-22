@@ -231,8 +231,58 @@ CREATE TABLE `familia` (
 --
 
 INSERT INTO `familia` (`faId`, `faNombre`, `faDescripcion`, `orId`) VALUES
-(1, 'Felidae', NULL, 6),
-(2, 'Kinosternidae', NULL, 24);
+  (1, 'Felidae', NULL, 6),
+  (2, 'Kinosternidae', NULL, 24),
+  (3, 'Alligatoridae', NULL, 8),
+  (4, 'Psittacidae', NULL, 20),
+  (5, 'Ardeidae', NULL, 16),
+  (6, 'Atelidae', NULL, 19),
+  (7, 'Boidae', NULL, 22),
+  (8, 'Bradypodidae', NULL, 18),
+  (9, 'Caviidae', NULL, 21),
+  (10, 'Testudinidae', NULL, 24),
+  (11, 'Accipitridae', NULL, 1),
+  (13, 'Arinae', NULL, 20),
+  (14, 'Anatidae', NULL, 2),
+  (15, 'Apodidae', NULL, 3),
+  (16, 'Callitrichidae', NULL, 19),
+  (17, 'Canidae', NULL, 6),
+  (18, 'Caprimulgidae', NULL, 5),
+  (19, 'Cathartidae', NULL, 12),
+  (20, 'Cebidae', NULL, 19),
+  (21, 'Cervidae', NULL, 4),
+  (22, 'Colubridae', NULL, 22),
+  (23, 'Corvidae', NULL, 15),
+  (24, 'Cracidae', NULL, 13),
+  (25, 'Columbidae', NULL, 9),
+  (26, 'Cuniculidae', NULL, 21),
+  (27, 'Dasypodidae', NULL, 7),
+  (28, 'Dasyproctidae', NULL, 21),
+  (29, 'Didelphidae', NULL, 10),
+  (30, 'Emberizidae', NULL, 15),
+  (31, 'Emydidae', NULL, 24),
+  (32, 'Erethizontidae', NULL, 21),
+  (33, 'Erinaceidae', NULL, 11),
+  (34, 'Falconidae', NULL, 12),
+  (35, 'Geoemydidae', NULL, 24),
+  (36, 'Iguanidae', NULL, 22),
+  (37, 'Strigidae', NULL, 23),
+  (38, 'Mimidae', NULL, 15),
+  (39, 'Mustelidae', NULL, 6),
+  (40, 'Myrmecophagidae', NULL, 18),
+  (41, 'Pandionidae', NULL, 1),
+  (42, 'Picidae', NULL, 17),
+  (43, 'Podocnemididae', NULL, 24),
+  (44, 'Procyonidae', NULL, 6),
+  (45, 'Rallidae', NULL, 14),
+  (46, 'Ramphastidae', NULL, 17),
+  (47, 'Elapidae', NULL, 22),
+  (48, 'Sciuridae', NULL, 21),
+  (49, 'Steatornithidae', NULL, 5),
+  (50, 'Thraupidae', NULL, 15),
+  (51, 'Threskiornithidae', NULL, 16),
+  (52, 'Tyrannidae', NULL, 15),
+  (53, 'Viperidae', NULL, 22);
 
 -- --------------------------------------------------------
 
@@ -944,7 +994,7 @@ ALTER TABLE `especie`
 -- AUTO_INCREMENT de la tabla `familia`
 --
 ALTER TABLE `familia`
-  MODIFY `faId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `faId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT de la tabla `fotoanimal`

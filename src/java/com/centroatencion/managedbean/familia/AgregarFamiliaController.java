@@ -10,6 +10,7 @@ import com.centroatencion.entities.Familia;
 import com.centroatencion.facade.OrdenFacade;
 import com.centroatencion.facade.FamiliaFacade;
 import java.io.Serializable;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -32,6 +33,7 @@ public class AgregarFamiliaController implements Serializable
     private String nombre;
     private String descripcion;
     private Integer ordenIdSelected;
+    private List<Orden> listaOrden;
     
     
     
@@ -58,13 +60,38 @@ public class AgregarFamiliaController implements Serializable
     {
         this.descripcion = descripcion;
     }
+
+    public Integer getOrdenIdSelected() {
+        return ordenIdSelected;
+    }
+
+    public void setOrdenIdSelected(Integer ordenIdSelected) {
+        this.ordenIdSelected = ordenIdSelected;
+    }
+
+    public List<Orden> getListaOrden() {
+        return listaOrden;
+    }
+
+    public void setListaOrden(List<Orden> listaOrden) {
+        this.listaOrden = listaOrden;
+    }
     
     public void abrirVentanaAgregarFamilia(Integer ordenIdSelected)
     {
        this.ordenIdSelected = ordenIdSelected;
        PrimeFaces pf = PrimeFaces.current();
-       pf.executeScript("PF('AgregarFamilia').show()");
+       
+       if(ordenIdSelected==0)
+       {
+          listaOrden = ordenEJB.findAll();
+          pf.executeScript("PF('AgregarFamiliaConOrden').show()");
+       }else{
+          pf.executeScript("PF('AgregarFamilia').show()");
+       }
     }
+    
+    
     
    public void registrarFamilia(FamiliaController familiaController)
    {
@@ -78,6 +105,27 @@ public class AgregarFamiliaController implements Serializable
         }
         familiaiEJB.create(familia);
         nombre="";
+        descripcion="";
+        familiaController.updateListaFamilia();
+        PrimeFaces pf = PrimeFaces.current();
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Registro Exitoso."));
+        pf.executeScript("PF('mensajeRegistroExitoso').show()");
+   }
+   
+   public void registrarFamiliaConNombre(FamiliaController familiaController)
+   {
+        Orden orden = ordenEJB.find(ordenIdSelected);
+        Familia familia = new Familia();
+        familia.setOrId(orden);
+        familia.setFaNombre(nombre);
+        if(descripcion!=null && !descripcion.isEmpty())
+        {
+            familia.setFaDescripcion(descripcion);
+        }
+        familiaiEJB.create(familia);
+        nombre="";
+        descripcion="";
+        ordenIdSelected =0;
         familiaController.updateListaFamilia();
         PrimeFaces pf = PrimeFaces.current();
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Registro Exitoso."));

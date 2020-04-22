@@ -17,7 +17,7 @@
                                           requiredMessage="Seleccione un Orden."
                                           valueChangeListener="#{famController.changedOrden}"
                                           >
-                            <f:selectItem itemLabel="Seleccione.." itemValue="0" />
+                            <f:selectItem itemLabel="Todo" itemValue="0" />
                             <f:selectItems value="#{famController.listaOrdens}"
                                            var="orden" itemLabel="#{orden.orNombre}" itemValue="#{orden.orId}"/>
                             <p:ajax update=":formTablaFamilias"/>
@@ -37,7 +37,7 @@
                 <p:commandButton  value="Agregar familia" class="botonAzul" style="margin-left: 395px;"
                                   action="#{agregarFamiliaController.abrirVentanaAgregarFamilia(famController.ordenIdSelected)}"
                                           onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
-                                          update="formTablaFamilias :form:panel"/>
+                                          update="formTablaFamilias :form:panel :formConOrden:panelConOrden"/>
             </h:panelGrid>
             <p:panel id="tablaFamilias" rendered="#{famController.enabledTablaOrdens}">                                            
                 <p:dataTable  value="#{famController.listaFamilias}"
@@ -45,8 +45,11 @@
                               paginator="true" rows="10"  
                               paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                               >
-                    <p:column headerText="Nombre" style="text-align: center">
+                    <p:column headerText="Familia" style="text-align: center">
                         #{familia.faNombre}
+                    </p:column>
+                     <p:column headerText="Orden" style="text-align: center">
+                        #{familia.orId.orNombre}
                     </p:column>
                     <p:column headerText="Descripción" style="text-align: center">
                         #{familia.faDescripcion}

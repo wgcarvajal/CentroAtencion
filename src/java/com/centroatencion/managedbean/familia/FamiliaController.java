@@ -31,7 +31,7 @@ public class FamiliaController implements Serializable{
     private FamiliaFacade familiaEJB;
     
     private List<Orden> listaOrdens;
-    private List<Familia> listaMuncipios;
+    private List<Familia> listaFamilias;
     private Integer ordenIdSelected;
     private boolean enabledTablaOrdens;
     private String nombreFamilia;
@@ -49,7 +49,7 @@ public class FamiliaController implements Serializable{
     
     public List<Familia>getListaFamilias()
     {
-        return listaMuncipios;
+        return listaFamilias;
     }
     public List<Orden> getListaOrdens()
     {
@@ -79,7 +79,9 @@ public class FamiliaController implements Serializable{
     
     private void initValues()
     {
-        enabledTablaOrdens = false;
+        enabledTablaOrdens = true;
+        ordenIdSelected =0;
+        listaFamilias = familiaEJB.findAll();
     }
     
     public void changedOrden(ValueChangeEvent e)
@@ -87,21 +89,25 @@ public class FamiliaController implements Serializable{
         enabledTablaOrdens = false;
         this.nombreFamilia = null;
         this.ordenIdSelected = null;
-        this.listaMuncipios = null;
+        this.listaFamilias = null;
         this.nombreFamilia = null;
         
         int idOrden = Integer.parseInt(e.getNewValue().toString());
+        this.enabledTablaOrdens = true;
         if(idOrden!=0)
         {
-            this.enabledTablaOrdens = true;
             this.ordenIdSelected = idOrden;
-            this.listaMuncipios = familiaEJB.findByOrden(ordenIdSelected);
-        } 
+            this.listaFamilias = familiaEJB.findByOrden(ordenIdSelected);
+        }
+        else{
+            this.ordenIdSelected = 0;
+            this.listaFamilias = familiaEJB.findAll();
+        }
     }
     
     public void searchByOrdenAndNombreFamilia()
     {
-        this.listaMuncipios=familiaEJB.findByOrdenAndNombre(ordenIdSelected, nombreFamilia);
+        this.listaFamilias=familiaEJB.findByOrdenAndNombre(ordenIdSelected, nombreFamilia);
     }
     
     public void updateListaFamilia()
@@ -112,7 +118,11 @@ public class FamiliaController implements Serializable{
         }
         else
         {
-            listaMuncipios = familiaEJB.findByOrden(ordenIdSelected);;
+            if(ordenIdSelected ==0)
+            {
+                listaFamilias = familiaEJB.findAll();
+            }
+            else{listaFamilias = familiaEJB.findByOrden(ordenIdSelected);}
         }
         
     }
