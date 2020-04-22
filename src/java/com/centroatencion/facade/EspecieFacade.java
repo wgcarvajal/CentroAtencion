@@ -39,8 +39,16 @@ public class EspecieFacade extends AbstractFacade<Especie> {
     }
     
     public List<Especie> findByFamiliaAndNombre(Integer faId,String espNombre) {
-        Query query = getEntityManager().createNamedQuery("Especie.findByFamiliaAndNombre");
-        query.setParameter("faId", faId);
+        Query query;
+        if(faId == 0)
+        {
+            query = getEntityManager().createNamedQuery("Especie.findByLikeEspNombre");
+        }
+        else
+        {
+            query = getEntityManager().createNamedQuery("Especie.findByFamiliaAndNombre");
+            query.setParameter("faId", faId);
+        }
         query.setParameter("espNombre", "%" + espNombre + "%");
         List<Especie> resultList = query.getResultList();
         return resultList;
@@ -51,5 +59,20 @@ public class EspecieFacade extends AbstractFacade<Especie> {
         query.setParameter("espId", espId);
         List resultList = query.getResultList();
         return resultList;
+    }
+    
+    @Override
+    public List<Especie> findAll() {
+       Query query = getEntityManager().createNamedQuery("Especie.findAll");
+        List<Especie> resultList = query.getResultList();
+        return resultList;
+    }
+    
+    public boolean existeNombre(String espNombre)
+    {
+        Query query = getEntityManager().createNamedQuery("Especie.findByEspNombre");
+        query.setParameter("espNombre",  espNombre);
+        List<Especie> resultList = query.getResultList();
+        return resultList!=null && resultList.size()>0;
     }
 }

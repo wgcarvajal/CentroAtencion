@@ -10,29 +10,8 @@
                Especies
         </div>
         <br/>
-        <h:form id="seleccionarOrden">
-            <p:panelGrid styleClass="panelgrid"> 
-                <p:column style="width:200px;">
-                    <p:outputLabel styleClass="CampoLabel" value="Seleccione Orden:" />
-                </p:column>   
-                <p:column>
-                    <p:selectOneMenu filter="true" filterMatchMode="startsWith"  id="tipoUsuario" style="width:150px;font-size: 15px;" required="true"
-                                     requiredMessage="Seleccione un Orden."
-                                     valueChangeListener="#{espController.changedOrden}"
-                                     >
-                        <f:selectItem itemLabel="Seleccione.." itemValue="0" />
-                        <f:selectItems value="#{espController.listaOrdens}"
-                                       var="orden" itemLabel="#{orden.orNombre}" itemValue="#{orden.orId}"/>
-                        <p:ajax update=":formSeleccionarFamilia :formTablaEspecies"/>
-                        <p:ajax onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"/>                                        
-                    </p:selectOneMenu>  
-                </p:column>
-
-            </p:panelGrid>
-        </h:form>
-        <br/>
         <h:form id="formSeleccionarFamilia">
-            <p:panelGrid styleClass="panelgrid" rendered="#{espController.enabledSelectFamilias}">
+            <p:panelGrid styleClass="panelgrid">
                 <p:column style="width:200px;">
                    <p:outputLabel styleClass="CampoLabel" value="Seleccione Familia:" /> 
                 </p:column>
@@ -42,7 +21,7 @@
                                  requiredMessage="Seleccione un Familia."
                                  valueChangeListener="#{espController.changedFamilia}"
                                  >
-                    <f:selectItem itemLabel="Seleccione.." itemValue="0" />
+                    <f:selectItem itemLabel="Todo" itemValue="0" />
                     <f:selectItems value="#{espController.listaFamilias}"
                                    var="familia" itemLabel="#{familia.faNombre}" itemValue="#{familia.faId}"/>
                     <p:ajax update=":formTablaEspecies"/>
@@ -64,7 +43,7 @@
                <p:commandButton  value="Agregar especie" class="botonAzul" style="margin-left: 395px;"
                                  action="#{agregarEspecieController.abrirVentanaAgregarEspecie(espController.familiaIdSelected)}"
                                           onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
-                                          update="formTablaEspecies :form:panel"/>
+                                          update="formTablaEspecies :form:panel :formConFamilia:panelConFamilia"/>
             </h:panelGrid>
             <p:panel id="tablaEspecies" rendered="#{espController.enabledTablaEspecies}">                                            
                 <p:dataTable  value="#{espController.listaEspecies}"
@@ -72,8 +51,11 @@
                               paginator="true" rows="10"  
                               paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                               >
-                    <p:column headerText="Nombre" style="text-align: center">
+                    <p:column headerText="Especie" style="text-align: center">
                         #{especie.espNombre}
+                    </p:column>
+                    <p:column headerText="Familia" style="text-align: center">
+                        #{especie.faId.faNombre}
                     </p:column>
                     <p:column headerText="Descripción" style="text-align: center">
                         #{especie.espDescripcion}

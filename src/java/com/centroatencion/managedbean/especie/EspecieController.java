@@ -5,10 +5,8 @@
  */
 package com.centroatencion.managedbean.especie;
 
-import com.centroatencion.entities.Orden;
 import com.centroatencion.entities.Familia;
 import com.centroatencion.entities.Especie;
-import com.centroatencion.facade.OrdenFacade;
 import com.centroatencion.facade.FamiliaFacade;
 import com.centroatencion.facade.EspecieFacade;
 import java.io.Serializable;
@@ -27,19 +25,14 @@ import javax.faces.event.ValueChangeEvent;
 @ViewScoped
 public class EspecieController implements Serializable{
     
-    @EJB
-    private OrdenFacade ordenEJB;
+
     @EJB
     private FamiliaFacade familiaEJB;
     @EJB
     private EspecieFacade especieEJB;
-    
-    private List<Orden> listaOrdens;
-    private List<Familia> listaMuncipios;
+    private List<Familia> listaFamilias;
     private List<Especie> listaEspecies;
-    private Integer ordenIdSelected;
     private Integer familiaIdSelected;
-    private boolean enabledSelectFamilias;
     private boolean enabledTablaEspecies;
     private String nombreEspecie;
     
@@ -50,18 +43,14 @@ public class EspecieController implements Serializable{
     @PostConstruct
     public void init()
     {
-        this.loadListaOrdens();
         this.initValues();
     }   
     
     public List<Familia>getListaFamilias()
     {
-        return listaMuncipios;
+        return listaFamilias;
     }
-    public List<Orden> getListaOrdens()
-    {
-        return listaOrdens;
-    }
+    
     public List<Especie> getListaEspecies()
     {
         return listaEspecies;
@@ -70,10 +59,7 @@ public class EspecieController implements Serializable{
     {
         return enabledTablaEspecies;
     }
-    public boolean getEnabledSelectFamilias()
-    {
-        return enabledSelectFamilias;
-    }
+    
     public String getNombreEspecie()
     {
         return nombreEspecie;
@@ -82,43 +68,18 @@ public class EspecieController implements Serializable{
     {
         this.nombreEspecie= nombreEspecie;
     }
-    public Integer getOrdenIdSelected()
-    {
-        return  ordenIdSelected;
-    }
+    
     public Integer getFamiliaIdSelected()
     {
         return familiaIdSelected;
     }
     
-    private void loadListaOrdens()
-    {
-        listaOrdens = ordenEJB.findAll();
-    }
-    
     private void initValues()
     {
-        enabledTablaEspecies = false;
-        enabledSelectFamilias = false;
-    }
-    
-    public void changedOrden(ValueChangeEvent e)
-    {
-        enabledSelectFamilias = false;
-        enabledTablaEspecies = false;
-        this.nombreEspecie = null;
-        this.ordenIdSelected = null;
-        this.familiaIdSelected = null;
-        this.listaMuncipios = null;
-        this.listaEspecies = null;
-        
-        int idOrden = Integer.parseInt(e.getNewValue().toString());
-        if(idOrden!=0)
-        {
-            this.enabledSelectFamilias = true;
-            this.ordenIdSelected = idOrden;
-            this.listaMuncipios = familiaEJB.findByOrden(ordenIdSelected);
-        } 
+        familiaIdSelected = 0;
+        enabledTablaEspecies = true;
+        listaFamilias = familiaEJB.findAll();
+        listaEspecies = especieEJB.findAll();
     }
     
     public void changedFamilia(ValueChangeEvent e)
@@ -128,12 +89,16 @@ public class EspecieController implements Serializable{
         this.familiaIdSelected = null;
         this.listaEspecies = null;
         int idFamilia = Integer.parseInt(e.getNewValue().toString());
+        this.enabledTablaEspecies = true;
+        this.familiaIdSelected = idFamilia;
         if(idFamilia!=0)
         {
-            this.enabledTablaEspecies = true;
-            this.familiaIdSelected = idFamilia;
             this.listaEspecies = especieEJB.findByFamilia(familiaIdSelected);
-        } 
+        }
+        else
+        {
+            this.listaEspecies = especieEJB.findAll();
+        }
     }
     
     public void searchByFamiliaAndNombreEspecie()
@@ -149,7 +114,11 @@ public class EspecieController implements Serializable{
         }
         else
         {
-            listaEspecies = especieEJB.findByFamilia(familiaIdSelected);;
+            if(familiaIdSelected ==0)
+            {
+                listaEspecies = especieEJB.findAll();
+            }
+            else{listaEspecies = especieEJB.findByFamilia(familiaIdSelected);}
         }
         
     }

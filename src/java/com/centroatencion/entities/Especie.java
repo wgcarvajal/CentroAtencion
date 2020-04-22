@@ -33,11 +33,12 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "especie", catalog = "hogardepasobd", schema = "")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Especie.findAll", query = "SELECT e FROM Especie e"),
+    @NamedQuery(name = "Especie.findAll", query = "SELECT e FROM Especie e order by e.espNombre"),
     @NamedQuery(name = "Especie.findByEspId", query = "SELECT e FROM Especie e WHERE e.espId = :espId"),
     @NamedQuery(name = "Especie.findByFamilia", query = "SELECT e FROM Especie e WHERE e.faId.faId = :faId"),
     @NamedQuery(name = "Especie.findByIdInnerJoinFamiliaAndOrden", query = "SELECT e,f,o FROM Especie e INNER JOIN Familia f INNER JOIN Orden o WHERE e.espId = :espId And e.faId.faId = f.faId And f.orId.orId = o.orId"),
-    @NamedQuery(name = "Especie.findByFamiliaAndNombre", query = "SELECT e FROM Especie e WHERE e.faId.faId = :faId AND LOWER(e.espNombre) LIKE :espNombre"),
+    @NamedQuery(name = "Especie.findByFamiliaAndNombre", query = "SELECT e FROM Especie e WHERE e.faId.faId = :faId AND LOWER(e.espNombre) LIKE :espNombre order by e.espNombre"),
+    @NamedQuery(name = "Especie.findByLikeEspNombre", query = "SELECT e FROM Especie e WHERE LOWER(e.espNombre) LIKE :espNombre order by e.espNombre"),
     @NamedQuery(name = "Especie.findByEspNombre", query = "SELECT e FROM Especie e WHERE e.espNombre = :espNombre")})
 public class Especie implements Serializable {
 
@@ -52,8 +53,6 @@ public class Especie implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "espNombre")
     private String espNombre;
-    @Basic(optional = false)
-    @NotNull
     @Lob
     @Size(min = 1, max = 65535)
     @Column(name = "espDescripcion")
@@ -71,10 +70,9 @@ public class Especie implements Serializable {
         this.espId = espId;
     }
 
-    public Especie(Integer espId, String espNombre, String espDescripcion) {
+    public Especie(Integer espId, String espNombre) {
         this.espId = espId;
         this.espNombre = espNombre;
-        this.espDescripcion = espDescripcion;
     }
 
     public Integer getEspId() {
