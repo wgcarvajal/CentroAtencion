@@ -39,9 +39,9 @@ public class AnimalFacade extends AbstractFacade<Animal> {
         return resultList;
     }
     
-    public List<Animal> searchByEspecie(String espNombre) {
-        Query query = getEntityManager().createNamedQuery("Animal.searchByEspecie");
-        query.setParameter("espNombre", "%" + espNombre + "%");
+    public List<Animal> searchByFamilia(String faNombre) {
+        Query query = getEntityManager().createNamedQuery("Animal.searchByFamilia");
+        query.setParameter("faNombre", "%" + faNombre + "%");
         List<Animal> resultList = query.getResultList();
         return resultList;
     }
@@ -49,6 +49,36 @@ public class AnimalFacade extends AbstractFacade<Animal> {
     public List<Animal> searchByGrupoTaxonomico(String gruptaxNombre) {
         Query query = getEntityManager().createNamedQuery("Animal.searchByGrupoTaxonomico");
         query.setParameter("gruptaxNombre", "%" + gruptaxNombre + "%");
+        List<Animal> resultList = query.getResultList();
+        return resultList;
+    }
+    
+    public boolean existeNombre(String anNombre)
+    {
+        Query query = getEntityManager().createNamedQuery("Animal.findByAnNombre");
+        query.setParameter("anNombre",  anNombre);
+        List<Animal> resultList = query.getResultList();
+        return resultList!=null && resultList.size()>0;
+    }
+    
+    public boolean existeEspecie(String anEspNombre)
+    {
+        Query query = getEntityManager().createNamedQuery("Animal.findByAnEspNombre");
+        query.setParameter("anEspNombre",  anEspNombre);
+        List<Animal> resultList = query.getResultList();
+        return resultList!=null && resultList.size()>0;
+    }
+    
+    @Override
+    public List<Animal> findAll() {
+       Query query = getEntityManager().createNamedQuery("Animal.findAll");
+        List<Animal> resultList = query.getResultList();
+        return resultList;
+    }
+    
+    public List<Animal> findByFamilia(Integer faId) {
+        Query query = getEntityManager().createNamedQuery("Animal.findByFamilia");
+        query.setParameter("faId", faId);
         List<Animal> resultList = query.getResultList();
         return resultList;
     }

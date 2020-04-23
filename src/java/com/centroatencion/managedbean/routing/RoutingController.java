@@ -129,12 +129,6 @@ public class RoutingController implements Serializable {
         resetViews();
 
     }
-
-    public void goToEspecies(AddNavegacionController addNavegacionController) {
-        addNavegacionController.addEspecies();
-        this.ruta = "../common/gestionAnimal/especie/especies.xhtml";
-        resetViews();
-    }
     
     public void irRegistroPlcTu() {
         this.ruta = "/administrador/plcTu/registroPlcTu.xhtml";

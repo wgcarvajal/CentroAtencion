@@ -6,15 +6,15 @@
 package com.centroatencion.managedbean.animal;
 
 import com.centroatencion.entities.Animal;
-import com.centroatencion.entities.Especie;
 import com.centroatencion.entities.Familia;
 import com.centroatencion.entities.Fotoanimal;
 import com.centroatencion.entities.Grupotaxonomico;
 import com.centroatencion.entities.Orden;
 import com.centroatencion.facade.AnimalFacade;
-import com.centroatencion.facade.EspecieFacade;
+import com.centroatencion.facade.FamiliaFacade;
 import com.centroatencion.facade.FotoanimalFacade;
 import com.centroatencion.facade.GrupotaxonomicoFacade;
+import com.centroatencion.managedbean.util.Util;
 import com.centroatencion.utilidades.RedimensionadorImagenes;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -51,13 +51,12 @@ public class VerEditarAnimalController implements Serializable{
     @EJB
     private FotoanimalFacade fotoAnimalEJB;
     @EJB
-    private EspecieFacade especieEJB;
+    private FamiliaFacade familiaEJB;
     @EJB
     private GrupotaxonomicoFacade grupoTaxonomicoEJB;
     
     private Orden orden;
     private Familia familia;
-    private Especie especie;
     private Grupotaxonomico grupotaxonomico;
     
     private static final String RUTAFOTOSANIMAL= "/Users/aranda/uploads/fotosAnimales/";
@@ -67,12 +66,14 @@ public class VerEditarAnimalController implements Serializable{
     private boolean campoDescripcion;
     private boolean campoEspecie;
     private boolean campoGrupoTaxonomico;
+    private boolean campoFamilia;
     private String nombre;
+    private String especie;
     private String descripcion;
     private AnimalController animalController;
     private boolean campoFoto;
     private UploadedFile uploadedFileFoto;
-    private List<Especie>especies;
+    private List<Familia>familias;
     private List<Grupotaxonomico> gruposTaxonomicos;
     
 
@@ -81,6 +82,16 @@ public class VerEditarAnimalController implements Serializable{
     public VerEditarAnimalController() {
         
     }
+
+    public String getEspecie() {
+        return especie;
+    }
+
+    public void setEspecie(String especie) {
+        this.especie = especie;
+    }
+    
+    
     
     public String getNombre() {
         return nombre;
@@ -113,6 +124,14 @@ public class VerEditarAnimalController implements Serializable{
         this.campoDescripcion = campoDescripcion;
     }
 
+    public boolean isCampoFamilia() {
+        return campoFamilia;
+    }
+
+    public void setCampoFamilia(boolean campoFamilia) {
+        this.campoFamilia = campoFamilia;
+    }
+    
     public void setCampoNombre(boolean campoNombre) {
         this.campoNombre = campoNombre;
     }
@@ -165,14 +184,6 @@ public class VerEditarAnimalController implements Serializable{
         this.familia = familia;
     }
 
-    public Especie getEspecie() {
-        return especie;
-    }
-
-    public void setEspecie(Especie especie) {
-        this.especie = especie;
-    }
-
     public Grupotaxonomico getGrupotaxonomico() {
         return grupotaxonomico;
     }
@@ -181,12 +192,12 @@ public class VerEditarAnimalController implements Serializable{
         this.grupotaxonomico = grupotaxonomico;
     }
 
-    public List<Especie> getEspecies() {
-        return especies;
+    public List<Familia> getFamilias() {
+        return familias;
     }
 
-    public void setEspecies(List<Especie> especies) {
-        this.especies = especies;
+    public void setFamilias(List<Familia> familias) {
+        this.familias = familias;
     }
 
     public List<Grupotaxonomico> getGruposTaxonomicos() {
@@ -231,12 +242,12 @@ public class VerEditarAnimalController implements Serializable{
         this.campoDescripcion = true;
         this.campoFoto = true;
         this.campoEspecie = true;
+        this.campoFamilia = true;
         this.campoGrupoTaxonomico = true;
         grupotaxonomico = grupoTaxonomicoEJB.find(animal.getGrupotaxonomicoId().getGruptaxId());
-        List query = especieEJB.findByIdInnerJoinFamiliaAndOrden(animal.getEspId().getEspId());
-        especie = (Especie)((Object [])query.get(0))[0];
-        familia = (Familia)((Object [])query.get(0))[1];;
-        orden  = (Orden)((Object [])query.get(0))[2];
+        List query = familiaEJB.findByIdInnerJoinOrden(animal.getFaId().getFaId());
+        familia = (Familia)((Object [])query.get(0))[0];
+        orden  = (Orden)((Object [])query.get(0))[1];
         PrimeFaces pf = PrimeFaces.current();  
         pf.executeScript("PF('verEditarAnimal').show()");
 
@@ -252,11 +263,80 @@ public class VerEditarAnimalController implements Serializable{
     }
 
     public void actualizarNombre() {
-        this.campoNombre = true;
-        //this.animal.setGruptaxNombre(nombre);
-        this.animalEJB.edit(this.animal);
-        animalController.updateListaAnimales();
-        FacesContext.getCurrentInstance().addMessage("desc", new FacesMessage(FacesMessage.SEVERITY_INFO, "Info. Campo Nombre Actualizado.", ""));
+        nombre = Util.formatText(nombre);
+        if(nombre.equals(animal.getAnNombre()))
+        {
+            this.campoNombre = true;
+            nombre = "";
+        }
+        else if (!animalEJB.existeNombre(nombre)) {
+            this.animal.setAnNombre(nombre);
+            this.animalEJB.edit(this.animal);
+            this.campoNombre = true;
+            nombre = "";
+            animalController.updateListaAnimales();
+            FacesContext.getCurrentInstance().addMessage("desc", new FacesMessage(FacesMessage.SEVERITY_INFO, "Info. Campo Nombre Actualizado.", ""));
+        }
+        else
+        {
+            FacesContext.getCurrentInstance().addMessage("desc", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error. Nombre comun ya existe.", ""));
+        }
+    }
+    
+    public void mostrarModificarEspecie() {
+        this.campoEspecie = false;
+        this.especie = this.animal.getAnEspNombre();
+    }
+    
+    public void cancelarActualizarEspecie() {
+        this.campoEspecie = true;
+        this.especie = "";
+    }
+    
+    public void actualizarEspecie() {
+        especie = Util.formatText(especie);
+        if(especie.equals(animal.getAnEspNombre()))
+        {
+            this.campoEspecie = true;
+            this.especie = "";
+        }
+        else if(!animalEJB.existeEspecie(especie))
+        {
+            this.animal.setAnEspNombre(especie);
+            this.animalEJB.edit(this.animal);
+            this.campoEspecie = true;
+            this.especie = "";
+            FacesContext.getCurrentInstance().addMessage("desc", new FacesMessage(FacesMessage.SEVERITY_INFO, "Info. Campo especie Actualizado.", ""));
+            animalController.updateListaAnimales();
+        }
+        else
+        {
+            FacesContext.getCurrentInstance().addMessage("desc", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error. Especie ya existe.", ""));
+        }
+    }
+    
+    public void mostrarModificarFamilia() {
+        this.campoFamilia = false;
+        this.familias = familiaEJB.findAll();
+    }
+    
+    public void cancelarActualizarFamilia() {
+        this.campoFamilia = true;
+        this.familia = animal.getFaId();
+    }
+    
+    public void actualizarFamilia()
+    {
+        this.campoFamilia = true;
+        if(!familia.getFaId().equals(animal.getFaId().getFaId()))
+        {
+            animal.setFaId(familia);
+            animalEJB.edit(animal);
+            List query = familiaEJB.findByIdInnerJoinOrden(animal.getFaId().getFaId());
+            familia = (Familia)((Object [])query.get(0))[0];
+            orden  = (Orden)((Object [])query.get(0))[1];
+            FacesContext.getCurrentInstance().addMessage("desc", new FacesMessage(FacesMessage.SEVERITY_INFO, "Info. Familia actualizada.", ""));
+        }
     }
     
     public void mostrarModificarDescripcion() {
@@ -275,31 +355,6 @@ public class VerEditarAnimalController implements Serializable{
         this.animalEJB.edit(this.animal);
         animalController.updateListaAnimales();
         FacesContext.getCurrentInstance().addMessage("desc", new FacesMessage(FacesMessage.SEVERITY_INFO, "Info. Campo Descripcion Actualizado.", ""));
-    }
-    
-    public void mostrarModificarEspecie() {
-        this.campoEspecie = false;
-        this.especies = especieEJB.findAll();
-    }
-
-    public void cancelarActualizarEspecie() {
-        this.campoEspecie = true;
-        List query = especieEJB.findByIdInnerJoinFamiliaAndOrden(animal.getEspId().getEspId());
-        especie = (Especie)((Object [])query.get(0))[0];
-        familia = (Familia)((Object [])query.get(0))[1];;
-        orden  = (Orden)((Object [])query.get(0))[2];
-    }
-
-    public void actualizarEspecie() {
-        this.campoEspecie = true;
-        this.animal.setEspId(especie);
-        this.animalEJB.edit(this.animal);
-        animalController.updateListaAnimales();
-        List query = especieEJB.findByIdInnerJoinFamiliaAndOrden(animal.getEspId().getEspId());
-        especie = (Especie)((Object [])query.get(0))[0];
-        familia = (Familia)((Object [])query.get(0))[1];;
-        orden  = (Orden)((Object [])query.get(0))[2];
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info. Campo especie Actualizado.", ""));
     }
     
     public void mostrarModificarGrupoTaxonomico() {

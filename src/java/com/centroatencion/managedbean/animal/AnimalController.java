@@ -6,9 +6,12 @@
 package com.centroatencion.managedbean.animal;
 
 import com.centroatencion.entities.Animal;
+import com.centroatencion.entities.Familia;
 import com.centroatencion.facade.AnimalFacade;
+import com.centroatencion.facade.FamiliaFacade;
 import java.io.Serializable;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -24,17 +27,32 @@ public class AnimalController implements Serializable  {
     
     @EJB
     private AnimalFacade animalEJB;
-    
+    @EJB
+    private FamiliaFacade familiaEJB;
     private String busqueda;
     private List<Animal> listaAnimales;
     private String buscarPor;
     private String labelBusqueda;
     private List<Animal> listaAnimalesFiltrados;
+    private List<Familia> listaFamilias;
+    private Integer familiaIdSelected;
     
     public AnimalController()
     {
         buscarPor = "e";
         labelBusqueda = "Especie";
+    }
+    
+    @PostConstruct
+    public void init()
+    {
+        this.initValues();
+    }
+    
+    private void initValues(){
+        familiaIdSelected = 0;
+        listaFamilias = familiaEJB.findAll();
+        listaAnimales = animalEJB.findAll();
     }
     
     public String getBusqueda()
@@ -49,16 +67,17 @@ public class AnimalController implements Serializable  {
     
     public List<Animal> getListaAnimales()
     {
-        if(listaAnimales==null)
-        {
-            listaAnimales = animalEJB.findAll();
-        }
         return listaAnimales;
     }
     
     public void setListaAnimales(List<Animal>listaAnimales)
     {
         this.listaAnimales= listaAnimales;
+    }
+    
+    public Integer getFamiliaIdSelected()
+    {
+        return familiaIdSelected;
     }
     
     public String getBuscarPor()
@@ -74,6 +93,14 @@ public class AnimalController implements Serializable  {
     public String getLabelBusqueda()
     {
         return labelBusqueda;
+    }
+
+    public List<Familia> getListaFamilias() {
+        return listaFamilias;
+    }
+
+    public void setListaFamilias(List<Familia> listaFamilias) {
+        this.listaFamilias = listaFamilias;
     }
     
     /**
@@ -94,7 +121,7 @@ public class AnimalController implements Serializable  {
     {
         if(buscarPor.equals("e"))
         {
-            this.listaAnimales=animalEJB.searchByEspecie(this.busqueda);
+            this.listaAnimales=animalEJB.searchByFamilia(this.busqueda);
         }
         else if(buscarPor.equals("g"))
         {
@@ -110,7 +137,12 @@ public class AnimalController implements Serializable  {
         }
         else
         {
-            listaAnimales = animalEJB.findAll();
+            if(familiaIdSelected ==0){
+                listaAnimales = animalEJB.findAll();
+            }
+            else{
+                listaAnimales = animalEJB.findByFamilia(familiaIdSelected);
+            }
         }
         
     }
@@ -130,5 +162,21 @@ public class AnimalController implements Serializable  {
         busqueda =null;
         updateListaAnimales();
         
+    }
+    
+    public void changedFamilia(ValueChangeEvent e)
+    {
+        this.familiaIdSelected = null;
+        this.listaAnimales = null;
+        int idFamilia = Integer.parseInt(e.getNewValue().toString());
+        this.familiaIdSelected = idFamilia;
+        if(idFamilia!=0)
+        {
+            this.listaAnimales = animalEJB.findByFamilia(familiaIdSelected);
+        }
+        else
+        {
+            this.listaAnimales = animalEJB.findAll();
+        }
     }
 }

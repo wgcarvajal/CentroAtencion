@@ -62,5 +62,11 @@ public class FamiliaFacade extends AbstractFacade<Familia> {
         return resultList;
     }
     
+    public List findByIdInnerJoinOrden(Integer faId) {
+        Query query = getEntityManager().createNamedQuery("Familia.findByIdInnerJoinOrden");
+        query.setParameter("faId", faId);
+        List resultList = query.getResultList();
+        return resultList;
+    }
     
 }

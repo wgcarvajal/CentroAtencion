@@ -21,8 +21,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -39,6 +37,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Familia.findByOrden", query = "SELECT f FROM Familia f WHERE f.orId.orId = :orId"),
     @NamedQuery(name = "Familia.findByOrdenAndNombre", query = "SELECT f FROM Familia f WHERE f.orId.orId = :orId AND LOWER(f.faNombre) LIKE :faNombre order by f.faNombre asc"),
     @NamedQuery(name = "Familia.findByFaNombreOrderByFaNombre", query = "SELECT f FROM Familia f WHERE LOWER(f.faNombre) LIKE :faNombre order by f.faNombre asc"),
+    @NamedQuery(name = "Familia.findByIdInnerJoinOrden", query = "SELECT f,o FROM Familia f INNER JOIN Orden o WHERE f.faId = :faId And f.orId.orId = o.orId"),
     @NamedQuery(name = "Familia.findByFaNombre", query = "SELECT f FROM Familia f WHERE f.faNombre = :faNombre")})
 public class Familia implements Serializable {
 
@@ -49,16 +48,13 @@ public class Familia implements Serializable {
     @Column(name = "faId")
     private Integer faId;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
     @Column(name = "faNombre")
     private String faNombre;
     @Lob
-    @Size(min = 1, max = 65535)
     @Column(name = "faDescripcion")
     private String faDescripcion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "faId")
-    private List<Especie> especieList;
+    private List<Animal> animalList;
     @JoinColumn(name = "orId", referencedColumnName = "orId")
     @ManyToOne(optional = false)
     private Orden orId;
@@ -100,12 +96,12 @@ public class Familia implements Serializable {
     }
 
     @XmlTransient
-    public List<Especie> getEspecieList() {
-        return especieList;
+    public List<Animal> getAnimalList() {
+        return animalList;
     }
 
-    public void setEspecieList(List<Especie> especieList) {
-        this.especieList = especieList;
+    public void setAnimalList(List<Animal> animalList) {
+        this.animalList = animalList;
     }
 
     public Orden getOrId() {
@@ -138,7 +134,9 @@ public class Familia implements Serializable {
 
     @Override
     public String toString() {
-        return "com.centroatencion.entities.Familia[ faId=" + faId + " ]";
+        return "entities.Familia[ faId=" + faId + " ]";
     }
+    
+    
     
 }

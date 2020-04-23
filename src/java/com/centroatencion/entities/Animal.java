@@ -21,8 +21,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -34,12 +32,14 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "animal", catalog = "hogardepasobd", schema = "")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Animal.findAll", query = "SELECT a FROM Animal a"),
+    @NamedQuery(name = "Animal.findAll", query = "SELECT a FROM Animal a order by a.anEspNombre asc"),
     @NamedQuery(name = "Animal.findByAnId", query = "SELECT a FROM Animal a WHERE a.anId = :anId"),
     @NamedQuery(name = "Animal.searchByNombreAnimal", query = "SELECT a FROM Animal a WHERE LOWER(a.anNombre) LIKE :anNombre"),
-    @NamedQuery(name = "Animal.searchByEspecie", query = "SELECT a FROM Animal a WHERE LOWER(a.espId.espNombre) LIKE :espNombre"),
+    @NamedQuery(name = "Animal.searchByFamilia", query = "SELECT a FROM Animal a WHERE LOWER(a.faId.faNombre) LIKE :faNombre"),
+    @NamedQuery(name = "Animal.findByFamilia", query = "SELECT a FROM Animal a WHERE a.faId.faId = :faId order by a.anEspNombre asc"),
     @NamedQuery(name = "Animal.searchByGrupoTaxonomico", query = "SELECT a FROM Animal a WHERE LOWER(a.grupotaxonomicoId.gruptaxNombre) LIKE :gruptaxNombre"),
-    @NamedQuery(name = "Animal.findByAnNombre", query = "SELECT a FROM Animal a WHERE a.anNombre = :anNombre")})
+    @NamedQuery(name = "Animal.findByAnNombre", query = "SELECT a FROM Animal a WHERE a.anNombre = :anNombre"),
+    @NamedQuery(name = "Animal.findByAnEspNombre", query = "SELECT a FROM Animal a WHERE a.anEspNombre = :anEspNombre")})
 public class Animal implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -49,23 +49,23 @@ public class Animal implements Serializable {
     @Column(name = "anId")
     private Long anId;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
     @Column(name = "anNombre")
     private String anNombre;
+    @Basic(optional = false)
+    @Column(name = "anEspNombre")
+    private String anEspNombre;
     @Lob
-    @Size(max = 16777215)
     @Column(name = "anDescripcion")
     private String anDescripcion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "animalId")
     private List<Fotoanimal> fotoanimalList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "animalId")
     private List<Ingreso> ingresoList;
-    @JoinColumn(name = "espId", referencedColumnName = "espId")
-    @ManyToOne
-    private Especie espId;
+    @JoinColumn(name = "faId", referencedColumnName = "faId")
+    @ManyToOne(optional = false)
+    private Familia faId;
     @JoinColumn(name = "grupotaxonomicoId", referencedColumnName = "gruptaxId")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Grupotaxonomico grupotaxonomicoId;
 
     public Animal() {
@@ -75,9 +75,10 @@ public class Animal implements Serializable {
         this.anId = anId;
     }
 
-    public Animal(Long anId, String anNombre) {
+    public Animal(Long anId, String anNombre, String anEspNombre) {
         this.anId = anId;
         this.anNombre = anNombre;
+        this.anEspNombre = anEspNombre;
     }
 
     public Long getAnId() {
@@ -94,6 +95,14 @@ public class Animal implements Serializable {
 
     public void setAnNombre(String anNombre) {
         this.anNombre = anNombre;
+    }
+
+    public String getAnEspNombre() {
+        return anEspNombre;
+    }
+
+    public void setAnEspNombre(String anEspNombre) {
+        this.anEspNombre = anEspNombre;
     }
 
     public String getAnDescripcion() {
@@ -122,12 +131,12 @@ public class Animal implements Serializable {
         this.ingresoList = ingresoList;
     }
 
-    public Especie getEspId() {
-        return espId;
+    public Familia getFaId() {
+        return faId;
     }
 
-    public void setEspId(Especie espId) {
-        this.espId = espId;
+    public void setFaId(Familia faId) {
+        this.faId = faId;
     }
 
     public Grupotaxonomico getGrupotaxonomicoId() {

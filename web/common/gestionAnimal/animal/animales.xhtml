@@ -9,44 +9,72 @@
         <div class="tituloContenido">                           
                Animales
         </div>
+        <h:form id="formSeleccionarFamilia">
+            <p:panelGrid styleClass="panelgrid">
+                <p:column style="width:200px;">
+                   <p:outputLabel styleClass="CampoLabel" value="Seleccione Familia:" /> 
+                </p:column>
+                <p:column>
+                    <p:selectOneMenu filter="true" filterMatchMode="startsWith" 
+                                 style="width:150px;font-size: 15px;" required="true"
+                                 requiredMessage="Seleccione un Familia."
+                                 valueChangeListener="#{anController.changedFamilia}"
+                                 >
+                    <f:selectItem itemLabel="Todo" itemValue="0" />
+                    <f:selectItems value="#{anController.listaFamilias}"
+                                   var="familia" itemLabel="#{familia.faNombre}" itemValue="#{familia.faId}"/>
+                    <p:ajax update=":formTablaAnimales"/>
+                    <p:ajax onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                            oncomplete="PF('tablaAnimalesWidgetVar').filter()"
+                            />                                        
+                </p:selectOneMenu>  
+                </p:column>                    
+                
+            </p:panelGrid>
+        </h:form>
         <h:form id="formTablaAnimales">
-           
-            
             <p:commandButton  value="Registrar animal" class="botonAzul" style="position: absolute; right:70px;; "
-                                  action="#{agregarAnimalController.abrirVentanaAgregarAnimal()}"
+                              action="#{agregarAnimalController.abrirVentanaAgregarAnimal(anController.familiaIdSelected)}"
                                           onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
-                                          update="formTablaAnimales :form:panel"/>
+                                          update=":form:panel :formConFamilia:panelConFamilia"/>
             <br/>
             <br/>
             <br/>
             <br/>
             <p:panel id="tablaAnimales">                                            
-                <p:dataTable  value="#{anController.listaAnimales}"
+                <p:dataTable  
+                    widgetVar="tablaAnimalesWidgetVar"
+                    value="#{anController.listaAnimales}"
                               var="animal" 
                               paginator="true" rows="10"  
                               paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                               filteredValue="#{anController.listaAnimalesFiltrados}"
                               >
-                    <p:column filterBy="#{animal.anNombre}"  filterMatchMode="contains" headerText="Nombre" style="text-align: center">
+                    <p:column filterBy="#{animal.anEspNombre}"  filterMatchMode="contains" headerText="Especie" style="text-align: center">
+                        #{animal.anEspNombre}
+                    </p:column>
+                    <p:column filterBy="#{animal.anNombre}"  filterMatchMode="contains" headerText="Nombre comun" style="text-align: center">
                         #{animal.anNombre}
+                    </p:column>
+                    <p:column headerText="Familia" style="text-align: center">
+                        #{animal.faId.faNombre}
+                    </p:column>
+                    <p:column filterBy="#{animal.grupotaxonomicoId.gruptaxNombre}"  filterMatchMode="contains" headerText="Grupo taxonómico" style="text-align: center">
+                        #{animal.grupotaxonomicoId.gruptaxNombre}
                     </p:column>
                     <p:column headerText="Descripcion" style="text-align: center">
                         <div style="width: 200px;white-space:normal;font-size:14px;word-wrap: break-word;">
                             #{animal.anDescripcion}
                         </div>
                     </p:column>
-                    <p:column filterBy="#{animal.espId.espNombre}"  filterMatchMode="contains" headerText="Especie" style="text-align: center">
-                        #{animal.espId.espNombre}
-                    </p:column>
-                    <p:column filterBy="#{animal.grupotaxonomicoId.gruptaxNombre}"  filterMatchMode="contains" headerText="Grupo taxonómico" style="text-align: center">
-                        #{animal.grupotaxonomicoId.gruptaxNombre}
-                    </p:column>
                     <p:column headerText="Acciones" width="150" style="text-align: center">                               
                         <p:commandLink update=":formularioTituloVerAnimal :formularioAnimal :formularioFoto :formularioEditarFoto :formClasificacion" title="Ver o Editar"   style="text-decoration: none;" action="#{verEditarAnimalController.animalSeleccionado(animal,anController)}">                                    
                             <p:graphicImage style="width:25px;margin-left: 5px;" library="imagenesAplicacion/usuarios" name="ver.png"
                                             />
                         </p:commandLink>                                
-                        <p:commandLink id="eliminar" style="text-decoration: none;margin-left: 5px; " title="Eliminar" action="#{eliminarAnimalController.ventanaEliminarAnimal(animal, anController)}">                                    
+                        <p:commandLink id="eliminar" style="text-decoration: none;margin-left: 5px; " 
+                                       title="Eliminar"
+                                       action="#{eliminarAnimalController.ventanaEliminarAnimal(animal, anController)}">                                    
                             <p:graphicImage style="width:20px; " library="imagenesAplicacion/usuarios" name="eliminar.png"/>
                         </p:commandLink>
                     </p:column>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 22-04-2020 a las 17:04:05
+-- Tiempo de generación: 23-04-2020 a las 19:39:21
 -- Versión del servidor: 5.7.28
 -- Versión de PHP: 7.3.11
 
@@ -31,10 +31,93 @@ SET time_zone = "+00:00";
 CREATE TABLE `animal` (
   `anId` bigint(20) NOT NULL,
   `anNombre` varchar(50) NOT NULL,
-  `anDescripcion` text NOT NULL,
-  `espId` int(11) NOT NULL,
+  `anEspNombre` varchar(50) NOT NULL,
+  `anDescripcion` text,
+  `faId` int(11) NOT NULL,
   `grupotaxonomicoId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `animal`
+--
+
+INSERT INTO `animal` (`anId`, `anNombre`, `anEspNombre`, `anDescripcion`, `faId`, `grupotaxonomicoId`) VALUES
+(1, 'Mono aullador', 'Alouatta seniculus', NULL, 6, 4),
+(2, 'Loro frente azul', 'Amazona amazonica', NULL, 4, 3),
+(3, 'Loro frente amarillo', 'Amazona ochrocephala', NULL, 4, 3),
+(4, 'Guacamayo azul y amarillo', 'Ara ararauna', NULL, 4, 3),
+(5, 'Guacamaya bandera', 'Ara macao', NULL, 4, 3),
+(6, 'Guacamaya cariseca', 'Ara severus', NULL, 4, 3),
+(7, 'Perico cara sucia', 'Eupsittula pertinax', NULL, 4, 3),
+(8, 'Perico frentirojo', 'Psittacara wagleri', NULL, 4, 3),
+(9, 'Búho orejudo negro', 'Asio stygius', NULL, 37, 3),
+(10, 'Erizo africano', 'Atelerix albiventris', NULL, 33, 4),
+(11, 'Tucán esmeralda', 'Aulacorhynchus prasinus', NULL, 46, 3),
+(12, 'Boa constrictor', 'Boa constrictor', NULL, 7, 2),
+(13, 'Oso perezoso', 'Bradypus tridactylus', NULL, 8, 4),
+(14, 'Perezoso bayo', 'Bradypus variegatus', NULL, 8, 4),
+(15, 'Garza ganadera', 'Bubulcus ibis', NULL, 5, 3),
+(16, 'Gavilán gris', 'Buteo magnirostris', NULL, 11, 3),
+(17, 'Babilla', 'Caiman crocodilus', NULL, 3, 2),
+(18, 'Cara cara', 'Caracara cheriway', NULL, 34, 3),
+(19, 'Mono cariblanco', 'Cebus albifrons', NULL, 20, 4),
+(20, 'Zorro perro', 'Cerdocyon thous', NULL, 17, 4),
+(21, 'Morrocoy patas amarillas', 'Chelonoidis denticulata', NULL, 10, 2),
+(22, 'Morrocoy patas rojas', 'Chelonoidis carbonaria', NULL, 10, 2),
+(24, 'Serpiente juetiadora ', 'Chironius spixii', NULL, 22, 2),
+(25, 'Perezoso de dos dedos', 'Choloepus hoffmanni', NULL, 54, 4),
+(26, 'Puercoespin arborícola', 'Coendou prehensilis', NULL, 32, 4),
+(27, 'Serpiente cascabel', 'Crotalus durissus', NULL, 53, 2),
+(28, 'Borugo o paca', 'Cuniculus paca', NULL, 26, 4),
+(29, 'Guara o ñeque oscuro', 'Dasyprocta fuliginosa', NULL, 28, 4),
+(30, 'Guara o ñeque centroamericano', 'Dasyprocta punctata', NULL, 28, 4),
+(31, 'Armadillo de nueve bandas', 'Dasypus novemcinctus', NULL, 27, 4),
+(32, 'Pato pisingo', 'Dendrocygna autumnalis', NULL, 14, 3),
+(33, 'Zarigüeya', 'Didelphis marsupialis', NULL, 29, 4),
+(34, 'Serpiente indigo', 'Drymarchon corais', NULL, 22, 2),
+(35, 'Anaconda', 'Eunectes murinus', NULL, 7, 2),
+(36, 'Perico cascabelito', 'Forpus conspicillatus', NULL, 4, 3),
+(37, 'Grisón o huroncito', 'Galictis vittata', NULL, 39, 4),
+(38, 'Gavilán coliblanco', 'Geranoaetus albicaudatus', NULL, 11, 3),
+(39, 'Puma yaguarundí', 'Herpailurus yagouaroundi', NULL, 1, 4),
+(40, 'Chigüiro', 'Hydrochoerus hydrochaeris', NULL, 9, 4),
+(41, 'Iguana', 'Iguana iguana', NULL, 36, 2),
+(42, 'Tortuga estuche', 'Kinosternon scorpioides', NULL, 2, 2),
+(43, 'Mono churuco', 'Lagothrix lagotricha', NULL, 6, 4),
+(44, 'Ocelote', 'Leopardus pardalis', NULL, 1, 4),
+(45, 'Nutria', 'Lontra longicaudis', NULL, 39, 4),
+(46, 'Venado colorado', 'Mazama rufina', NULL, 21, 4),
+(47, 'Búho currucutú', 'Megascops choliba', NULL, 37, 3),
+(48, 'Garrapatero', 'Milvago chimachima', NULL, 34, 3),
+(49, 'Mirla blanca', 'Mimus gilvus', NULL, 38, 3),
+(50, 'Cusumbo', 'Nasua nasua', NULL, 44, 4),
+(51, 'Cusumbo andino', 'Nasuella olivacea', NULL, 44, 4),
+(52, 'Guarda camino', 'Nyctidromus albicollis', NULL, 18, 3),
+(53, 'Guacharaca', 'Ortalis columbiana', NULL, 24, 3),
+(54, 'Aguila pescadora', 'Pandion haliaetus', NULL, 41, 3),
+(55, 'Polla de agua', 'Pardirallus nigricans', NULL, 45, 3),
+(56, 'Lora negra', 'Pionus chalcopterus', NULL, 4, 3),
+(57, 'Cotorra cheja', 'Pionus menstruus', NULL, 4, 3),
+(58, 'Bichofué', 'Pitangus sulphuratus', NULL, 52, 3),
+(59, 'Charapa arrau', 'Podocnemis expansa', NULL, 43, 2),
+(60, 'Tortuga terecay', 'Podocnemis unifilis', NULL, 43, 2),
+(61, 'Polla azul', 'Porphyrio martinicus', NULL, 45, 3),
+(62, 'Perro de monte', 'Potos flavus', NULL, 44, 4),
+(63, 'Mapache', 'Procyon cancrivorus', NULL, 44, 4),
+(64, 'Búho Rayado', 'Asio clamator', NULL, 37, 3),
+(65, 'Tucán pichí bandirrojo', 'Pteroglossus castanotis', NULL, 46, 3),
+(66, 'Tucán pechiblanco', 'Ramphastos tucanus', NULL, 46, 3),
+(67, 'Mico león bebeleche', 'Saguinus fuscicollis', NULL, 16, 4),
+(68, 'Mono ardilla', 'Saimiri sciureus', NULL, 20, 4),
+(69, 'Ardilla', 'Sciurus granatensis', NULL, 48, 4),
+(70, 'Aguila real de montaña', 'Spizaetus isidori', NULL, 11, 3),
+(71, 'Guácharo', 'Steatornis caripensis', NULL, 49, 3),
+(72, 'Vencejo de collar blanco', 'Streptoprocne zonaris', NULL, 15, 3),
+(73, 'Oso hormiguero', 'Tamandua mexicana', NULL, 40, 4),
+(74, 'Cocli', 'Theristicus caudatus', NULL, 51, 3),
+(75, 'Tortuga hicotea', 'Trachemys callirostris', NULL, 31, 2),
+(76, 'Tortuga palmera', 'Rhinoclemmys melanosterna', NULL, 35, 2),
+(77, 'Azulejo', 'Thraupis episcopus', NULL, 50, 3);
 
 -- --------------------------------------------------------
 
@@ -203,100 +286,6 @@ CREATE TABLE `entidad` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `especie`
---
-
-CREATE TABLE `especie` (
-  `espId` int(11) NOT NULL,
-  `espNombre` varchar(50) NOT NULL,
-  `espDescripcion` text,
-  `faId` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `especie`
---
-
-INSERT INTO `especie` (`espId`, `espNombre`, `espDescripcion`, `faId`) VALUES
-(1, 'Alouatta seniculus', NULL, 6),
-  (2, 'Amazona amazonica', NULL, 4),
-  (3, 'Amazona ochrocephala', NULL, 4),
-  (4, 'Ara ararauna', NULL, 4),
-  (5, 'Ara macao', NULL, 4),
-  (6, 'Ara severus', NULL, 4),
-  (7, 'Eupsittula pertinax', NULL, 4),
-  (8, 'Psittacara wagleri', NULL, 4),
-  (9, 'Asio stygius', NULL, 37),
-  (10, 'Atelerix albiventris', NULL, 33),
-  (11, 'Aulacorhynchus prasinus', NULL, 46),
-  (12, 'Boa constrictor', NULL, 7),
-  (13, 'Bradypus tridactylus', NULL, 8),
-  (14, 'Bradypus variegatus', NULL, 8),
-  (15, 'Bubulcus ibis', NULL, 5),
-  (16, 'Buteo magnirostris', NULL, 11),
-  (17, 'Caiman crocodilus', NULL, 3),
-  (18, 'Caracara cheriway', NULL, 34),
-  (19, 'Cebus albifrons', NULL, 20),
-  (20, 'Cerdocyon thous', NULL, 17),
-  (21, 'Chelonoidis denticulata', NULL, 10),
-  (22, 'Chelonoidis carbonaria', NULL, 10),
-  (24, 'Chironius spixii', NULL, 22),
-  (25, 'Choloepus hoffmanni', NULL, 54),
-  (26, 'Coendou prehensilis', NULL, 32),
-  (27, 'Crotalus durissus', NULL, 53),
-  (28, 'Cuniculus paca', NULL, 26),
-  (29, 'Dasyprocta fuliginosa', NULL, 28),
-  (30, 'Dasyprocta punctata', NULL, 28),
-  (31, 'Dasypus novemcinctus', NULL, 27),
-  (32, 'Dendrocygna autumnalis', NULL, 14),
-  (33, 'Didelphis marsupialis', NULL, 29),
-  (34, 'Drymarchon corais', NULL, 22),
-  (35, 'Eunectes murinus', NULL, 7),
-  (36, 'Forpus conspicillatus', NULL, 4),
-  (37, 'Galictis vittata', NULL, 39),
-  (38, 'Geranoaetus albicaudatus', NULL, 11),
-  (39, 'Herpailurus yagouaroundi', NULL, 1),
-  (40, 'Hydrochoerus hydrochaeris', NULL, 9),
-  (41, 'Iguana iguana', NULL, 36),
-  (42, 'Kinosternon scorpioides', NULL, 2),
-  (43, 'Lagothrix lagotricha', NULL, 6),
-  (44, 'Leopardus pardalis', NULL, 1),
-  (45, 'Lontra longicaudis', NULL, 39),
-  (46, 'Mazama rufina', NULL, 21),
-  (47, 'Megascops choliba', NULL, 37),
-  (48, 'Milvago chimachima', NULL, 34),
-  (49, 'Mimus gilvus', NULL, 38),
-  (50, 'Nasua nasua', NULL, 44),
-  (51, 'Nasuella olivacea', NULL, 44),
-  (52, 'Nyctidromus albicollis', NULL, 18),
-  (53, 'Ortalis columbiana', NULL, 24),
-  (54, 'Pandion haliaetus', NULL, 41),
-  (55, 'Pardirallus nigricans', NULL, 45),
-  (56, 'Pionus chalcopterus', NULL, 4),
-  (57, 'Pionus menstruus', NULL, 4),
-  (58, 'Pitangus sulphuratus', NULL, 52),
-  (59, 'Podocnemis expansa', NULL, 43),
-  (60, 'Podocnemis unifilis', NULL, 43),
-  (61, 'Porphyrio martinicus', NULL, 45),
-  (62, 'Potos flavus', NULL, 44),
-  (63, 'Procyon cancrivorus', NULL, 44),
-  (64, 'Asio clamator', NULL, 37),
-  (65, 'Pteroglossus castanotis', NULL, 46),
-  (66, 'Ramphastos tucanus', NULL, 46),
-  (67, 'Saguinus fuscicollis', NULL, 16),
-  (68, 'Saimiri sciureus', NULL, 20),
-  (69, 'Sciurus granatensis', NULL, 48),
-  (70, 'Spizaetus isidori', NULL, 11),
-  (71, 'Steatornis caripensis', NULL, 49),
-  (72, 'Streptoprocne zonaris', NULL, 15),
-  (73, 'Tamandua mexicana', NULL, 40),
-  (74, 'Theristicus caudatus', NULL, 51),
-  (75, 'Trachemys callirostris', NULL, 31),
-  (76, 'Rhinoclemmys melanosterna', NULL, 35);
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `familia`
 --
 
@@ -313,58 +302,58 @@ CREATE TABLE `familia` (
 
 INSERT INTO `familia` (`faId`, `faNombre`, `faDescripcion`, `orId`) VALUES
 (1, 'Felidae', NULL, 6),
-  (2, 'Kinosternidae', NULL, 24),
-  (3, 'Alligatoridae', NULL, 8),
-  (4, 'Psittacidae', NULL, 20),
-  (5, 'Ardeidae', NULL, 16),
-  (6, 'Atelidae', NULL, 19),
-  (7, 'Boidae', NULL, 22),
-  (8, 'Bradypodidae', NULL, 18),
-  (9, 'Caviidae', NULL, 21),
-  (10, 'Testudinidae', NULL, 24),
-  (11, 'Accipitridae', NULL, 1),
-  (13, 'Arinae', NULL, 20),
-  (14, 'Anatidae', NULL, 2),
-  (15, 'Apodidae', NULL, 3),
-  (16, 'Callitrichidae', NULL, 19),
-  (17, 'Canidae', NULL, 6),
-  (18, 'Caprimulgidae', NULL, 5),
-  (19, 'Cathartidae', NULL, 12),
-  (20, 'Cebidae', NULL, 19),
-  (21, 'Cervidae', NULL, 4),
-  (22, 'Colubridae', NULL, 22),
-  (23, 'Corvidae', NULL, 15),
-  (24, 'Cracidae', NULL, 13),
-  (25, 'Columbidae', NULL, 9),
-  (26, 'Cuniculidae', NULL, 21),
-  (27, 'Dasypodidae', NULL, 7),
-  (28, 'Dasyproctidae', NULL, 21),
-  (29, 'Didelphidae', NULL, 10),
-  (30, 'Emberizidae', NULL, 15),
-  (31, 'Emydidae', NULL, 24),
-  (32, 'Erethizontidae', NULL, 21),
-  (33, 'Erinaceidae', NULL, 11),
-  (34, 'Falconidae', NULL, 12),
-  (35, 'Geoemydidae', NULL, 24),
-  (36, 'Iguanidae', NULL, 22),
-  (37, 'Strigidae', NULL, 23),
-  (38, 'Mimidae', NULL, 15),
-  (39, 'Mustelidae', NULL, 6),
-  (40, 'Myrmecophagidae', NULL, 18),
-  (41, 'Pandionidae', NULL, 1),
-  (42, 'Picidae', NULL, 17),
-  (43, 'Podocnemididae', NULL, 24),
-  (44, 'Procyonidae', NULL, 6),
-  (45, 'Rallidae', NULL, 14),
-  (46, 'Ramphastidae', NULL, 17),
-  (47, 'Elapidae', NULL, 22),
-  (48, 'Sciuridae', NULL, 21),
-  (49, 'Steatornithidae', NULL, 5),
-  (50, 'Thraupidae', NULL, 15),
-  (51, 'Threskiornithidae', NULL, 16),
-  (52, 'Tyrannidae', NULL, 15),
-  (53, 'Viperidae', NULL, 22),
-  (54, 'Megalonychidae', NULL, 18);
+(2, 'Kinosternidae', NULL, 24),
+(3, 'Alligatoridae', NULL, 8),
+(4, 'Psittacidae', NULL, 20),
+(5, 'Ardeidae', NULL, 16),
+(6, 'Atelidae', NULL, 19),
+(7, 'Boidae', NULL, 22),
+(8, 'Bradypodidae', NULL, 18),
+(9, 'Caviidae', NULL, 21),
+(10, 'Testudinidae', NULL, 24),
+(11, 'Accipitridae', NULL, 1),
+(13, 'Arinae', NULL, 20),
+(14, 'Anatidae', NULL, 2),
+(15, 'Apodidae', NULL, 3),
+(16, 'Callitrichidae', NULL, 19),
+(17, 'Canidae', NULL, 6),
+(18, 'Caprimulgidae', NULL, 5),
+(19, 'Cathartidae', NULL, 12),
+(20, 'Cebidae', NULL, 19),
+(21, 'Cervidae', NULL, 4),
+(22, 'Colubridae', NULL, 22),
+(23, 'Corvidae', NULL, 15),
+(24, 'Cracidae', NULL, 13),
+(25, 'Columbidae', NULL, 9),
+(26, 'Cuniculidae', NULL, 21),
+(27, 'Dasypodidae', NULL, 7),
+(28, 'Dasyproctidae', NULL, 21),
+(29, 'Didelphidae', NULL, 10),
+(30, 'Emberizidae', NULL, 15),
+(31, 'Emydidae', NULL, 24),
+(32, 'Erethizontidae', NULL, 21),
+(33, 'Erinaceidae', NULL, 11),
+(34, 'Falconidae', NULL, 12),
+(35, 'Geoemydidae', NULL, 24),
+(36, 'Iguanidae', NULL, 22),
+(37, 'Strigidae', NULL, 23),
+(38, 'Mimidae', NULL, 15),
+(39, 'Mustelidae', NULL, 6),
+(40, 'Myrmecophagidae', NULL, 18),
+(41, 'Pandionidae', NULL, 1),
+(42, 'Picidae', NULL, 17),
+(43, 'Podocnemididae', NULL, 24),
+(44, 'Procyonidae', NULL, 6),
+(45, 'Rallidae', NULL, 14),
+(46, 'Ramphastidae', NULL, 17),
+(47, 'Elapidae', NULL, 22),
+(48, 'Sciuridae', NULL, 21),
+(49, 'Steatornithidae', NULL, 5),
+(50, 'Thraupidae', NULL, 15),
+(51, 'Threskiornithidae', NULL, 16),
+(52, 'Tyrannidae', NULL, 15),
+(53, 'Viperidae', NULL, 22),
+(54, 'Megalonychidae', NULL, 18);
 
 -- --------------------------------------------------------
 
@@ -427,6 +416,7 @@ INSERT INTO `grupotaxonomico` (`gruptaxId`, `gruptaxNombre`, `grupotaxAbreviatur
 
 CREATE TABLE `ingreso` (
   `ingId` bigint(20) NOT NULL,
+  `animalId` bigint(20) NOT NULL,
   `ingNumeroRadicado` varchar(40) NOT NULL,
   `ingFecha` datetime NOT NULL,
   `ingFechaFin` datetime DEFAULT NULL,
@@ -729,7 +719,7 @@ CREATE TABLE `zonaubicacionanimal` (
 --
 ALTER TABLE `animal`
   ADD PRIMARY KEY (`anId`),
-  ADD KEY `fk_animal_especie` (`espId`),
+  ADD KEY `fk_animal_especie` (`faId`),
   ADD KEY `fk_animal_grupotaxonomico` (`grupotaxonomicoId`);
 
 --
@@ -816,13 +806,6 @@ ALTER TABLE `entidad`
   ADD KEY `fk_entidad_vereda` (`veredaId`);
 
 --
--- Indices de la tabla `especie`
---
-ALTER TABLE `especie`
-  ADD PRIMARY KEY (`espId`),
-  ADD KEY `fk_especie_familia` (`faId`);
-
---
 -- Indices de la tabla `familia`
 --
 ALTER TABLE `familia`
@@ -866,7 +849,8 @@ ALTER TABLE `ingreso`
   ADD KEY `fk_ingreso_municipio` (`municipioId`),
   ADD KEY `fk_ingreso_sexo` (`sexoId`),
   ADD KEY `fk_ingreso_vereda` (`veredaId`),
-  ADD KEY `fk_ingreso_marca` (`marcaId`);
+  ADD KEY `fk_ingreso_marca` (`marcaId`),
+  ADD KEY `fk_ingreso_animal` (`animalId`);
 
 --
 -- Indices de la tabla `ingresofoto`
@@ -992,7 +976,7 @@ ALTER TABLE `zonaubicacionanimal`
 -- AUTO_INCREMENT de la tabla `animal`
 --
 ALTER TABLE `animal`
-  MODIFY `anId` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `anId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
 
 --
 -- AUTO_INCREMENT de la tabla `asignazona`
@@ -1067,12 +1051,6 @@ ALTER TABLE `entidad`
   MODIFY `entId` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `especie`
---
-ALTER TABLE `especie`
-  MODIFY `espId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
-
---
 -- AUTO_INCREMENT de la tabla `familia`
 --
 ALTER TABLE `familia`
@@ -1082,7 +1060,7 @@ ALTER TABLE `familia`
 -- AUTO_INCREMENT de la tabla `fotoanimal`
 --
 ALTER TABLE `fotoanimal`
-  MODIFY `fotanId` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `fotanId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `grupotaxonomico`
@@ -1200,7 +1178,7 @@ ALTER TABLE `zonaubicacionanimal`
 -- Filtros para la tabla `animal`
 --
 ALTER TABLE `animal`
-  ADD CONSTRAINT `fk_animal_especie` FOREIGN KEY (`espId`) REFERENCES `especie` (`espId`),
+  ADD CONSTRAINT `fk_animal_familia` FOREIGN KEY (`faId`) REFERENCES `familia` (`faId`),
   ADD CONSTRAINT `fk_animal_grupotaxonomico` FOREIGN KEY (`grupotaxonomicoId`) REFERENCES `grupotaxonomico` (`gruptaxId`);
 
 --
@@ -1245,12 +1223,6 @@ ALTER TABLE `entidad`
   ADD CONSTRAINT `fk_entidad_vereda` FOREIGN KEY (`veredaId`) REFERENCES `vereda` (`verId`);
 
 --
--- Filtros para la tabla `especie`
---
-ALTER TABLE `especie`
-  ADD CONSTRAINT `fk_especie_familia` FOREIGN KEY (`faId`) REFERENCES `familia` (`faId`);
-
---
 -- Filtros para la tabla `familia`
 --
 ALTER TABLE `familia`
@@ -1266,6 +1238,7 @@ ALTER TABLE `fotoanimal`
 -- Filtros para la tabla `ingreso`
 --
 ALTER TABLE `ingreso`
+  ADD CONSTRAINT `fk_ingreso_animal` FOREIGN KEY (`animalId`) REFERENCES `animal` (`anId`),
   ADD CONSTRAINT `fk_ingreso_causaingreso` FOREIGN KEY (`causaingresoId`) REFERENCES `causaingreso` (`causaingId`),
   ADD CONSTRAINT `fk_ingreso_denuncia` FOREIGN KEY (`denunciaId`) REFERENCES `denuncia` (`denId`),
   ADD CONSTRAINT `fk_ingreso_desarrollobiologico` FOREIGN KEY (`desarrollobiologicoId`) REFERENCES `desarrollobiologico` (`desbioId`),

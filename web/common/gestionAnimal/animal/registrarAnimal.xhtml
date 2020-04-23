@@ -12,7 +12,9 @@
             <h:form>
                 <p:commandButton  value="Aceptar" style="background:#22419A; 
                                      color: #FFFFFF;margin-left:70px;font-weight: normal;"
-                                  onclick="PF('mensajeRegistroExitoso').hide()"/>
+                                  onclick="PF('mensajeRegistroExitoso').hide()"
+                                  oncomplete="PF('tablaAnimalesWidgetVar').filter()"
+                                  />
             </h:form>
         </p:dialog>
         <p:dialog position="center" resizable="false"   header="Agregar Animal" showEffect="scale" modal="true"  widgetVar="AgregarAnimal">
@@ -25,10 +27,27 @@
                                                    value="*"/>
                                     <h:outputLabel class="CampoLabelObligatorios" value=" Campos Obligatorios" />
                                 </p:column>                                
-                            </p:row> 
+                            </p:row>
                             <p:row>
                                 <p:column style="text-align:right">
-                                    <h:outputLabel class="CampoLabel" for="nombre" value="Nombre: " />
+                                    <h:outputLabel class="CampoLabel" for="especie" value="Especie: " />
+                                    <h:outputLabel style="font-style: italic;font-size: 16px;text-align: left; color:red;" 
+                                                   value="*"/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText style="width: 140px;font-size:15px" 
+                                                 id="especie" value="#{agregarAnimalController.especie}"
+                                                 required="true" requiredMessage="Campo obligatorio.">
+                                        
+                                    </p:inputText>                                
+                                </p:column>
+                                <p:column>
+                                    <p:message for="especie"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="text-align:right">
+                                    <h:outputLabel class="CampoLabel" for="nombre" value="Nombre común: " />
                                     <h:outputLabel style="font-style: italic;font-size: 16px;text-align: left; color:red;" 
                                                    value="*"/>
                                 </p:column>
@@ -41,28 +60,6 @@
                                 </p:column>
                                 <p:column>
                                     <p:message for="nombre"/>
-                                </p:column>
-                            </p:row>
-                            <p:row>
-                                <p:column style="text-align:right">
-                                    <h:outputLabel class="CampoLabel" for="especie" value="Especie: " />
-                                    <h:outputLabel style="font-style: italic;font-size: 16px;text-align: left; color:red;" 
-                                                   value="*"/>
-                                </p:column>
-                                <p:column>
-                                    <p:selectOneMenu filter="true" filterMatchMode="startsWith"  id="especie" style="width:150px;font-size: 15px;" required="true"
-                                                     requiredMessage="Seleccione un Especie."
-                                                     value="#{agregarAnimalController.especieSelected}"
-                                                     >
-                                        <f:selectItem itemLabel="Seleccione.." itemValue="0" />
-                                        <f:selectItems value="#{agregarAnimalController.listaEspecies}" 
-                                                       var="especie"
-                                                       itemLabel="#{especie.espNombre}" itemValue="#{especie}"/>
-                                        <f:validator validatorId="ValidarCamposSeleccionar" />
-                                    </p:selectOneMenu>                                
-                                </p:column>
-                                <p:column>
-                                    <p:message for="especie"/>
                                 </p:column>
                             </p:row>
                             <p:row>
@@ -107,11 +104,136 @@
                                 <p:column>
                                     <p:commandButton   
                                                        action="#{agregarAnimalController.registrarAnimal(anController)}" value="Registrar" ajax="true" 
-                                                       update="panel :formTablaAnimales" id="registrar" onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                                       update="panel :formTablaAnimales" id="registrar" 
+                                                       onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
                                                        />
                                     <p:commandButton   
                                                        value="Cancelar" onclick="PF('AgregarAnimal').hide()"
                                                         id="cancelar" onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                                       />
+                                </p:column>
+                            </p:row>                               
+                        </p:panelGrid>                            
+                    </h:form>       
+                </p:dialog>
+                <p:dialog position="center" resizable="false"   header="Agregar Animal" showEffect="scale" modal="true"  widgetVar="AgregarAnimalConFamilia">
+
+                    <h:form id="formConFamilia">
+                        <p:panelGrid style="text-align:left;" styleClass="panelgrid"  id="panelConFamilia">
+                            <p:row>
+                                <p:column>
+                                    <h:outputLabel style="font-style: italic;font-size: 16px;text-align: left; color:red;" 
+                                                   value="*"/>
+                                    <h:outputLabel class="CampoLabelObligatorios" value=" Campos Obligatorios" />
+                                </p:column>                                
+                            </p:row>
+                            <p:row>
+                                <p:column style="text-align:right">
+                                    <h:outputLabel class="CampoLabel" for="familia" value="Familia: " />
+                                    <h:outputLabel style="font-style: italic;font-size: 16px;text-align: left; color:red;" 
+                                                   value="*"/>
+                                </p:column>
+                                <p:column>
+                                    <p:selectOneMenu filter="true" filterMatchMode="startsWith"  id="familia" style="width:150px;font-size: 15px;" required="true"
+                                                     requiredMessage="Seleccione una familia.."
+                                                     value="#{agregarAnimalController.familiaSelected}"
+                                                     >
+                                        <f:selectItem itemLabel="Seleccione.." itemValue="0" />
+                                        <f:selectItems value="#{agregarAnimalController.listaFamilias}" 
+                                                       var="familia"
+                                                       itemLabel="#{familia.faNombre}" itemValue="#{familia}"/>
+                                        <f:validator validatorId="ValidarCamposSeleccionar" />
+                                    </p:selectOneMenu>                                
+                                </p:column>
+                                <p:column>
+                                    <p:message for="familia"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="text-align:right">
+                                    <h:outputLabel class="CampoLabel" for="especieConFamilia" value="Especie: " />
+                                    <h:outputLabel style="font-style: italic;font-size: 16px;text-align: left; color:red;" 
+                                                   value="*"/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText style="width: 140px;font-size:15px" 
+                                                 id="especieConFamilia" value="#{agregarAnimalController.especie}"
+                                                 required="true" requiredMessage="Campo obligatorio.">
+                                        
+                                    </p:inputText>                                
+                                </p:column>
+                                <p:column>
+                                    <p:message for="especieConFamilia"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="text-align:right">
+                                    <h:outputLabel class="CampoLabel" for="nombreConFamilia" value="Nombre común: " />
+                                    <h:outputLabel style="font-style: italic;font-size: 16px;text-align: left; color:red;" 
+                                                   value="*"/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText style="width: 140px;font-size:15px" 
+                                                 id="nombreConFamilia" value="#{agregarAnimalController.nombre}"
+                                                 required="true" requiredMessage="Campo obligatorio.">
+                                        
+                                    </p:inputText>                                
+                                </p:column>
+                                <p:column>
+                                    <p:message for="nombreConFamilia"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="text-align:right">
+                                    <h:outputLabel class="CampoLabel" for="grupoTaxonomicoConFamilia" value="Grupo taxonómico: " />
+                                    <h:outputLabel style="font-style: italic;font-size: 16px;text-align: left; color:red;" 
+                                                   value="*"/>
+                                </p:column>
+                                <p:column>
+                                    <p:selectOneMenu filter="true" filterMatchMode="startsWith"  id="grupoTaxonomicoConFamilia"
+                                                     style="width:150px;font-size: 15px;" required="true"
+                                                     requiredMessage="Seleccione un grupo taxonómico."
+                                                     value="#{agregarAnimalController.grupotaxonomicoSelected}"
+                                                     >
+                                        <f:selectItem itemLabel="Seleccione.." itemValue="0" />
+                                        <f:selectItems value="#{agregarAnimalController.listaGrupoTaxonomicos}" 
+                                                       var="grupoTaxonomico"
+                                                       itemLabel="#{grupoTaxonomico.gruptaxNombre}" itemValue="#{grupoTaxonomico}"/>
+                                        <f:validator validatorId="ValidarCamposSeleccionar" />
+                                    </p:selectOneMenu>                                
+                                </p:column>
+                                <p:column>
+                                    <p:message for="grupoTaxonomicoConFamilia"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="text-align:right">
+                                    <h:outputLabel class="CampoLabel" for="descripcionConFamilia" value="Descripción: " />
+                                </p:column>
+                                <p:column>
+                                    <p:inputTextarea style="width: 140px;font-size:15px" 
+                                                     id="descripcionConFamilia" 
+                                                     value="#{agregarAnimalController.descripcion}"
+                                                 />                               
+                                </p:column>
+                                <p:column>
+                                    <p:message for="descripcionConFamilia"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+
+                                </p:column>
+                                <p:column>
+                                    <p:commandButton   
+                                                       action="#{agregarAnimalController.registrarAnimal(anController)}" value="Registrar" ajax="true" 
+                                                       update="panelConFamilia :formTablaAnimales" 
+                                                       id="registrarConFamilia" 
+                                                       onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                                       />
+                                    <p:commandButton   
+                                                       value="Cancelar" onclick="PF('AgregarAnimalConFamilia').hide()"
+                                                        id="cancelarConFamilia" onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
                                                        />
                                 </p:column>
                             </p:row>                               

@@ -43,7 +43,7 @@ public class EliminarFamiliaController implements Serializable{
         PrimeFaces pf = PrimeFaces.current(); 
         if(this.familiaSeleccionado!=null)
         {
-            if(this.familiaSeleccionado.getEspecieList().isEmpty())
+            if(this.familiaSeleccionado.getAnimalList().isEmpty())
             {
                 this.familiaEJB.remove(familiaSeleccionado);
                 familiaController.updateListaFamilia();

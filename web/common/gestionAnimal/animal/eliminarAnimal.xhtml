@@ -20,6 +20,7 @@
                                     <p:commandButton  
                                                      value="Aceptar" action="#{eliminarAnimalController.eliminarAnimal()}"
                                                      update=":formTablaAnimales"
+                                                     oncomplete="PF('tablaAnimalesWidgetVar').filter()"
                                                      />
                                     <p:commandButton style="margin-left: 10px;" value="Cancelar" onclick="PF('eliminarAnimal').hide()"/>
                                 </p:column>
