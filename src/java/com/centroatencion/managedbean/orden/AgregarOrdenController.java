@@ -7,6 +7,7 @@ package com.centroatencion.managedbean.orden;
 
 import com.centroatencion.entities.Orden;
 import com.centroatencion.facade.OrdenFacade;
+import com.centroatencion.managedbean.util.Util;
 import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -66,29 +67,34 @@ public class AgregarOrdenController implements Serializable{
        UIViewRoot viewRoot = viewHandler.createView(context, context.getViewRoot().getViewId());
        context.setViewRoot(viewRoot);       
        context.renderResponse();
+       this.nombre = null;
        pf.executeScript("PF('AgregarOrden').show()");
     }
     
    public void registrarOrden(OrdenController ordenController)
    {
-        Orden orden = new Orden();
-        orden.setOrNombre(nombre);
-        if(descripcion!=null && !descripcion.isEmpty())
-        {
-            orden.setOrDescripcion(descripcion);
-        }
-        ordenEJB.create(orden);
-        nombre="";
-        ordenController.updateListaOrdenes();
+        nombre = Util.formatText(nombre);
         PrimeFaces pf = PrimeFaces.current();
-        FacesContext context = FacesContext.getCurrentInstance();
-        Application application = context.getApplication();
-        ViewHandler viewHandler = application.getViewHandler();
-        UIViewRoot viewRoot = viewHandler.createView(context, context.getViewRoot().getViewId());
-        context.setViewRoot(viewRoot);       
-        context.renderResponse();
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Registro Exitoso."));
-        pf.executeScript("PF('mensajeRegistroExitoso').show()");
+        if (!ordenEJB.existeNombre(nombre)) {
+           Orden orden = new Orden();
+           orden.setOrNombre(nombre);
+           if (descripcion != null && !descripcion.isEmpty()) {
+               orden.setOrDescripcion(descripcion);
+           }
+           ordenEJB.create(orden);
+           nombre = "";
+           ordenController.updateListaOrdenes();
+           FacesContext context = FacesContext.getCurrentInstance();
+           Application application = context.getApplication();
+           ViewHandler viewHandler = application.getViewHandler();
+           UIViewRoot viewRoot = viewHandler.createView(context, context.getViewRoot().getViewId());
+           context.setViewRoot(viewRoot);
+           context.renderResponse();
+           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Registro Exitoso."));
+       } else {
+           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Orden ya existe."));
+       }
+       pf.executeScript("PF('mensajeRegistroExitoso').show()");
    }
     
 }

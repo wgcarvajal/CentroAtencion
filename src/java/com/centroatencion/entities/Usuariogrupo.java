@@ -15,8 +15,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -37,8 +35,6 @@ public class Usuariogrupo implements Serializable {
     @EmbeddedId
     protected UsuariogrupoPK usuariogrupoPK;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
     @Column(name = "nombreusuario")
     private String nombreusuario;
     @JoinColumn(name = "grupoId", referencedColumnName = "grupoid", insertable = false, updatable = false)
@@ -118,7 +114,7 @@ public class Usuariogrupo implements Serializable {
 
     @Override
     public String toString() {
-        return "com.centroatencion.entities.Usuariogrupo[ usuariogrupoPK=" + usuariogrupoPK + " ]";
+        return "entities.Usuariogrupo[ usuariogrupoPK=" + usuariogrupoPK + " ]";
     }
     
 }

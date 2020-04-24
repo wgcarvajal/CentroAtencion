@@ -42,8 +42,6 @@ public class Fotoanimal implements Serializable {
     @Column(name = "fotanId")
     private Long fotanId;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
     @Column(name = "fotanNombre")
     private String fotanNombre;
     @JoinColumn(name = "animalId", referencedColumnName = "anId")

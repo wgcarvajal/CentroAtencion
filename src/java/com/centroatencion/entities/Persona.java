@@ -20,8 +20,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -50,47 +48,37 @@ public class Persona implements Serializable {
     @Column(name = "perId")
     private Long perId;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
     @Column(name = "perIdentificacion")
     private String perIdentificacion;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
     @Column(name = "perNombres")
     private String perNombres;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
     @Column(name = "perApellidos")
     private String perApellidos;
-    @Size(max = 100)
+    @Basic(optional = false)
     @Column(name = "perdireccion")
     private String perdireccion;
-    @Size(max = 20)
+    @Basic(optional = false)
     @Column(name = "pertelefono")
     private String pertelefono;
-    @Size(max = 200)
+    @Basic(optional = false)
     @Column(name = "perEmail")
     private String perEmail;
     @JoinColumn(name = "municipioId", referencedColumnName = "munId")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Municipio municipioId;
     @JoinColumn(name = "tipoidentificacionId", referencedColumnName = "tipidentId")
     @ManyToOne(optional = false)
     private Tipoidentificacion tipoidentificacionId;
     @JoinColumn(name = "usuarioId", referencedColumnName = "usuId")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Usuario usuarioId;
     @JoinColumn(name = "veredaId", referencedColumnName = "verId")
     @ManyToOne
     private Vereda veredaId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perId")
-    private List<Contrato> contratoList;
-    @OneToMany(mappedBy = "infractordonatanteId")
-    private List<Ingreso> ingresoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "funcionarioId")
-    private List<Ingreso> ingresoList1;
+    private List<Ingreso> ingresoList;
 
     public Persona() {
     }
@@ -99,11 +87,14 @@ public class Persona implements Serializable {
         this.perId = perId;
     }
 
-    public Persona(Long perId, String perIdentificacion, String perNombres, String perApellidos) {
+    public Persona(Long perId, String perIdentificacion, String perNombres, String perApellidos, String perdireccion, String pertelefono, String perEmail) {
         this.perId = perId;
         this.perIdentificacion = perIdentificacion;
         this.perNombres = perNombres;
         this.perApellidos = perApellidos;
+        this.perdireccion = perdireccion;
+        this.pertelefono = pertelefono;
+        this.perEmail = perEmail;
     }
 
     public Long getPerId() {
@@ -195,30 +186,12 @@ public class Persona implements Serializable {
     }
 
     @XmlTransient
-    public List<Contrato> getContratoList() {
-        return contratoList;
-    }
-
-    public void setContratoList(List<Contrato> contratoList) {
-        this.contratoList = contratoList;
-    }
-
-    @XmlTransient
     public List<Ingreso> getIngresoList() {
         return ingresoList;
     }
 
     public void setIngresoList(List<Ingreso> ingresoList) {
         this.ingresoList = ingresoList;
-    }
-
-    @XmlTransient
-    public List<Ingreso> getIngresoList1() {
-        return ingresoList1;
-    }
-
-    public void setIngresoList1(List<Ingreso> ingresoList1) {
-        this.ingresoList1 = ingresoList1;
     }
 
     @Override

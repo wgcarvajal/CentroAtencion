@@ -37,13 +37,9 @@ public class Grupo implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 10)
     @Column(name = "grupoid")
     private String grupoid;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
     @Column(name = "grupodescripcion")
     private String grupodescripcion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "grupo")
@@ -108,7 +104,7 @@ public class Grupo implements Serializable {
 
     @Override
     public String toString() {
-        return "com.centroatencion.entities.Grupo[ grupoid=" + grupoid + " ]";
+        return "entities.Grupo[ grupoid=" + grupoid + " ]";
     }
     
 }

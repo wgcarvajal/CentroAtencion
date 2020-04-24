@@ -8,6 +8,7 @@ package com.centroatencion.entities;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,8 +18,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -44,16 +43,12 @@ public class Grupotaxonomico implements Serializable {
     @Column(name = "gruptaxId")
     private Integer gruptaxId;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 30)
     @Column(name = "gruptaxNombre")
     private String gruptaxNombre;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2)
     @Column(name = "grupotaxAbreviatura")
     private String grupotaxAbreviatura;
-    @OneToMany(mappedBy = "grupotaxonomicoId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "grupotaxonomicoId")
     private List<Animal> animalList;
 
     public Grupotaxonomico() {
@@ -124,7 +119,7 @@ public class Grupotaxonomico implements Serializable {
 
     @Override
     public String toString() {
-        return "com.centroatencion.entities.Grupotaxonomico[ gruptaxId=" + gruptaxId + " ]";
+        return "entities.Grupotaxonomico[ gruptaxId=" + gruptaxId + " ]";
     }
     
 }

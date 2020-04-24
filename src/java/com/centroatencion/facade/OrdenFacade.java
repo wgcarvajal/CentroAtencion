@@ -38,4 +38,19 @@ public class OrdenFacade extends AbstractFacade<Orden> {
         return resultList;
     }
     
+    public boolean existeNombre(String orNombre)
+    {
+        Query query = getEntityManager().createNamedQuery("Orden.findByOrNombre");
+        query.setParameter("orNombre",  orNombre);
+        List<Orden> resultList = query.getResultList();
+        return resultList!=null && resultList.size()>0;
+    }
+    
+    @Override
+    public List<Orden> findAll() {
+       Query query = getEntityManager().createNamedQuery("Orden.findAll");
+        List<Orden> resultList = query.getResultList();
+        return resultList;
+    }
+    
 }

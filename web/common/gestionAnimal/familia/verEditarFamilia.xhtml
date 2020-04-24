@@ -17,10 +17,47 @@
             <br/>
                 <h:form id="formularioFamilia">
                     <p:messages closable="true"/>
-                    <p:panelGrid styleClass="panelgrid"> 
+                    <p:panelGrid styleClass="panelgrid">
+                        <p:row rendered="#{verEditarFamiliaController.campoOrden}">
+                            <p:column>
+                                <p:outputLabel style="font-size: 15px;" value="Orden: "/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{verEditarFamiliaController.familia.orId.orNombre}"/>
+                            </p:column>
+                            <p:column>
+                                <p:commandLink update="formularioFamilia" style="color: blue;" value="Modificar" action="#{verEditarFamiliaController.mostrarModificarOrden()}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{!verEditarFamiliaController.campoOrden}">
+                            <p:column>
+                                <p:outputLabel style="font-size: 15px;" value="Orden: "/>
+                                <h:outputLabel style="font-style: italic;font-size: 16px;text-align: left; color:red;" 
+                                               value="* "/>
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu filter="true" filterMatchMode="startsWith"  
+                                                 id="orden" style="width:150px;font-size: 15px;" 
+                                                 value="#{verEditarFamiliaController.orden}">
+                                                 
+                                    <f:selectItems value="#{verEditarFamiliaController.listaOrden}" 
+                                            var="orden"
+                                            itemLabel="#{orden.orNombre}" itemValue="#{orden}"/>
+                                </p:selectOneMenu>  
+                            </p:column>
+                            <p:column>
+                                <p:commandLink style="color: blue;" value="Aceptar" action="#{verEditarFamiliaController.actualizarOrden()}"
+                                               onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                               update="formularioFamilia :formTablaFamilias"/>
+                                <p:commandLink style="margin-left: 10px;color: blue;" value="Cancelar" 
+                                               action="#{verEditarFamiliaController.cancelarActualizarOrden()}"
+                                               onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                               update="formularioFamilia"/>
+                            </p:column>
+                        </p:row>
                         <p:row rendered="#{verEditarFamiliaController.campoNombre}">
                             <p:column>
-                                <p:outputLabel style="font-size: 15px;" value="Nombre: "/>
+                                <p:outputLabel style="font-size: 15px;" value="Familia: "/>
                             </p:column>
                             <p:column>
                                 <p:outputLabel value="#{verEditarFamiliaController.familia.faNombre}"/>
@@ -31,7 +68,7 @@
                         </p:row>
                         <p:row rendered="#{!verEditarFamiliaController.campoNombre}">
                             <p:column>
-                                <p:outputLabel style="font-size: 15px;" value="Nombre: "/>
+                                <p:outputLabel style="font-size: 15px;" value="Familia: "/>
                                 <h:outputLabel style="font-style: italic;font-size: 16px;text-align: left; color:red;" 
                                                value="* "/>
                             </p:column>
@@ -52,7 +89,7 @@
                         </p:row>
                         <p:row rendered="#{verEditarFamiliaController.campoDescripcion}">
                             <p:column>
-                                <p:outputLabel style="font-size: 15px;" value="Nombre: "/>
+                                <p:outputLabel style="font-size: 15px;" value="Descripción: "/>
                             </p:column>
                             <p:column>
                                 <p:outputLabel value="#{verEditarFamiliaController.familia.faDescripcion}"/>
@@ -63,7 +100,7 @@
                         </p:row>
                         <p:row rendered="#{!verEditarFamiliaController.campoDescripcion}">
                             <p:column>
-                                <p:outputLabel style="font-size: 15px;" value="Nombre: "/>
+                                <p:outputLabel style="font-size: 15px;" value="Descripción: "/>
                                 <h:outputLabel style="font-style: italic;font-size: 16px;text-align: left; color:red;" 
                                                value="* "/>
                             </p:column>

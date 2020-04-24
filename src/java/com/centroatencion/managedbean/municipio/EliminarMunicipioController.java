@@ -44,8 +44,6 @@ public class EliminarMunicipioController implements Serializable{
         if(this.municipioSeleccionado!=null)
         {
             if(this.municipioSeleccionado.getVeredaList().isEmpty() && 
-                    this.municipioSeleccionado.getEntidadList().isEmpty() && 
-                    this.municipioSeleccionado.getIngresoList().isEmpty() &&
                     this.municipioSeleccionado.getPersonaList().isEmpty())
             {
                 this.municipioEJB.remove(municipioSeleccionado);

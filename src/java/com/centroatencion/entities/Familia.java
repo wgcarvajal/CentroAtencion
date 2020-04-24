@@ -41,7 +41,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Familia.findByFaNombre", query = "SELECT f FROM Familia f WHERE f.faNombre = :faNombre")})
 public class Familia implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -136,7 +136,5 @@ public class Familia implements Serializable {
     public String toString() {
         return "entities.Familia[ faId=" + faId + " ]";
     }
-    
-    
     
 }

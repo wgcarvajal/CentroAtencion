@@ -44,9 +44,7 @@ public class EliminarVeredaController implements Serializable{
         PrimeFaces pf = PrimeFaces.current(); 
         if(this.veredaSeleccionado !=null)
         {
-            if(this.veredaSeleccionado.getEntidadList().isEmpty() && 
-                    this.veredaSeleccionado.getIngresoList().isEmpty() &&
-                    this.veredaSeleccionado.getPersonaList().isEmpty())
+            if(this.veredaSeleccionado.getPersonaList().isEmpty())
             {
                 this.veredaEJB.remove(veredaSeleccionado);
                 veredaController.updateListaVeredas();

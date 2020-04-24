@@ -18,8 +18,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -45,23 +43,18 @@ public class Usuario implements Serializable {
     @Column(name = "usuId")
     private Long usuId;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
     @Column(name = "usuNombreUsuario")
     private String usuNombreUsuario;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 250)
     @Column(name = "usuContrasena")
     private String usuContrasena;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "usuEstado")
     private int usuEstado;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
+    private List<Persona> personaList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuario")
     private List<Usuariogrupo> usuariogrupoList;
-    @OneToMany(mappedBy = "usuarioId")
-    private List<Persona> personaList;
 
     public Usuario() {
     }
@@ -110,21 +103,21 @@ public class Usuario implements Serializable {
     }
 
     @XmlTransient
-    public List<Usuariogrupo> getUsuariogrupoList() {
-        return usuariogrupoList;
-    }
-
-    public void setUsuariogrupoList(List<Usuariogrupo> usuariogrupoList) {
-        this.usuariogrupoList = usuariogrupoList;
-    }
-
-    @XmlTransient
     public List<Persona> getPersonaList() {
         return personaList;
     }
 
     public void setPersonaList(List<Persona> personaList) {
         this.personaList = personaList;
+    }
+
+    @XmlTransient
+    public List<Usuariogrupo> getUsuariogrupoList() {
+        return usuariogrupoList;
+    }
+
+    public void setUsuariogrupoList(List<Usuariogrupo> usuariogrupoList) {
+        this.usuariogrupoList = usuariogrupoList;
     }
 
     @Override
@@ -149,7 +142,7 @@ public class Usuario implements Serializable {
 
     @Override
     public String toString() {
-        return "com.centroatencion.entities.Usuario[ usuId=" + usuId + " ]";
+        return "entities.Usuario[ usuId=" + usuId + " ]";
     }
     
 }

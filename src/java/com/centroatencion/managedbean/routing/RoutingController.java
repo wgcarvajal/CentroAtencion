@@ -4,10 +4,6 @@
  * and open the template in the editor.
  */
 package com.centroatencion.managedbean.routing;
-
-import com.centroatencion.entities.Entidad;
-import com.centroatencion.managedbean.entidad.EntidadController;
-import com.centroatencion.managedbean.entidad.VerEditarEntidadController;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
@@ -90,11 +86,6 @@ public class RoutingController implements Serializable {
         resetViews();
     }
     
-    public void goToEntidad(AddNavegacionController addNavegacionController,VerEditarEntidadController verEditarEntidadController,Entidad entidad,EntidadController entidadConTroller) {
-        addNavegacionController.addEntidad();
-        verEditarEntidadController.entidadSeleccionado(entidad, entidadConTroller);
-        this.ruta = "gestionEntidad/entidad/verEditarEntidad.xhtml";
-    }
     
     public void goToTipoZonas(AddNavegacionController addNavegacionController) {
         addNavegacionController.addTipoZonas();

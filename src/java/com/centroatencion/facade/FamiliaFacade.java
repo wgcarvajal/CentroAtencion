@@ -69,4 +69,12 @@ public class FamiliaFacade extends AbstractFacade<Familia> {
         return resultList;
     }
     
+    public boolean existeNombre(String faNombre)
+    {
+        Query query = getEntityManager().createNamedQuery("Familia.findByFaNombre");
+        query.setParameter("faNombre",  faNombre);
+        List<Familia> resultList = query.getResultList();
+        return resultList!=null && resultList.size()>0;
+    }
+    
 }

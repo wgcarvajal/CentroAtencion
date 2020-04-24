@@ -7,6 +7,7 @@ package com.centroatencion.managedbean.orden;
 
 import com.centroatencion.entities.Orden;
 import com.centroatencion.facade.OrdenFacade;
+import com.centroatencion.managedbean.util.Util;
 import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -93,11 +94,23 @@ public class VerEditarOrdenController implements Serializable{
     }
 
     public void actualizarNombre() {
-        this.campoNombre = true;
-        this.orden.setOrNombre(nombre);
-        this.ordenEJB.edit(this.orden);
-        ordenController.updateListaOrdenes();
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info. Campo Nombre Actualizado.", ""));
+        nombre = Util.formatText(nombre);
+        if (!nombre.equals(this.orden.getOrNombre())) {
+            if(!ordenEJB.existeNombre(nombre))
+            {
+                this.campoNombre = true;
+                this.orden.setOrNombre(nombre);
+                this.ordenEJB.edit(this.orden);
+                ordenController.updateListaOrdenes();
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info. Campo Nombre Actualizado.", ""));
+            }
+            else{
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error. Orden ya existe.", ""));
+            }
+        }
+        else{
+            this.campoNombre = true;
+        }
     }
     
     public void mostrarModificarDescripcion() {

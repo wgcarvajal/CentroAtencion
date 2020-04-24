@@ -18,8 +18,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -44,8 +42,6 @@ public class Departamento implements Serializable {
     @Column(name = "depId")
     private Long depId;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
     @Column(name = "depNombre")
     private String depNombre;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "departamentoId")
@@ -110,7 +106,7 @@ public class Departamento implements Serializable {
 
     @Override
     public String toString() {
-        return "com.centroatencion.entities.Departamento[ depId=" + depId + " ]";
+        return "entities.Departamento[ depId=" + depId + " ]";
     }
     
 }

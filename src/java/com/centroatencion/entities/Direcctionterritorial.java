@@ -18,8 +18,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -44,17 +42,13 @@ public class Direcctionterritorial implements Serializable {
     @Column(name = "dirterId")
     private Integer dirterId;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
     @Column(name = "dirterNombre")
     private String dirterNombre;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 4)
     @Column(name = "dirterAbreviatura")
     private String dirterAbreviatura;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "direccionterritorialId")
-    private List<Entidad> entidadList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "dirterId")
+    private List<Ingreso> ingresoList;
 
     public Direcctionterritorial() {
     }
@@ -94,12 +88,12 @@ public class Direcctionterritorial implements Serializable {
     }
 
     @XmlTransient
-    public List<Entidad> getEntidadList() {
-        return entidadList;
+    public List<Ingreso> getIngresoList() {
+        return ingresoList;
     }
 
-    public void setEntidadList(List<Entidad> entidadList) {
-        this.entidadList = entidadList;
+    public void setIngresoList(List<Ingreso> ingresoList) {
+        this.ingresoList = ingresoList;
     }
 
     @Override
@@ -124,7 +118,7 @@ public class Direcctionterritorial implements Serializable {
 
     @Override
     public String toString() {
-        return "com.centroatencion.entities.Direcctionterritorial[ dirterId=" + dirterId + " ]";
+        return "entities.Direcctionterritorial[ dirterId=" + dirterId + " ]";
     }
     
 }

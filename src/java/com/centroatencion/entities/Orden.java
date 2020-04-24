@@ -19,8 +19,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -32,7 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "orden", catalog = "hogardepasobd", schema = "")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Orden.findAll", query = "SELECT o FROM Orden o"),
+    @NamedQuery(name = "Orden.findAll", query = "SELECT o FROM Orden o ORDER BY o.orNombre asc"),
     @NamedQuery(name = "Orden.findByOrId", query = "SELECT o FROM Orden o WHERE o.orId = :orId"),
     @NamedQuery(name = "Orden.findByNombreOrden", query = "SELECT o FROM Orden o WHERE LOWER(o.orNombre) LIKE :orNombre"),
     @NamedQuery(name = "Orden.findByOrNombre", query = "SELECT o FROM Orden o WHERE o.orNombre = :orNombre")})
@@ -45,12 +43,9 @@ public class Orden implements Serializable {
     @Column(name = "orId")
     private Integer orId;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
     @Column(name = "orNombre")
     private String orNombre;
     @Lob
-    @Size(min = 1, max = 65535)
     @Column(name = "orDescripcion")
     private String orDescripcion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "orId")
@@ -123,7 +118,7 @@ public class Orden implements Serializable {
 
     @Override
     public String toString() {
-        return "com.centroatencion.entities.Orden[ orId=" + orId + " ]";
+        return "entities.Orden[ orId=" + orId + " ]";
     }
     
 }

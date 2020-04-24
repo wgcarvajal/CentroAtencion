@@ -20,8 +20,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -47,19 +45,13 @@ public class Municipio implements Serializable {
     @Column(name = "munId")
     private Long munId;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
     @Column(name = "munNombre")
     private String munNombre;
-    @OneToMany(mappedBy = "municipioId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "municipioId")
     private List<Persona> personaList;
     @JoinColumn(name = "departamentoId", referencedColumnName = "depId")
     @ManyToOne(optional = false)
     private Departamento departamentoId;
-    @OneToMany(mappedBy = "municipioId")
-    private List<Ingreso> ingresoList;
-    @OneToMany(mappedBy = "municipioId")
-    private List<Entidad> entidadList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "municipioId")
     private List<Vereda> veredaList;
 
@@ -109,24 +101,6 @@ public class Municipio implements Serializable {
     }
 
     @XmlTransient
-    public List<Ingreso> getIngresoList() {
-        return ingresoList;
-    }
-
-    public void setIngresoList(List<Ingreso> ingresoList) {
-        this.ingresoList = ingresoList;
-    }
-
-    @XmlTransient
-    public List<Entidad> getEntidadList() {
-        return entidadList;
-    }
-
-    public void setEntidadList(List<Entidad> entidadList) {
-        this.entidadList = entidadList;
-    }
-
-    @XmlTransient
     public List<Vereda> getVeredaList() {
         return veredaList;
     }
@@ -157,7 +131,7 @@ public class Municipio implements Serializable {
 
     @Override
     public String toString() {
-        return "com.centroatencion.entities.Municipio[ munId=" + munId + " ]";
+        return "entities.Municipio[ munId=" + munId + " ]";
     }
     
 }

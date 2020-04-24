@@ -19,14 +19,12 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author aranda
+ * @author Wilson Carvajal
  */
 @Entity
 @Table(name = "vereda", catalog = "hogardepasobd", schema = "")
@@ -46,16 +44,10 @@ public class Vereda implements Serializable {
     @Column(name = "verId")
     private Long verId;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
     @Column(name = "verNombre")
     private String verNombre;
     @OneToMany(mappedBy = "veredaId")
     private List<Persona> personaList;
-    @OneToMany(mappedBy = "veredaId")
-    private List<Ingreso> ingresoList;
-    @OneToMany(mappedBy = "veredaId")
-    private List<Entidad> entidadList;
     @JoinColumn(name = "municipioId", referencedColumnName = "munId")
     @ManyToOne(optional = false)
     private Municipio municipioId;
@@ -97,24 +89,6 @@ public class Vereda implements Serializable {
         this.personaList = personaList;
     }
 
-    @XmlTransient
-    public List<Ingreso> getIngresoList() {
-        return ingresoList;
-    }
-
-    public void setIngresoList(List<Ingreso> ingresoList) {
-        this.ingresoList = ingresoList;
-    }
-
-    @XmlTransient
-    public List<Entidad> getEntidadList() {
-        return entidadList;
-    }
-
-    public void setEntidadList(List<Entidad> entidadList) {
-        this.entidadList = entidadList;
-    }
-
     public Municipio getMunicipioId() {
         return municipioId;
     }
@@ -145,7 +119,7 @@ public class Vereda implements Serializable {
 
     @Override
     public String toString() {
-        return "com.centroatencion.entities.Vereda[ verId=" + verId + " ]";
+        return "entities.Vereda[ verId=" + verId + " ]";
     }
     
 }

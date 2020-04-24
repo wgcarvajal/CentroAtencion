@@ -42,25 +42,16 @@ public class EliminarDireccionTerritorialController implements Serializable{
         pf.executeScript("PF('eliminarDireccionTerritorial').show()");
     }
     
-    public void eliminarDireccionTerritorial()
-    {
-        PrimeFaces pf = PrimeFaces.current(); 
-        if(this.direccionTerritorialSeleccionado !=null)
-        {
-            if(this.direccionTerritorialSeleccionado.getEntidadList().isEmpty())
-            {
-                this.direccionTerritorialEJB.remove(direccionTerritorialSeleccionado);
-                direccionTerritorialController.updateListaDireccionTerritorial();
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha eliminado la DireccionTerritorial.",null));
-                pf.executeScript("PF('eliminarDireccionTerritorial').hide()");  
-                pf.executeScript("PF('eliminacionCorrecta').show()");
-            }
-            else
-            {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "La Dirección territorial tiene registros asociados.",null));
-                pf.executeScript("PF('eliminarDireccionTerritorial').hide()");
-                pf.executeScript("PF('noSePuedeEliminar').show()");
-            }
+    public void eliminarDireccionTerritorial() {
+        PrimeFaces pf = PrimeFaces.current();
+        if (this.direccionTerritorialSeleccionado != null) {
+
+            this.direccionTerritorialEJB.remove(direccionTerritorialSeleccionado);
+            direccionTerritorialController.updateListaDireccionTerritorial();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha eliminado la DireccionTerritorial.", null));
+            pf.executeScript("PF('eliminarDireccionTerritorial').hide()");
+            pf.executeScript("PF('eliminacionCorrecta').show()");
+
         }
     }
 }
