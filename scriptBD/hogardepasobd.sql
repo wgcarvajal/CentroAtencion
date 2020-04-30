@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 24-04-2020 a las 06:12:27
+-- Tiempo de generación: 30-04-2020 a las 02:44:38
 -- Versión del servidor: 5.7.28
 -- Versión de PHP: 7.3.11
 
@@ -159,6 +159,28 @@ INSERT INTO `departamento` (`depId`, `depNombre`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `desarrollobiologico`
+--
+
+CREATE TABLE `desarrollobiologico` (
+  `desbioId` int(11) NOT NULL,
+  `desbioNombre` varchar(20) NOT NULL,
+  `desbioAbreviatura` varchar(3) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `desarrollobiologico`
+--
+
+INSERT INTO `desarrollobiologico` (`desbioId`, `desbioNombre`, `desbioAbreviatura`) VALUES
+(1, 'Cría', 'CR'),
+(2, 'Polluelo', 'P'),
+(3, 'Juvenil', 'J'),
+(4, 'Adulto', 'A');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `direcctionterritorial`
 --
 
@@ -167,6 +189,38 @@ CREATE TABLE `direcctionterritorial` (
   `dirterNombre` varchar(50) NOT NULL,
   `dirterAbreviatura` varchar(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `direcctionterritorial`
+--
+
+INSERT INTO `direcctionterritorial` (`dirterId`, `dirterNombre`, `dirterAbreviatura`) VALUES
+(1, 'Dirección territorial norte', 'DTN'),
+(2, 'Dirección territorial sur', 'DTS'),
+(3, 'Dirección territorial centro', 'DTC'),
+(4, 'Dirección territorial occidental', 'DTO');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `donanteinfractor`
+--
+
+CREATE TABLE `donanteinfractor` (
+  `doninId` bigint(20) NOT NULL,
+  `doninIdentifiacion` varchar(20) DEFAULT NULL,
+  `doninNombres` varchar(100) DEFAULT NULL,
+  `doninApellidos` varchar(100) DEFAULT NULL,
+  `doninDireccion` varchar(100) DEFAULT NULL,
+  `doninTelefono` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `donanteinfractor`
+--
+
+INSERT INTO `donanteinfractor` (`doninId`, `doninIdentifiacion`, `doninNombres`, `doninApellidos`, `doninDireccion`, `doninTelefono`) VALUES
+(1, '1075220291', 'Wilson', 'Carvajal', 'Cr 5b #63-07 el cortijo neiva', '3182785398');
 
 -- --------------------------------------------------------
 
@@ -255,6 +309,26 @@ CREATE TABLE `fotoanimal` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `genero`
+--
+
+CREATE TABLE `genero` (
+  `genId` int(11) NOT NULL,
+  `genNombre` varchar(20) NOT NULL,
+  `genAbreviatura` varchar(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `genero`
+--
+
+INSERT INTO `genero` (`genId`, `genNombre`, `genAbreviatura`) VALUES
+(1, 'Macho', 'M'),
+(2, 'Hembra', 'H');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `grupo`
 --
 
@@ -268,7 +342,8 @@ CREATE TABLE `grupo` (
 --
 
 INSERT INTO `grupo` (`grupoid`, `grupodescripcion`) VALUES
-('admin', 'usuario admin');
+('admin', 'usuario admin'),
+('user', 'usuario');
 
 -- --------------------------------------------------------
 
@@ -307,9 +382,77 @@ CREATE TABLE `ingreso` (
   `dirterId` int(11) NOT NULL,
   `animalId` bigint(20) NOT NULL,
   `funcionarioId` bigint(20) NOT NULL,
-  `ingConsecutivo` bigint(20) NOT NULL,
-  `ingEstado` int(11) NOT NULL COMMENT 'vivo=1 muerto = 2'
+  `donanteinfractorId` bigint(20) DEFAULT NULL,
+  `ingConsecutivo` bigint(20) DEFAULT NULL,
+  `ingEstado` int(11) DEFAULT NULL COMMENT 'vivo=1 muerto = 2',
+  `ingCausa` varchar(2) DEFAULT NULL COMMENT 'Entrega voluntaria = EV , decomiso = DC',
+  `lugardecomisoentregavoluntariaId` int(11) DEFAULT NULL,
+  `genId` int(11) DEFAULT NULL,
+  `desbioId` int(11) DEFAULT NULL,
+  `ingObservaciones` longtext,
+  `ingEstadoSalud` varchar(1) DEFAULT NULL COMMENT 'B=Bueno,M=Malo,R=Regular',
+  `depOcurrenciaId` bigint(20) DEFAULT NULL,
+  `depExtraccionId` bigint(20) DEFAULT NULL,
+  `munOcurrenciaId` bigint(20) DEFAULT NULL,
+  `munExtraccionId` bigint(20) DEFAULT NULL,
+  `verOcurrenciaId` bigint(20) DEFAULT NULL,
+  `verExtraccionId` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `ingreso`
+--
+
+INSERT INTO `ingreso` (`ingId`, `ingFecha`, `ingRadicado`, `ingAUCTFF`, `dirterId`, `animalId`, `funcionarioId`, `donanteinfractorId`, `ingConsecutivo`, `ingEstado`, `ingCausa`, `lugardecomisoentregavoluntariaId`, `genId`, `desbioId`, `ingObservaciones`, `ingEstadoSalud`, `depOcurrenciaId`, `depExtraccionId`, `munOcurrenciaId`, `munExtraccionId`, `verOcurrenciaId`, `verExtraccionId`) VALUES
+(1, '2020-04-06 00:00:00', '465767', '32545645', 2, 20, 1, 1, 1, 2, 'EV', 10, 1, 4, 'kdlkfklds', NULL, 1, NULL, NULL, 2, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `ingresosubproducto`
+--
+
+CREATE TABLE `ingresosubproducto` (
+  `ingsubproId` bigint(20) NOT NULL,
+  `ingId` bigint(20) NOT NULL,
+  `subprodId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `ingresosubproducto`
+--
+
+INSERT INTO `ingresosubproducto` (`ingsubproId`, `ingId`, `subprodId`) VALUES
+(1, 1, 7);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `lugardecomisoentregavoluntaria`
+--
+
+CREATE TABLE `lugardecomisoentregavoluntaria` (
+  `lugDecEntVoId` int(11) NOT NULL,
+  `lugDecEntVoNombre` varchar(100) NOT NULL,
+  `lugDecEntVoAbreviatura` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `lugardecomisoentregavoluntaria`
+--
+
+INSERT INTO `lugardecomisoentregavoluntaria` (`lugDecEntVoId`, `lugDecEntVoNombre`, `lugDecEntVoAbreviatura`) VALUES
+(1, 'Plaza de mercado', 'PM'),
+(2, 'Terminal de transporte terrestre', 'TTT'),
+(3, 'Terminal de transporte aereo', 'TTA'),
+(4, 'Puesto de control', 'PC'),
+(5, 'Tienda de mascotas', 'TM'),
+(6, 'Establecimiento privado', 'EP'),
+(7, 'Residencia', 'RS'),
+(8, 'Centro de atención y valoración', 'CAV'),
+(9, 'Finca', 'FCA'),
+(10, 'Direccion territorial', 'DT'),
+(11, 'Centro de atención inmediata', 'CAI');
 
 -- --------------------------------------------------------
 
@@ -328,7 +471,8 @@ CREATE TABLE `municipio` (
 --
 
 INSERT INTO `municipio` (`munId`, `munNombre`, `departamentoId`) VALUES
-(1, 'Neiva', 1);
+(1, 'Neiva', 1),
+(2, 'Pitalito', 1);
 
 -- --------------------------------------------------------
 
@@ -383,14 +527,88 @@ CREATE TABLE `persona` (
   `perIdentificacion` varchar(20) NOT NULL,
   `perNombres` varchar(100) NOT NULL,
   `perApellidos` varchar(100) NOT NULL,
-  `perdireccion` varchar(100) NOT NULL,
-  `pertelefono` varchar(20) NOT NULL,
-  `perEmail` varchar(200) NOT NULL,
-  `municipioId` bigint(20) NOT NULL,
-  `tipoidentificacionId` int(11) NOT NULL,
+  `perdireccion` varchar(100) DEFAULT NULL,
+  `pertelefono` varchar(20) DEFAULT NULL,
+  `perEmail` varchar(200) DEFAULT NULL,
+  `municipioId` bigint(20) DEFAULT NULL,
+  `tipoidentificacionId` int(11) DEFAULT NULL,
   `usuarioId` bigint(20) NOT NULL,
   `veredaId` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `persona`
+--
+
+INSERT INTO `persona` (`perId`, `perIdentificacion`, `perNombres`, `perApellidos`, `perdireccion`, `pertelefono`, `perEmail`, `municipioId`, `tipoidentificacionId`, `usuarioId`, `veredaId`) VALUES
+(1, '1061705800', 'Deisy Cristina', 'Piñeros Triviño', 'cr 8 este #3-21 sur', '3143791267', 'deisypt@gmail.com', NULL, NULL, 2, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `responsable`
+--
+
+CREATE TABLE `responsable` (
+  `respId` int(11) NOT NULL,
+  `respNombre` varchar(100) NOT NULL,
+  `respAbreviatura` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `responsable`
+--
+
+INSERT INTO `responsable` (`respId`, `respNombre`, `respAbreviatura`) VALUES
+(1, 'Corporación autónoma regional del alto magdalena', 'CAM'),
+(2, 'Carabineros', 'CARAB'),
+(3, 'Policia nacional', 'PONAL'),
+(4, 'Ejercito nacional de colombia', 'EJERCOL'),
+(5, 'RED TIES', 'RED TIES');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `responsableingreso`
+--
+
+CREATE TABLE `responsableingreso` (
+  `respingId` bigint(20) NOT NULL,
+  `ingId` bigint(20) NOT NULL,
+  `respId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `responsableingreso`
+--
+
+INSERT INTO `responsableingreso` (`respingId`, `ingId`, `respId`) VALUES
+(1, 1, 2),
+(2, 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `subproducto`
+--
+
+CREATE TABLE `subproducto` (
+  `subprodId` int(11) NOT NULL,
+  `subprodNombre` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `subproducto`
+--
+
+INSERT INTO `subproducto` (`subprodId`, `subprodNombre`) VALUES
+(1, 'Huevo'),
+(2, 'Piel'),
+(3, 'Pluma'),
+(4, 'Garra'),
+(5, 'Pico'),
+(6, 'Carne'),
+(7, 'Animal disecado');
 
 -- --------------------------------------------------------
 
@@ -422,7 +640,8 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`usuId`, `usuNombreUsuario`, `usuContrasena`, `usuEstado`) VALUES
-(1, 'admin', '8bb0cf6eb9b17d0f7d22b456f121257dc1254e1f01665370476383ea776df414', 1);
+(1, 'admin', '8bb0cf6eb9b17d0f7d22b456f121257dc1254e1f01665370476383ea776df414', 1),
+(2, 'deisypt', '8bb0cf6eb9b17d0f7d22b456f121257dc1254e1f01665370476383ea776df414', 1);
 
 -- --------------------------------------------------------
 
@@ -441,7 +660,8 @@ CREATE TABLE `usuariogrupo` (
 --
 
 INSERT INTO `usuariogrupo` (`grupoId`, `usuarioId`, `nombreusuario`) VALUES
-('admin', 1, 'admin');
+('admin', 1, 'admin'),
+('user', 2, 'deisypt');
 
 -- --------------------------------------------------------
 
@@ -454,6 +674,14 @@ CREATE TABLE `vereda` (
   `verNombre` varchar(100) NOT NULL,
   `municipioId` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `vereda`
+--
+
+INSERT INTO `vereda` (`verId`, `verNombre`, `municipioId`) VALUES
+(1, 'Vereda holanda', 2),
+(2, 'Vereda la esmeralda', 2);
 
 --
 -- Índices para tablas volcadas
@@ -474,10 +702,22 @@ ALTER TABLE `departamento`
   ADD PRIMARY KEY (`depId`);
 
 --
+-- Indices de la tabla `desarrollobiologico`
+--
+ALTER TABLE `desarrollobiologico`
+  ADD PRIMARY KEY (`desbioId`);
+
+--
 -- Indices de la tabla `direcctionterritorial`
 --
 ALTER TABLE `direcctionterritorial`
   ADD PRIMARY KEY (`dirterId`);
+
+--
+-- Indices de la tabla `donanteinfractor`
+--
+ALTER TABLE `donanteinfractor`
+  ADD PRIMARY KEY (`doninId`);
 
 --
 -- Indices de la tabla `familia`
@@ -492,6 +732,12 @@ ALTER TABLE `familia`
 ALTER TABLE `fotoanimal`
   ADD PRIMARY KEY (`fotanId`),
   ADD KEY `fk_fotoanimal_animal` (`animalId`);
+
+--
+-- Indices de la tabla `genero`
+--
+ALTER TABLE `genero`
+  ADD PRIMARY KEY (`genId`);
 
 --
 -- Indices de la tabla `grupo`
@@ -512,7 +758,31 @@ ALTER TABLE `ingreso`
   ADD PRIMARY KEY (`ingId`),
   ADD KEY `fk_ingreso_direccionterritorial` (`dirterId`),
   ADD KEY `fk_ingreso_animal` (`animalId`),
-  ADD KEY `fk_ingreso_funcionario` (`funcionarioId`);
+  ADD KEY `fk_ingreso_funcionario` (`funcionarioId`),
+  ADD KEY `fk_ingreso_donanteinfractor` (`donanteinfractorId`),
+  ADD KEY `fk_ingreso_lugardecomisoentregavoluntaria` (`lugardecomisoentregavoluntariaId`),
+  ADD KEY `fk_ingreso_desarrollobiologico` (`desbioId`),
+  ADD KEY `fk_ingreso_genero` (`genId`),
+  ADD KEY `fk_ingreso_departamentoextraccion` (`depExtraccionId`),
+  ADD KEY `fk_ingreso_departamentoocurrencia` (`depOcurrenciaId`),
+  ADD KEY `fk_ingreso_municipioextraccion` (`munExtraccionId`),
+  ADD KEY `fk_ingreso_municipioocurrencia` (`munOcurrenciaId`),
+  ADD KEY `fk_ingreso_veredaextraccion` (`verExtraccionId`),
+  ADD KEY `fk_ingreso_veredaocurrencia` (`verOcurrenciaId`);
+
+--
+-- Indices de la tabla `ingresosubproducto`
+--
+ALTER TABLE `ingresosubproducto`
+  ADD PRIMARY KEY (`ingsubproId`),
+  ADD KEY `fk_ingresosubproducto_ingreso` (`ingId`),
+  ADD KEY `fk_ingresosubproducto_subproducto` (`subprodId`);
+
+--
+-- Indices de la tabla `lugardecomisoentregavoluntaria`
+--
+ALTER TABLE `lugardecomisoentregavoluntaria`
+  ADD PRIMARY KEY (`lugDecEntVoId`);
 
 --
 -- Indices de la tabla `municipio`
@@ -536,6 +806,26 @@ ALTER TABLE `persona`
   ADD KEY `fk_persona_municipio` (`municipioId`),
   ADD KEY `fk_persona_vereda` (`veredaId`),
   ADD KEY `fk_persona_usuario` (`usuarioId`);
+
+--
+-- Indices de la tabla `responsable`
+--
+ALTER TABLE `responsable`
+  ADD PRIMARY KEY (`respId`);
+
+--
+-- Indices de la tabla `responsableingreso`
+--
+ALTER TABLE `responsableingreso`
+  ADD PRIMARY KEY (`respingId`),
+  ADD KEY `fk_responsableingreso_ingreso` (`ingId`),
+  ADD KEY `fk_responsableingreso_responsable` (`respId`);
+
+--
+-- Indices de la tabla `subproducto`
+--
+ALTER TABLE `subproducto`
+  ADD PRIMARY KEY (`subprodId`);
 
 --
 -- Indices de la tabla `tipoidentificacion`
@@ -580,22 +870,40 @@ ALTER TABLE `departamento`
   MODIFY `depId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT de la tabla `desarrollobiologico`
+--
+ALTER TABLE `desarrollobiologico`
+  MODIFY `desbioId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT de la tabla `direcctionterritorial`
 --
 ALTER TABLE `direcctionterritorial`
-  MODIFY `dirterId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `dirterId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de la tabla `donanteinfractor`
+--
+ALTER TABLE `donanteinfractor`
+  MODIFY `doninId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `familia`
 --
 ALTER TABLE `familia`
-  MODIFY `faId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `faId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
 -- AUTO_INCREMENT de la tabla `fotoanimal`
 --
 ALTER TABLE `fotoanimal`
-  MODIFY `fotanId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `fotanId` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `genero`
+--
+ALTER TABLE `genero`
+  MODIFY `genId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `grupotaxonomico`
@@ -607,13 +915,25 @@ ALTER TABLE `grupotaxonomico`
 -- AUTO_INCREMENT de la tabla `ingreso`
 --
 ALTER TABLE `ingreso`
-  MODIFY `ingId` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `ingId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `ingresosubproducto`
+--
+ALTER TABLE `ingresosubproducto`
+  MODIFY `ingsubproId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `lugardecomisoentregavoluntaria`
+--
+ALTER TABLE `lugardecomisoentregavoluntaria`
+  MODIFY `lugDecEntVoId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `municipio`
 --
 ALTER TABLE `municipio`
-  MODIFY `munId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `munId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `orden`
@@ -625,7 +945,25 @@ ALTER TABLE `orden`
 -- AUTO_INCREMENT de la tabla `persona`
 --
 ALTER TABLE `persona`
-  MODIFY `perId` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `perId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `responsable`
+--
+ALTER TABLE `responsable`
+  MODIFY `respId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de la tabla `responsableingreso`
+--
+ALTER TABLE `responsableingreso`
+  MODIFY `respingId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `subproducto`
+--
+ALTER TABLE `subproducto`
+  MODIFY `subprodId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `tipoidentificacion`
@@ -637,13 +975,13 @@ ALTER TABLE `tipoidentificacion`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `usuId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `usuId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `vereda`
 --
 ALTER TABLE `vereda`
-  MODIFY `verId` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `verId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Restricciones para tablas volcadas
@@ -673,8 +1011,25 @@ ALTER TABLE `fotoanimal`
 --
 ALTER TABLE `ingreso`
   ADD CONSTRAINT `fk_ingreso_animal` FOREIGN KEY (`animalId`) REFERENCES `animal` (`anId`),
+  ADD CONSTRAINT `fk_ingreso_departamentoextraccion` FOREIGN KEY (`depExtraccionId`) REFERENCES `departamento` (`depId`),
+  ADD CONSTRAINT `fk_ingreso_departamentoocurrencia` FOREIGN KEY (`depOcurrenciaId`) REFERENCES `departamento` (`depId`),
+  ADD CONSTRAINT `fk_ingreso_desarrollobiologico` FOREIGN KEY (`desbioId`) REFERENCES `desarrollobiologico` (`desbioId`),
   ADD CONSTRAINT `fk_ingreso_direccionterritorial` FOREIGN KEY (`dirterId`) REFERENCES `direcctionterritorial` (`dirterId`),
-  ADD CONSTRAINT `fk_ingreso_funcionario` FOREIGN KEY (`funcionarioId`) REFERENCES `persona` (`perId`);
+  ADD CONSTRAINT `fk_ingreso_donanteinfractor` FOREIGN KEY (`donanteinfractorId`) REFERENCES `donanteinfractor` (`doninId`),
+  ADD CONSTRAINT `fk_ingreso_funcionario` FOREIGN KEY (`funcionarioId`) REFERENCES `persona` (`perId`),
+  ADD CONSTRAINT `fk_ingreso_genero` FOREIGN KEY (`genId`) REFERENCES `genero` (`genId`),
+  ADD CONSTRAINT `fk_ingreso_lugardecomisoentregavoluntaria` FOREIGN KEY (`lugardecomisoentregavoluntariaId`) REFERENCES `lugardecomisoentregavoluntaria` (`lugDecEntVoId`),
+  ADD CONSTRAINT `fk_ingreso_municipioextraccion` FOREIGN KEY (`munExtraccionId`) REFERENCES `municipio` (`munId`),
+  ADD CONSTRAINT `fk_ingreso_municipioocurrencia` FOREIGN KEY (`munOcurrenciaId`) REFERENCES `municipio` (`munId`),
+  ADD CONSTRAINT `fk_ingreso_veredaextraccion` FOREIGN KEY (`verExtraccionId`) REFERENCES `vereda` (`verId`),
+  ADD CONSTRAINT `fk_ingreso_veredaocurrencia` FOREIGN KEY (`verOcurrenciaId`) REFERENCES `vereda` (`verId`);
+
+--
+-- Filtros para la tabla `ingresosubproducto`
+--
+ALTER TABLE `ingresosubproducto`
+  ADD CONSTRAINT `fk_ingresosubproducto_ingreso` FOREIGN KEY (`ingId`) REFERENCES `ingreso` (`ingId`),
+  ADD CONSTRAINT `fk_ingresosubproducto_subproducto` FOREIGN KEY (`subprodId`) REFERENCES `subproducto` (`subprodId`);
 
 --
 -- Filtros para la tabla `municipio`
@@ -690,6 +1045,13 @@ ALTER TABLE `persona`
   ADD CONSTRAINT `fk_persona_tipoidentifiacion` FOREIGN KEY (`tipoidentificacionId`) REFERENCES `tipoidentificacion` (`tipidentId`),
   ADD CONSTRAINT `fk_persona_usuario` FOREIGN KEY (`usuarioId`) REFERENCES `usuario` (`usuId`),
   ADD CONSTRAINT `fk_persona_vereda` FOREIGN KEY (`veredaId`) REFERENCES `vereda` (`verId`);
+
+--
+-- Filtros para la tabla `responsableingreso`
+--
+ALTER TABLE `responsableingreso`
+  ADD CONSTRAINT `fk_responsableingreso_ingreso` FOREIGN KEY (`ingId`) REFERENCES `ingreso` (`ingId`),
+  ADD CONSTRAINT `fk_responsableingreso_responsable` FOREIGN KEY (`respId`) REFERENCES `responsable` (`respId`);
 
 --
 -- Filtros para la tabla `usuariogrupo`

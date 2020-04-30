@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author aranda
+ * @author Wilson Carvajal
  */
 @Entity
 @Table(name = "animal", catalog = "hogardepasobd", schema = "")
@@ -39,6 +39,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Animal.findByFamilia", query = "SELECT a FROM Animal a WHERE a.faId.faId = :faId order by a.anEspNombre asc"),
     @NamedQuery(name = "Animal.searchByGrupoTaxonomico", query = "SELECT a FROM Animal a WHERE LOWER(a.grupotaxonomicoId.gruptaxNombre) LIKE :gruptaxNombre"),
     @NamedQuery(name = "Animal.findByAnNombre", query = "SELECT a FROM Animal a WHERE a.anNombre = :anNombre"),
+    @NamedQuery(name = "Animal.findFamiliaJoinOrden",query ="SELECT f,o FROM Animal a INNER JOIN Familia f INNER JOIN Orden o WHERE a.anId=:anId And a.faId.faId = f.faId And f.orId.orId = o.orId "),
     @NamedQuery(name = "Animal.findByAnEspNombre", query = "SELECT a FROM Animal a WHERE a.anEspNombre = :anEspNombre")})
 public class Animal implements Serializable {
 

@@ -8,7 +8,9 @@
 
     <ui:composition>
         <p:dialog resizable="false" header="Información" modal="true"  widgetVar="mensajeRegistroExitoso" closable="false">
-            <p:messages  style="font-size: 15px;"  showDetail="true" autoUpdate="true"/>
+            <p:messages  style="font-size: 15px;"  showDetail="true">
+                <p:autoUpdate />
+            </p:messages>
             <h:form>
                 <p:commandButton  value="Aceptar" style="background:#22419A; 
                                      color: #FFFFFF;margin-left:70px;font-weight: normal;"

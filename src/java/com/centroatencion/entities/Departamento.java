@@ -23,13 +23,13 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author aranda
+ * @author Wilson Carvajal
  */
 @Entity
 @Table(name = "departamento", catalog = "hogardepasobd", schema = "")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Departamento.findAll", query = "SELECT d FROM Departamento d"),
+    @NamedQuery(name = "Departamento.findAll", query = "SELECT d FROM Departamento d ORDER BY d.depNombre asc"),
     @NamedQuery(name = "Departamento.findByDepId", query = "SELECT d FROM Departamento d WHERE d.depId = :depId"),
     @NamedQuery(name = "Departamento.findByNombreDepartamento", query = "SELECT d FROM Departamento d WHERE LOWER(d.depNombre) LIKE :depNombre"),
     @NamedQuery(name = "Departamento.findByDepNombre", query = "SELECT d FROM Departamento d WHERE d.depNombre = :depNombre")})
@@ -46,6 +46,10 @@ public class Departamento implements Serializable {
     private String depNombre;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "departamentoId")
     private List<Municipio> municipioList;
+    @OneToMany(mappedBy = "depExtraccionId")
+    private List<Ingreso> ingresoList;
+    @OneToMany(mappedBy = "depOcurrenciaId")
+    private List<Ingreso> ingresoList1;
 
     public Departamento() {
     }
@@ -82,6 +86,24 @@ public class Departamento implements Serializable {
 
     public void setMunicipioList(List<Municipio> municipioList) {
         this.municipioList = municipioList;
+    }
+
+    @XmlTransient
+    public List<Ingreso> getIngresoList() {
+        return ingresoList;
+    }
+
+    public void setIngresoList(List<Ingreso> ingresoList) {
+        this.ingresoList = ingresoList;
+    }
+
+    @XmlTransient
+    public List<Ingreso> getIngresoList1() {
+        return ingresoList1;
+    }
+
+    public void setIngresoList1(List<Ingreso> ingresoList1) {
+        this.ingresoList1 = ingresoList1;
     }
 
     @Override

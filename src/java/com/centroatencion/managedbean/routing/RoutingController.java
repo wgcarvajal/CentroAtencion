@@ -121,6 +121,20 @@ public class RoutingController implements Serializable {
 
     }
     
+    public void goToIngresos(AddNavegacionController addNavegacionController) {
+        addNavegacionController.addIngresos();
+        this.ruta = "../user/ingreso/ingresos.xhtml";
+        resetViews();
+
+    }
+    
+    public void goToNuevoIngreso(AddNavegacionController addNavegacionController) {
+        addNavegacionController.addIngresos();
+        this.ruta = "../user/ingreso/nuevoIngreso.xhtml";
+        resetViews();
+
+    }
+    
     public void irRegistroPlcTu() {
         this.ruta = "/administrador/plcTu/registroPlcTu.xhtml";
     }

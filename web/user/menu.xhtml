@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+
+    </h:head>
+    <h:body>
+
+        <div id="contenidoMenu">
+            <h:form id="formMenu" >
+                <p:tieredMenu>
+                    <p:menuitem action="#{routingController.goToIngresos(addNavegacionController)}" value="Ingresos" ajax="false"/>
+                    <p:submenu label="Gestión animal">
+                        <p:menuitem value="Orden" action="#{routingController.goToOrden(addNavegacionController)}" ajax="false"/>
+                        <p:menuitem value="Familia"  action="#{routingController.goToFamilias(addNavegacionController)}" ajax="false"/>
+                        <p:menuitem value="Grupo taxnomico"  action="#{routingController.goToGrupoTaxonomico(addNavegacionController)}" ajax="false"/>
+                        <p:menuitem value="Animal"  action="#{routingController.goToAnimal(addNavegacionController)}" ajax="false"/>
+                    </p:submenu>
+                    <p:submenu label="Gestión territorial">
+                        <p:menuitem value="Departamentos" action="#{routingController.goToDepartamentos(addNavegacionController)}" ajax="false"/>
+                        <p:menuitem value="Municipios"  action="#{routingController.goToMuncipios(addNavegacionController)}" ajax="false"/>
+                        <p:menuitem value="Veredas"  action="#{routingController.goToVeredas(addNavegacionController)}" ajax="false"/>
+                    </p:submenu>
+                </p:tieredMenu>
+                
+            </h:form>
+        </div>
+
+    </h:body>
+</html>

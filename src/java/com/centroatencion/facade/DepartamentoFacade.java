@@ -14,7 +14,7 @@ import javax.persistence.Query;
 
 /**
  *
- * @author aranda
+ * @author Wilson Carvajal
  */
 @Stateless
 public class DepartamentoFacade extends AbstractFacade<Departamento> {
@@ -37,5 +37,13 @@ public class DepartamentoFacade extends AbstractFacade<Departamento> {
         List<Departamento> resultList = query.getResultList();
         return resultList;
     }
+
+    @Override
+    public List<Departamento> findAll() {
+        Query query = getEntityManager().createNamedQuery("Departamento.findAll");
+        List<Departamento> resultList = query.getResultList();
+        return resultList; 
+    }
+    
     
 }

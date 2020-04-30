@@ -47,7 +47,7 @@ public class Tipoidentificacion implements Serializable {
     @Basic(optional = false)
     @Column(name = "tipidentAbreviatura")
     private String tipidentAbreviatura;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoidentificacionId")
+    @OneToMany(mappedBy = "tipoidentificacionId")
     private List<Persona> personaList;
 
     public Tipoidentificacion() {

@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Vereda.findAll", query = "SELECT v FROM Vereda v"),
     @NamedQuery(name = "Vereda.findByVerId", query = "SELECT v FROM Vereda v WHERE v.verId = :verId"),
-    @NamedQuery(name = "Vereda.findByMunicipio", query = "SELECT v FROM Vereda v WHERE v.municipioId.munId = :municipioId"),
+    @NamedQuery(name = "Vereda.findByMunicipio", query = "SELECT v FROM Vereda v WHERE v.municipioId.munId = :municipioId ORDER BY v.verNombre asc"),
     @NamedQuery(name = "Vereda.findByMunicipioAndNombre", query = "SELECT v FROM Vereda v WHERE v.municipioId.munId = :municipioId AND LOWER(v.verNombre) LIKE :verNombre"),
     @NamedQuery(name = "Vereda.findByVerNombre", query = "SELECT v FROM Vereda v WHERE v.verNombre = :verNombre")})
 public class Vereda implements Serializable {
@@ -48,6 +48,10 @@ public class Vereda implements Serializable {
     private String verNombre;
     @OneToMany(mappedBy = "veredaId")
     private List<Persona> personaList;
+    @OneToMany(mappedBy = "verOcurrenciaId")
+    private List<Ingreso> ingresoList;
+    @OneToMany(mappedBy = "verExtraccionId")
+    private List<Ingreso> ingresoList1;
     @JoinColumn(name = "municipioId", referencedColumnName = "munId")
     @ManyToOne(optional = false)
     private Municipio municipioId;
@@ -87,6 +91,24 @@ public class Vereda implements Serializable {
 
     public void setPersonaList(List<Persona> personaList) {
         this.personaList = personaList;
+    }
+
+    @XmlTransient
+    public List<Ingreso> getIngresoList() {
+        return ingresoList;
+    }
+
+    public void setIngresoList(List<Ingreso> ingresoList) {
+        this.ingresoList = ingresoList;
+    }
+
+    @XmlTransient
+    public List<Ingreso> getIngresoList1() {
+        return ingresoList1;
+    }
+
+    public void setIngresoList1(List<Ingreso> ingresoList1) {
+        this.ingresoList1 = ingresoList1;
     }
 
     public Municipio getMunicipioId() {

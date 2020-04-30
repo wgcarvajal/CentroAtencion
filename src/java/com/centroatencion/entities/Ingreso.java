@@ -7,24 +7,29 @@ package com.centroatencion.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author aranda
+ * @author Wilson Carvajal
  */
 @Entity
 @Table(name = "ingreso", catalog = "hogardepasobd", schema = "")
@@ -34,6 +39,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Ingreso.findByIngId", query = "SELECT i FROM Ingreso i WHERE i.ingId = :ingId"),
     @NamedQuery(name = "Ingreso.findByIngNumeroRadicado", query = "SELECT i FROM Ingreso i WHERE i.ingRadicado = :ingRadicado"),
     @NamedQuery(name = "Ingreso.findByIngFecha", query = "SELECT i FROM Ingreso i WHERE i.ingFecha = :ingFecha"),
+    @NamedQuery(name = "Ingreso.findMaxConsecutivo",query = "SELECT MAX(i.ingConsecutivo) FROM Ingreso i"),
     @NamedQuery(name = "Ingreso.findByIngNumeroUCTFF", query = "SELECT i FROM Ingreso i WHERE i.ingAUCTFF = :ingAUCTFF")})
 public class Ingreso implements Serializable {
 
@@ -51,21 +57,60 @@ public class Ingreso implements Serializable {
     private String ingRadicado;
     @Column(name = "ingAUCTFF")
     private String ingAUCTFF;
-    @Basic(optional = false)
     @Column(name = "ingConsecutivo")
     private long ingConsecutivo;
-    @Basic(optional = false)
     @Column(name = "ingEstado")
-    private int ingEstado;
-    @JoinColumn(name = "animalId", referencedColumnName = "anId")
-    @ManyToOne(optional = false)
-    private Animal animalId;
+    private Integer ingEstado;
+    @Column(name = "ingCausa")
+    private String ingCausa;
+    @Lob
+    @Column(name = "ingObservaciones")
+    private String ingObservaciones;
+    @Column(name = "ingEstadoSalud")
+    private String ingEstadoSalud;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ingId")
+    private List<Ingresosubproducto> ingresosubproductoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ingId")
+    private List<Responsableingreso> responsableingresoList;
     @JoinColumn(name = "dirterId", referencedColumnName = "dirterId")
     @ManyToOne(optional = false)
     private Direcctionterritorial dirterId;
+    @JoinColumn(name = "animalId", referencedColumnName = "anId")
+    @ManyToOne(optional = false)
+    private Animal animalId;
+    @JoinColumn(name = "depExtraccionId", referencedColumnName = "depId")
+    @ManyToOne
+    private Departamento depExtraccionId;
+    @JoinColumn(name = "depOcurrenciaId", referencedColumnName = "depId")
+    @ManyToOne
+    private Departamento depOcurrenciaId;
+    @JoinColumn(name = "desbioId", referencedColumnName = "desbioId")
+    @ManyToOne
+    private Desarrollobiologico desbioId;
+    @JoinColumn(name = "donanteinfractorId", referencedColumnName = "doninId")
+    @ManyToOne
+    private Donanteinfractor donanteinfractorId;
     @JoinColumn(name = "funcionarioId", referencedColumnName = "perId")
     @ManyToOne(optional = false)
     private Persona funcionarioId;
+    @JoinColumn(name = "genId", referencedColumnName = "genId")
+    @ManyToOne
+    private Genero genId;
+    @JoinColumn(name = "lugardecomisoentregavoluntariaId", referencedColumnName = "lugDecEntVoId")
+    @ManyToOne
+    private Lugardecomisoentregavoluntaria lugardecomisoentregavoluntariaId;
+    @JoinColumn(name = "munExtraccionId", referencedColumnName = "munId")
+    @ManyToOne
+    private Municipio munExtraccionId;
+    @JoinColumn(name = "verOcurrenciaId", referencedColumnName = "verId")
+    @ManyToOne
+    private Vereda verOcurrenciaId;
+    @JoinColumn(name = "verExtraccionId", referencedColumnName = "verId")
+    @ManyToOne
+    private Vereda verExtraccionId;
+    @JoinColumn(name = "munOcurrenciaId", referencedColumnName = "munId")
+    @ManyToOne
+    private Municipio munOcurrenciaId;
 
     public Ingreso() {
     }
@@ -74,11 +119,9 @@ public class Ingreso implements Serializable {
         this.ingId = ingId;
     }
 
-    public Ingreso(Long ingId, Date ingFecha, long ingConsecutivo, int ingEstado) {
+    public Ingreso(Long ingId, Date ingFecha) {
         this.ingId = ingId;
         this.ingFecha = ingFecha;
-        this.ingConsecutivo = ingConsecutivo;
-        this.ingEstado = ingEstado;
     }
 
     public Long getIngId() {
@@ -121,20 +164,54 @@ public class Ingreso implements Serializable {
         this.ingConsecutivo = ingConsecutivo;
     }
 
-    public int getIngEstado() {
+    public Integer getIngEstado() {
         return ingEstado;
     }
 
-    public void setIngEstado(int ingEstado) {
+    public void setIngEstado(Integer ingEstado) {
         this.ingEstado = ingEstado;
     }
 
-    public Animal getAnimalId() {
-        return animalId;
+    public String getIngCausa() {
+        return ingCausa;
     }
 
-    public void setAnimalId(Animal animalId) {
-        this.animalId = animalId;
+    public void setIngCausa(String ingCausa) {
+        this.ingCausa = ingCausa;
+    }
+
+    public String getIngObservaciones() {
+        return ingObservaciones;
+    }
+
+    public void setIngObservaciones(String ingObservaciones) {
+        this.ingObservaciones = ingObservaciones;
+    }
+
+    public String getIngEstadoSalud() {
+        return ingEstadoSalud;
+    }
+
+    public void setIngEstadoSalud(String ingEstadoSalud) {
+        this.ingEstadoSalud = ingEstadoSalud;
+    }
+
+    @XmlTransient
+    public List<Ingresosubproducto> getIngresosubproductoList() {
+        return ingresosubproductoList;
+    }
+
+    public void setIngresosubproductoList(List<Ingresosubproducto> ingresosubproductoList) {
+        this.ingresosubproductoList = ingresosubproductoList;
+    }
+
+    @XmlTransient
+    public List<Responsableingreso> getResponsableingresoList() {
+        return responsableingresoList;
+    }
+
+    public void setResponsableingresoList(List<Responsableingreso> responsableingresoList) {
+        this.responsableingresoList = responsableingresoList;
     }
 
     public Direcctionterritorial getDirterId() {
@@ -145,12 +222,100 @@ public class Ingreso implements Serializable {
         this.dirterId = dirterId;
     }
 
+    public Animal getAnimalId() {
+        return animalId;
+    }
+
+    public void setAnimalId(Animal animalId) {
+        this.animalId = animalId;
+    }
+
+    public Departamento getDepExtraccionId() {
+        return depExtraccionId;
+    }
+
+    public void setDepExtraccionId(Departamento depExtraccionId) {
+        this.depExtraccionId = depExtraccionId;
+    }
+
+    public Departamento getDepOcurrenciaId() {
+        return depOcurrenciaId;
+    }
+
+    public void setDepOcurrenciaId(Departamento depOcurrenciaId) {
+        this.depOcurrenciaId = depOcurrenciaId;
+    }
+
+    public Desarrollobiologico getDesbioId() {
+        return desbioId;
+    }
+
+    public void setDesbioId(Desarrollobiologico desbioId) {
+        this.desbioId = desbioId;
+    }
+
+    public Donanteinfractor getDonanteinfractorId() {
+        return donanteinfractorId;
+    }
+
+    public void setDonanteinfractorId(Donanteinfractor donanteinfractorId) {
+        this.donanteinfractorId = donanteinfractorId;
+    }
+
     public Persona getFuncionarioId() {
         return funcionarioId;
     }
 
     public void setFuncionarioId(Persona funcionarioId) {
         this.funcionarioId = funcionarioId;
+    }
+
+    public Genero getGenId() {
+        return genId;
+    }
+
+    public void setGenId(Genero genId) {
+        this.genId = genId;
+    }
+
+    public Lugardecomisoentregavoluntaria getLugardecomisoentregavoluntariaId() {
+        return lugardecomisoentregavoluntariaId;
+    }
+
+    public void setLugardecomisoentregavoluntariaId(Lugardecomisoentregavoluntaria lugardecomisoentregavoluntariaId) {
+        this.lugardecomisoentregavoluntariaId = lugardecomisoentregavoluntariaId;
+    }
+
+    public Municipio getMunExtraccionId() {
+        return munExtraccionId;
+    }
+
+    public void setMunExtraccionId(Municipio munExtraccionId) {
+        this.munExtraccionId = munExtraccionId;
+    }
+
+    public Vereda getVerOcurrenciaId() {
+        return verOcurrenciaId;
+    }
+
+    public void setVerOcurrenciaId(Vereda verOcurrenciaId) {
+        this.verOcurrenciaId = verOcurrenciaId;
+    }
+
+    public Vereda getVerExtraccionId() {
+        return verExtraccionId;
+    }
+
+    public void setVerExtraccionId(Vereda verExtraccionId) {
+        this.verExtraccionId = verExtraccionId;
+    }
+
+    public Municipio getMunOcurrenciaId() {
+        return munOcurrenciaId;
+    }
+
+    public void setMunOcurrenciaId(Municipio munOcurrenciaId) {
+        this.munOcurrenciaId = munOcurrenciaId;
     }
 
     @Override

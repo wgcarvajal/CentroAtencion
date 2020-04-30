@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author aranda
+ * @author Wilson Carvajal
  */
 @Entity
 @Table(name = "persona", catalog = "hogardepasobd", schema = "")
@@ -38,6 +38,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Persona.findByPerApellidos", query = "SELECT p FROM Persona p WHERE p.perApellidos = :perApellidos"),
     @NamedQuery(name = "Persona.findByPerdireccion", query = "SELECT p FROM Persona p WHERE p.perdireccion = :perdireccion"),
     @NamedQuery(name = "Persona.findByPertelefono", query = "SELECT p FROM Persona p WHERE p.pertelefono = :pertelefono"),
+    @NamedQuery(name = "Persona.findByUsuNombreUsuario", query = "SELECT p FROM Persona p WHERE p.usuarioId.usuNombreUsuario = :usuNombreUsuario"),
     @NamedQuery(name = "Persona.findByPerEmail", query = "SELECT p FROM Persona p WHERE p.perEmail = :perEmail")})
 public class Persona implements Serializable {
 
@@ -56,20 +57,17 @@ public class Persona implements Serializable {
     @Basic(optional = false)
     @Column(name = "perApellidos")
     private String perApellidos;
-    @Basic(optional = false)
     @Column(name = "perdireccion")
     private String perdireccion;
-    @Basic(optional = false)
     @Column(name = "pertelefono")
     private String pertelefono;
-    @Basic(optional = false)
     @Column(name = "perEmail")
     private String perEmail;
     @JoinColumn(name = "municipioId", referencedColumnName = "munId")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Municipio municipioId;
     @JoinColumn(name = "tipoidentificacionId", referencedColumnName = "tipidentId")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Tipoidentificacion tipoidentificacionId;
     @JoinColumn(name = "usuarioId", referencedColumnName = "usuId")
     @ManyToOne(optional = false)
@@ -87,14 +85,11 @@ public class Persona implements Serializable {
         this.perId = perId;
     }
 
-    public Persona(Long perId, String perIdentificacion, String perNombres, String perApellidos, String perdireccion, String pertelefono, String perEmail) {
+    public Persona(Long perId, String perIdentificacion, String perNombres, String perApellidos) {
         this.perId = perId;
         this.perIdentificacion = perIdentificacion;
         this.perNombres = perNombres;
         this.perApellidos = perApellidos;
-        this.perdireccion = perdireccion;
-        this.pertelefono = pertelefono;
-        this.perEmail = perEmail;
     }
 
     public Long getPerId() {

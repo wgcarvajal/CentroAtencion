@@ -339,6 +339,21 @@ public class AddNavegacionController implements Serializable {
         this.menuNavegacion.addElement(departamentos);
 
     }
+    
+    public void addIngresos() {
+        this.menuNavegacion = new DefaultMenuModel();
+        DefaultMenuItem index = new DefaultMenuItem();
+        index.setValue("Index");
+        index.setAjax(false);
+        index.setCommand("#{routingController.goToHome(addNavegacionController)}");
+       
+        
+        DefaultMenuItem ingresos = new DefaultMenuItem();
+        ingresos.setValue("Ingresos");
+        this.menuNavegacion.addElement(index);
+        this.menuNavegacion.addElement(ingresos);
+
+    }
 
     public void addGestionarPlcTu() {
         this.menuNavegacion = new DefaultMenuModel();

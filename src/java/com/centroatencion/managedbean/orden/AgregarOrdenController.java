@@ -84,12 +84,6 @@ public class AgregarOrdenController implements Serializable{
            ordenEJB.create(orden);
            nombre = "";
            ordenController.updateListaOrdenes();
-           FacesContext context = FacesContext.getCurrentInstance();
-           Application application = context.getApplication();
-           ViewHandler viewHandler = application.getViewHandler();
-           UIViewRoot viewRoot = viewHandler.createView(context, context.getViewRoot().getViewId());
-           context.setViewRoot(viewRoot);
-           context.renderResponse();
            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Registro Exitoso."));
        } else {
            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Orden ya existe."));

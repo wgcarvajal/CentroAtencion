@@ -5,6 +5,7 @@
  */
 package com.centroatencion.managedbean.session;
 
+import com.centroatencion.entities.Usuariogrupo;
 import com.centroatencion.facade.UsuariogrupoFacade;
 import java.io.IOException;
 import javax.inject.Named;
@@ -15,7 +16,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import org.primefaces.context.RequestContext;
+import org.primefaces.PrimeFaces;
 
 /**
  *
@@ -70,7 +71,6 @@ public class SessionController implements Serializable {
        
     public void login()throws IOException, ServletException 
     {
-        RequestContext requestContext = RequestContext.getCurrentInstance();
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpServletRequest req = (HttpServletRequest) fc.getExternalContext().getRequest();        
         if (req.getUserPrincipal() == null) {
@@ -79,21 +79,30 @@ public class SessionController implements Serializable {
                 req.login(this.nombreDeUsuario, this.contrasena);
                 req.getServletContext().log("Autenticacion exitosa");
                 haySesion = true;
-                
-                FacesContext.getCurrentInstance().getExternalContext().redirect("faces/admin/main.xhtml");
+                go(this.nombreDeUsuario);
                 
             } 
             catch (ServletException e) 
             {
                 fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Nombre de usuario o contraseña incorrectos", "Nombre de usuario o contraseña incorrectos"));
-                requestContext.update("formularioInicioSession");                
+                PrimeFaces.current().ajax().update("formularioInicioSession");                
             }
         } 
         else 
         {
             req.getServletContext().log("El usuario ya estaba logueado:  ");
-            FacesContext.getCurrentInstance().getExternalContext().redirect("/CentroAtencion/faces/admin/main.xhtml");
+            go(req.getUserPrincipal().getName());
         }
+    }
+    
+    
+    private void go(String nombreDeUsuario) throws IOException
+    {
+        Usuariogrupo usuarioGrupo =usuarioGrupoEJB.findByNombreusuario(nombreDeUsuario);
+        if(usuarioGrupo.getNombreusuario().equalsIgnoreCase("admin"))   
+          FacesContext.getCurrentInstance().getExternalContext().redirect("faces/admin/main.xhtml");
+        else
+          FacesContext.getCurrentInstance().getExternalContext().redirect("faces/user/main.xhtml");
     }
     
     public void logout() throws IOException, ServletException 

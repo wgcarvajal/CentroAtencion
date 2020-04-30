@@ -9,6 +9,7 @@ import com.centroatencion.entities.Ingreso;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -27,6 +28,13 @@ public class IngresoFacade extends AbstractFacade<Ingreso> {
 
     public IngresoFacade() {
         super(Ingreso.class);
+    }
+    
+    public long findMaxConsecutivo()
+    {
+        Query query = getEntityManager().createNamedQuery("Ingreso.findMaxConsecutivo");
+        long restul = (long)query.getSingleResult();
+        return restul;
     }
     
 }

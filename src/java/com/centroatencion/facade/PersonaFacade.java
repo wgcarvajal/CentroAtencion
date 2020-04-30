@@ -39,4 +39,12 @@ public class PersonaFacade extends AbstractFacade<Persona> {
         return object;
     }
     
+    public Persona findPersonaByNombreUsuario(String usuNombreUsuario)
+    {
+        Query query = getEntityManager().createNamedQuery("Persona.findByUsuNombreUsuario");
+        query.setParameter("usuNombreUsuario", usuNombreUsuario);
+        Persona object = (Persona)query.getSingleResult();
+        return object;
+    }
+    
 }

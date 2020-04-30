@@ -200,3 +200,22 @@ body {
     background: url(../imagenesAplicacion/fondoNaranja.jpg) no-repeat !important;
     background-size: cover !important;
 }
+
+.refreshIcon
+{   color: white;
+    background: #459e00;
+    border-radius: 10px;
+    width: 20px;
+    height: 20px;
+}
+
+.helper {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.refreshIcon i
+{
+    vertical-align: middle;
+}

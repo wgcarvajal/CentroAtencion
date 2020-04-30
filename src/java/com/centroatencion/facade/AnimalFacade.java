@@ -14,7 +14,7 @@ import javax.persistence.Query;
 
 /**
  *
- * @author aranda
+ * @author Wilson Carvajal
  */
 @Stateless
 public class AnimalFacade extends AbstractFacade<Animal> {
@@ -80,6 +80,14 @@ public class AnimalFacade extends AbstractFacade<Animal> {
         Query query = getEntityManager().createNamedQuery("Animal.findByFamilia");
         query.setParameter("faId", faId);
         List<Animal> resultList = query.getResultList();
+        return resultList;
+    }
+    
+    public List<Object[]> findFamiliaJoinOrden(long anId)
+    {
+        Query query = getEntityManager().createNamedQuery("Animal.findFamiliaJoinOrden");
+        query.setParameter("anId", anId);
+        List<Object[]> resultList = query.getResultList();
         return resultList;
     }
 }

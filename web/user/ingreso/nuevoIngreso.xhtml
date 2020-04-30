@@ -1,0 +1,694 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"      
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition>
+        <div class="tituloContenido">                           
+               #{bundle.NuevoIngreso}
+        </div>
+        <br/>
+        <h:form id="form">
+            <p:wizard flowListener="#{nuevoIngresoController.onFlowProcess}"
+                      backLabel="#{bundle.Regresar}" nextLabel="#{bundle.Siguiente}">
+                <p:tab id="gestion" title="#{bundle.Gestion}">
+                    <p:panel header="#{bundle.GestionDetalle}">
+                        <p:panelGrid >
+                            <p:row>
+                                <p:column>
+                                    <h:outputLabel style="text-align: left; color:red;" 
+                                                   value="*"/>
+                                    <h:outputLabel value=" #{bundle.CampoObligatorios}" />
+                                </p:column>                                
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="#{bundle.FechaIngreso}: " />
+                                    <h:outputLabel style="text-align: left; color:red;" 
+                                                   value="*"/>
+                                </p:column>
+                                <p:column>
+                                    <p:calendar 
+                                        pattern="dd/MM/yyyy"
+                                        id="date" value="#{nuevoIngresoController.date}"
+                                        maxdate="#{nuevoIngresoController.maxVisibleDate()}" 
+                                        readonlyInput="true"
+                                        required="true" requiredMessage="#{bundle.CampoRequerido}" >
+                                    </p:calendar>
+                                </p:column>
+                                <p:column>
+                                    <p:message for="date"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="#{bundle.DireccionTerritorial}: " />
+                                    <h:outputLabel style="text-align: left; color:red;" 
+                                                   value="*"/>
+                                </p:column>
+                                <p:column>
+                                    <p:selectOneMenu
+                                        id="dirTerritorial"
+                                        value="#{nuevoIngresoController.direcctionterritorial}"
+                                        required="true" requiredMessage="#{bundle.CampoRequerido}"            
+                                                     >
+                                        <f:selectItem itemLabel="#{bundle.Seleccione}.." />
+                                        <f:selectItems value="#{nuevoIngresoController.listDirTerritorial}" 
+                                                       var="dirTerritorial" itemLabel="#{dirTerritorial.dirterNombre}"
+                                                       itemValue="#{dirTerritorial}"
+                                                       />
+                                    </p:selectOneMenu>
+                                </p:column>
+                                <p:column>
+                                    <p:message for="dirTerritorial"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="#{bundle.NumeroRadicado}: " />
+                                </p:column>
+                                <p:column>
+                                    <p:inputText id="noRadicado"  value="#{nuevoIngresoController.noRadicado}"/>
+                                    <p:keyFilter for="noRadicado" mask="num"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="#{bundle.NumeroAUCTFF}: "></h:outputText>
+                                    <p:outputLabel id="test"><i  class="fa fa-fw fa-info-circle"></i></p:outputLabel>
+                                    <p:tooltip for="test" value="#{bundle.DescripcionNumeroAUCTFF}" />
+                                </p:column>
+                                <p:column>
+                                    <p:inputText id="noAUCTFF" value="#{nuevoIngresoController.noAUCTFF}"/>
+                                    <p:keyFilter for="noAUCTFF" mask="num"/>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                    </p:panel>
+                </p:tab>
+                <p:tab id="especie" title="#{bundle.Especie}">
+                    <p:panel id="panelEspecie" header="#{bundle.EspecieDetalles}">
+                        <p:panelGrid >
+                            <p:row>
+                                <p:column>
+                                    <h:outputLabel style="text-align: left; color:red;" 
+                                                   value="*"/>
+                                    <h:outputLabel value=" #{bundle.CampoObligatorios}" />
+                                </p:column>                                
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <h:outputLabel value="#{bundle.Especie}: "/>
+                                    <h:outputLabel style="text-align: left; color:red;" 
+                                                   value="*"/>
+                                </p:column>
+                                <p:column>
+                                    <p:selectOneMenu
+                                        id="seleccionEspecie"
+                                        filter="true"
+                                        filterMatchMode="contains"
+                                        valueChangeListener="#{nuevoIngresoController.changedAnimal}"
+                                        value="#{nuevoIngresoController.animalSelected}"
+                                        >
+                                        <f:selectItem itemLabel="#{bundle.Seleccione}.."/>
+                                        <f:selectItems value="#{nuevoIngresoController.listaAnimal}"
+                                                       var="animal"
+                                                       itemLabel="#{animal.anNombre} | #{bundle.Especie}: #{animal.anEspNombre}"
+                                                       itemValue="#{animal}"
+                                                       />
+                                        <p:ajax update="panelEspecie"/>
+                                        <p:ajax onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"/>
+                                    </p:selectOneMenu>
+                                </p:column>
+                                <p:column>
+                                    <p:commandLink 
+                                        action="#{nuevoIngresoController.reloadAnimalList}"
+                                        id="reloadListEspecies"
+                                        update="panelEspecie"
+                                        style="text-decoration: none !important;"
+                                        onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                        >
+                                        <div class="refreshIcon">
+                                            <span class="helper"></span>
+                                            <i class="pi pi-refresh"></i>
+                                        </div>
+                                    </p:commandLink>
+                                </p:column>
+                                <p:column>
+                                    <p:message for="seleccionEspecie"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel value="#{bundle.Familia}: " />
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel value="#{nuevoIngresoController.familiaNombre()}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel value="#{bundle.Orden}: " />
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel value="#{nuevoIngresoController.ordenNombre()}"/>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                    </p:panel>
+                </p:tab>
+                <p:tab id="causa" title="#{bundle.Causa}">
+                    <p:panel id="panelCausa" header="#{bundle.CausaDetalles}">
+                        <p:panelGrid>
+                            <p:row>
+                                <p:column>
+                                    <h:outputLabel style="text-align: left; color:red;" 
+                                                   value="*"/>
+                                    <h:outputLabel value=" #{bundle.CampoObligatorios}" />
+                                </p:column>                                
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <h:outputLabel value="#{bundle.CausaIngreso}: " />
+                                    <h:outputLabel style="text-align: left; color:red;" 
+                                                   value="*"/>
+                                </p:column>
+                                <p:column colspan="2">
+                                    <p:selectOneRadio 
+                                        id="SeleccioneCausa"
+                                        value="#{nuevoIngresoController.causaIngreso}"
+                                                      valueChangeListener="#{nuevoIngresoController.changedCausaIngreso}"
+                                                      >
+                                        <f:selectItem itemLabel="#{bundle.EntregaVoluntaria}" itemValue="EV"/>
+                                        <f:selectItem itemLabel="#{bundle.Decomiso}" itemValue="DC"/>
+                                        <p:ajax update="panelCausa"/>
+                                        <p:ajax onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"/>
+                                    </p:selectOneRadio>
+                                </p:column>
+                                <p:column>
+                                    <p:message for="SeleccioneCausa"/>
+                                </p:column>
+                            </p:row>
+                            <p:row rendered="#{nuevoIngresoController.verPersona}">
+                                <p:column rowspan="5">
+                                    <h:outputLabel value="#{nuevoIngresoController.tipoPersona}: "/>
+                                </p:column>
+                                <p:column>
+                                    <h:outputLabel value="#{bundle.NumeroIdentificacion}: "/>
+                                </p:column>
+                                <p:column>
+                                    <p:remoteCommand name="buscarPersona" actionListener="#{nuevoIngresoController.buscarPersona}"
+                                        onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                        update="panelCausa"
+                                                     />
+                                    <p:inputText
+                                        id="identificacion"
+                                        value="#{nuevoIngresoController.identificacion}"
+                                        onkeypress="if (event.keyCode == 13) { buscarPersona(); return false; }"/>
+                                    <p:keyFilter for="identificacion" mask="num"/>
+                                </p:column>
+                            </p:row>
+                            <p:row rendered="#{nuevoIngresoController.verPersona}">
+                                <p:column>
+                                    <h:outputLabel value="#{bundle.Nombres}: "/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText 
+                                        style="width: 200px;"
+                                        value="#{nuevoIngresoController.nombres}"
+                                        />
+                                </p:column>
+                            </p:row>
+                            <p:row rendered="#{nuevoIngresoController.verPersona}">
+                                <p:column>
+                                    <h:outputLabel value="#{bundle.Apellidos}: "/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText style="width: 200px;"
+                                        value="#{nuevoIngresoController.apellidos}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row rendered="#{nuevoIngresoController.verPersona}">
+                                <p:column>
+                                    <h:outputLabel value="#{bundle.Direccion}: "/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText style="width: 300px;"
+                                        value="#{nuevoIngresoController.direccion}"
+                                        />
+                                </p:column>
+                            </p:row>
+                            <p:row rendered="#{nuevoIngresoController.verPersona}">
+                                <p:column>
+                                    <h:outputLabel value="#{bundle.Telefono}: "/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText 
+                                        id="telefono"
+                                        value="#{nuevoIngresoController.telefono}"
+                                        />
+                                    <p:keyFilter for="telefono" mask="num"/>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                    </p:panel>
+                </p:tab>
+                <p:tab id="sitioOcurrencia" title="#{bundle.SitioOcurrencia}">
+                    <p:panel id="panelSitioOcurrencia" header="#{bundle.SitioOcurrenciaDetalles}">
+                        <div style="float: left;">
+                            <p:panelGrid id="panelGridSitioOcurrencia">
+                                <p:row>
+                                    <p:column>
+                                        <h:outputLabel value="#{bundle.Departamento}: "/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:selectOneMenu
+                                            filter="true"
+                                            filterMatchMode="contains"
+                                            value="#{nuevoIngresoController.departamentoOcurrenciaSelected}"
+                                            valueChangeListener="#{nuevoIngresoController.changedDepartamentoOcurrencia}"
+                                            >
+                                            <f:selectItem itemLabel="#{bundle.SinDatos}.." />
+                                            <f:selectItems 
+                                                value="#{nuevoIngresoController.listaDepartamentosOcurrencia}"
+                                                var="departamento"
+                                                itemLabel="#{departamento.depNombre}"
+                                                itemValue="#{departamento}"
+                                                />
+                                            <p:ajax update="panelGridSitioOcurrencia"/>
+                                            <p:ajax onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"/>
+                                        </p:selectOneMenu>
+                                    </p:column>
+                                    <p:column>
+                                        <p:commandLink 
+                                            action="#{nuevoIngresoController.reloadDepartamentoOcurrenciaList}"
+                                            update="panelGridSitioOcurrencia"
+                                            style="text-decoration: none !important;"
+                                            onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                            >
+                                            <div class="refreshIcon">
+                                                <span class="helper"></span>
+                                                <i class="pi pi-refresh"></i>
+                                            </div>
+                                        </p:commandLink>
+                                    </p:column>
+                                </p:row>
+                                <p:row rendered="#{nuevoIngresoController.verMunicipiosOcurrencia}">
+                                    <p:column>
+                                        <h:outputLabel value="#{bundle.Municipio}: "/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:selectOneMenu
+                                            filter="true"
+                                            filterMatchMode="contains"
+                                            value="#{nuevoIngresoController.municipioOcurrenciaSelected}"
+                                            valueChangeListener="#{nuevoIngresoController.changedMunicipioOcurrencia}"
+                                            >
+                                            <f:selectItem itemLabel="#{bundle.SinDatos}.." />
+                                            <f:selectItems 
+                                                value="#{nuevoIngresoController.listaMunicipiosOcurrencia}"
+                                                var="municipio"
+                                                itemLabel="#{municipio.munNombre}"
+                                                itemValue="#{municipio}"
+                                                />
+                                            <p:ajax update="panelGridSitioOcurrencia"/>
+                                            <p:ajax onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"/>
+                                        </p:selectOneMenu>
+                                    </p:column>
+                                    <p:column>
+                                        <p:commandLink
+                                            action="#{nuevoIngresoController.reloadMunicipioOcurrenciaList}"
+                                            update="panelGridSitioOcurrencia"
+                                            style="text-decoration: none !important;"
+                                            onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                            >
+                                            <div class="refreshIcon">
+                                                <span class="helper"></span>
+                                                <i class="pi pi-refresh"></i>
+                                            </div>
+                                        </p:commandLink>
+                                    </p:column>
+                                </p:row>
+                                <p:row rendered="#{nuevoIngresoController.verVeredasOcurrencia}">
+                                    <p:column>
+                                        <h:outputLabel value="#{bundle.VeredaBarrio}: "/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:selectOneMenu
+                                            filter="true"
+                                            filterMatchMode="contains"
+                                            value="#{nuevoIngresoController.veredaOcurrenciaSelected}"
+                                            >
+                                            <f:selectItem itemLabel="#{bundle.SinDatos}.." />
+                                            <f:selectItems 
+                                                value="#{nuevoIngresoController.listaVeredasOcurrencia}"
+                                                var="vereda"
+                                                itemLabel="#{vereda.verNombre}"
+                                                itemValue="#{vereda}"
+                                                />
+                                        </p:selectOneMenu>
+                                    </p:column>
+                                    <p:column>
+                                        <p:commandLink
+                                            action="#{nuevoIngresoController.reloadVeredaOcurrenciaList}"
+                                            update="panelGridSitioOcurrencia"
+                                            style="text-decoration: none !important;"
+                                            onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                            >
+                                            <div class="refreshIcon">
+                                                <span class="helper"></span>
+                                                <i class="pi pi-refresh"></i>
+                                            </div>
+                                        </p:commandLink>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </div>
+                        <div style=" margin-left: 10px; float: left;">
+                            <p:panelGrid>
+                                <p:row>
+                                    <p:column>
+                                        <h:outputLabel value="#{bundle.Responsable}: "/>
+                                        <p:outputLabel id="responsableInfo"><i  class="fa fa-fw fa-info-circle"></i></p:outputLabel>
+                                        <p:tooltip for="responsableInfo" value="#{bundle.DescripcionResponsable}" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:selectManyCheckbox 
+                                            value="#{nuevoIngresoController.responsablesSelected}"
+                                            converter="selectManyCheckbox"
+                                            layout="pageDirection">
+                                            <f:selectItems
+                                                value="#{nuevoIngresoController.listaResponsables}"
+                                                var="responsable"
+                                                itemLabel="#{responsable.respAbreviatura}"
+                                                itemValue="#{responsable}" itemDescription="#{responsable.respNombre}"/>
+                                                
+                                        </p:selectManyCheckbox>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </div>
+                        <div style=" margin-left: 10px; float: left;">
+                            <p:panelGrid>
+                                <p:row>
+                                    <p:column>
+                                        <h:outputLabel value="#{bundle.Lugar}: "/>
+                                        <p:outputLabel id="lugarInfo"><i  class="fa fa-fw fa-info-circle"></i></p:outputLabel>
+                                        <p:tooltip for="lugarInfo" value="#{bundle.LugarDescripcion}" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:selectOneMenu
+                                            converter="selectManyCheckbox"
+                                            value="#{nuevoIngresoController.lugardecomisoentregavoluntariaSelected}"
+                                            >
+                                            <f:selectItem itemLabel="#{bundle.SinDatos}.." />
+                                            <f:selectItems 
+                                                value="#{nuevoIngresoController.listaLugardecomisoentregavoluntaria}"
+                                                var="lugardecomisoentregavoluntaria"
+                                                itemLabel="#{lugardecomisoentregavoluntaria.lugDecEntVoAbreviatura}"
+                                                itemValue="#{lugardecomisoentregavoluntaria}"
+                                                itemDescription="#{lugardecomisoentregavoluntaria.lugDecEntVoNombre}"/>
+                                        </p:selectOneMenu>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </div>
+                        <div style="clear: both;"></div>
+                    </p:panel>
+                </p:tab>
+                <p:tab id="sitioExtraccion" title="#{bundle.SitioExtraccion}">
+                    <p:panel id="panelSitioExtraccion" header="#{bundle.SitioExtraccionDetalles}">
+                        <p:panelGrid>
+                            <p:row>
+                                <p:column>
+                                    <h:outputLabel value="#{bundle.Departamento}: "/>
+                                </p:column>
+                                <p:column>
+                                    <p:selectOneMenu
+                                        filter="true"
+                                        filterMatchMode="contains"
+                                        value="#{nuevoIngresoController.departamentoSelected}"
+                                        valueChangeListener="#{nuevoIngresoController.changedDepartamento}"
+                                        >
+                                        <f:selectItem itemLabel="#{bundle.SinDatos}.." />
+                                        <f:selectItems 
+                                            value="#{nuevoIngresoController.listaDepartamentos}"
+                                            var="departamento"
+                                            itemLabel="#{departamento.depNombre}"
+                                            itemValue="#{departamento}"
+                                                       />
+                                        <p:ajax update="panelSitioExtraccion"/>
+                                        <p:ajax onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"/>
+                                    </p:selectOneMenu>
+                                </p:column>
+                                <p:column>
+                                    <p:commandLink 
+                                        id="reloadListDepartamentos"
+                                        action="#{nuevoIngresoController.reloadDepartamentoList}"
+                                        update="panelSitioExtraccion"
+                                        style="text-decoration: none !important;"
+                                        onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                        >
+                                        <div class="refreshIcon">
+                                            <span class="helper"></span>
+                                            <i class="pi pi-refresh"></i>
+                                        </div>
+                                    </p:commandLink>
+                                </p:column>
+                            </p:row>
+                            <p:row rendered="#{nuevoIngresoController.verMunicipios}">
+                                <p:column>
+                                    <h:outputLabel value="#{bundle.Municipio}: "/>
+                                </p:column>
+                                <p:column>
+                                    <p:selectOneMenu
+                                        filter="true"
+                                        filterMatchMode="contains"
+                                        value="#{nuevoIngresoController.municipioSelected}"
+                                        valueChangeListener="#{nuevoIngresoController.changedMunicipio}"
+                                        >
+                                        <f:selectItem itemLabel="#{bundle.SinDatos}.." />
+                                        <f:selectItems 
+                                            value="#{nuevoIngresoController.listaMunicipios}"
+                                            var="municipio"
+                                            itemLabel="#{municipio.munNombre}"
+                                            itemValue="#{municipio}"
+                                                       />
+                                        <p:ajax update="panelSitioExtraccion"/>
+                                        <p:ajax onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"/>
+                                    </p:selectOneMenu>
+                                </p:column>
+                                <p:column>
+                                    <p:commandLink 
+                                        id="reloadListMunicipios"
+                                        action="#{nuevoIngresoController.reloadMunicipioList}"
+                                        update="panelSitioExtraccion"
+                                        style="text-decoration: none !important;"
+                                        onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                        >
+                                        <div class="refreshIcon">
+                                            <span class="helper"></span>
+                                            <i class="pi pi-refresh"></i>
+                                        </div>
+                                    </p:commandLink>
+                                </p:column>
+                            </p:row>
+                            <p:row rendered="#{nuevoIngresoController.verVeredas}">
+                                <p:column>
+                                    <h:outputLabel value="#{bundle.VeredaBarrio}: "/>
+                                </p:column>
+                                <p:column>
+                                    <p:selectOneMenu
+                                        filter="true"
+                                        filterMatchMode="contains"
+                                        value="#{nuevoIngresoController.veredaSelected}"
+                                        >
+                                        <f:selectItem itemLabel="#{bundle.SinDatos}.." />
+                                        <f:selectItems 
+                                            value="#{nuevoIngresoController.listaVeredas}"
+                                            var="vereda"
+                                            itemLabel="#{vereda.verNombre}"
+                                            itemValue="#{vereda}"
+                                                       />
+                                    </p:selectOneMenu>
+                                </p:column>
+                                <p:column>
+                                    <p:commandLink 
+                                        id="reloadListVeredas"
+                                        action="#{nuevoIngresoController.reloadVeredaList}"
+                                        update="panelSitioExtraccion"
+                                        style="text-decoration: none !important;"
+                                        onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                        >
+                                        <div class="refreshIcon">
+                                            <span class="helper"></span>
+                                            <i class="pi pi-refresh"></i>
+                                        </div>
+                                    </p:commandLink>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                    </p:panel>
+                </p:tab>
+                <p:tab id="estado" title="#{bundle.Estado}">
+                    <p:panel header="#{bundle.EstadoDetalles}">
+                        <div style="float: left;">
+                            <p:panelGrid id="panelGridEstado">
+                                <p:row>
+                                    <p:column>
+                                        <h:outputLabel style="text-align: left; color:red;" 
+                                                       value="*"/>
+                                        <h:outputLabel value=" #{bundle.CampoObligatorios}" />
+                                    </p:column>                                
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <h:outputLabel value="#{bundle.Genero}: "/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:selectOneMenu
+                                            value="#{nuevoIngresoController.generoSelected}"
+                                            converter="selectManyCheckbox"
+                                            valueChangeListener="#{nuevoIngresoController.changedGenero}"
+                                            >
+                                            <f:selectItem itemLabel="#{bundle.Indeterminado}"/>
+                                            <f:selectItems
+                                                value="#{nuevoIngresoController.listaGenero}"
+                                                var="genero"
+                                                itemLabel="#{genero.genNombre}" itemValue="#{genero}"/>
+                                            <p:ajax onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"/>
+                                        </p:selectOneMenu>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <h:outputLabel value="#{bundle.DesarrolloBiologico}: "/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:selectOneMenu
+                                            converter="selectManyCheckbox"
+                                            value="#{nuevoIngresoController.desarrollobiologicoSelected}"
+                                            valueChangeListener="#{nuevoIngresoController.changedDesarrolloBiologico}"
+                                            >
+                                            <f:selectItem itemLabel="#{bundle.Indeterminado}"/>
+                                            <f:selectItems
+                                                value="#{nuevoIngresoController.listaDesarrolloBiologico}"
+                                                var="desarrollobiologico"
+                                                itemLabel="#{desarrollobiologico.desbioNombre}" itemValue="#{desarrollobiologico}"/>
+                                            <p:ajax onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"/>
+                                        </p:selectOneMenu>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <h:outputLabel value="#{bundle.Estado}: "/>
+                                        <h:outputLabel style="text-align: left; color:red;" 
+                                                       value="*"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:selectOneRadio 
+                                            id="SeleccioneEstado"
+                                            value="#{nuevoIngresoController.estado}"
+                                            valueChangeListener="#{nuevoIngresoController.changedEstado}"
+                                            >
+                                            <f:selectItem itemLabel="#{bundle.Vivo}" itemValue="1"/>
+                                            <f:selectItem itemLabel="#{bundle.Muerto}" itemValue="2"/>
+                                            <p:ajax update="panelGridEstado form:panelGridObservaciones"/>
+                                            <p:ajax onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"/>
+                                        </p:selectOneRadio>
+                                    </p:column>
+                                    <p:column>
+                                        <p:message for="SeleccioneEstado"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row rendered="#{nuevoIngresoController.ejemplarMuerto}">
+                                    <p:column>
+                                        <h:outputLabel value="#{bundle.Producto}: "/>
+                                        <h:outputLabel style="text-align: left; color:red;" 
+                                                       value="*"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:selectOneRadio 
+                                            id="SeleccioneProducto"
+                                            value="#{nuevoIngresoController.producto}"
+                                            valueChangeListener="#{nuevoIngresoController.changedProducto}"
+                                            >
+                                            <f:selectItem itemLabel="#{bundle.Completo}" itemValue="1"/>
+                                            <f:selectItem itemLabel="#{bundle.SubProducto}" itemValue="2"/>
+                                            <p:ajax update="panelGridEstado form:panelGridObservaciones"/>
+                                            <p:ajax onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"/>
+                                        </p:selectOneRadio>
+                                    </p:column>
+                                    <p:column>
+                                        <p:message for="SeleccioneProducto"/>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </div>
+                        <div style="float: left; margin-left: 10px;">
+                            <p:panelGrid id="panelGridObservaciones" >
+                                <p:row rendered="#{nuevoIngresoController.subProducto}">
+                                    <p:column>
+                                        <h:outputLabel value="#{bundle.SubProducto}: " />
+                                    </p:column>
+                                    <p:column>
+                                        <p:selectManyCheckbox 
+                                            value="#{nuevoIngresoController.listaSubproductoSelected}"
+                                            converter="selectManyCheckbox"
+                                            layout="grid"
+                                            columns="2"
+                                            >
+                                            <f:selectItems
+                                                value="#{nuevoIngresoController.listaSubproducto}"
+                                                var="subproducto"
+                                                itemLabel="#{subproducto.subprodNombre}"
+                                                itemValue="#{subproducto}" />
+                                                
+                                        </p:selectManyCheckbox>
+                                    </p:column>
+                                </p:row>
+                                <p:row rendered="#{nuevoIngresoController.ejemplarVivo}">
+                                    <p:column>
+                                        <h:outputLabel value="#{bundle.EstadoSalud}: " />
+                                    </p:column>
+                                    <p:column>
+                                        <p:selectOneMenu
+                                            value="#{nuevoIngresoController.estadoSalud}"
+                                            >
+                                            <f:selectItem itemLabel="#{bundle.Seleccione}.." />
+                                            <f:selectItem itemLabel="#{bundle.Bueno}"
+                                                          itemValue="B"/>
+                                            <f:selectItem itemLabel="#{bundle.Malo}"
+                                                          itemValue="M"/>
+                                            <f:selectItem itemLabel="#{bundle.Regular}"
+                                                          itemValue="R"/>
+                                        </p:selectOneMenu>
+                                    </p:column>
+                                </p:row>
+                                <p:row rendered="#{nuevoIngresoController.ejemplarVivo || nuevoIngresoController.productoCompleto || nuevoIngresoController.subProducto}">
+                                    <p:column>
+                                        <h:outputLabel value="#{bundle.Observaciones}: " />
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputTextarea value="#{nuevoIngresoController.observaciones}" />
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </div>
+                        <div style="clear: both;"></div>
+                        <div style="width: 100%;margin-top: 40px ;text-align: center;">
+                            <p:commandButton 
+                                action="#{nuevoIngresoController.registrar}"
+                                value="#{bundle.Registrar}"
+                                update="form:panelGridEstado"
+                                onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                />
+                        </div>
+                    </p:panel>
+                </p:tab>
+            </p:wizard>
+        </h:form>
+    </ui:composition>
+</html>

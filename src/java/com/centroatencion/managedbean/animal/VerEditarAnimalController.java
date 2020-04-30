@@ -32,11 +32,10 @@ import javax.faces.event.PhaseId;
 import javax.inject.Named;
 import org.apache.commons.io.FileUtils;
 import org.primefaces.PrimeFaces;
-import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
-import org.primefaces.model.UploadedFile;
+import org.primefaces.model.file.UploadedFile;
 
 /**
  *
@@ -393,12 +392,11 @@ public class VerEditarAnimalController implements Serializable{
     }
     
     public void actualizarFoto() throws InterruptedException {
-        RequestContext requestContext = RequestContext.getCurrentInstance();
         if (this.uploadedFileFoto != null) {
             this.campoFoto = true;
                 
             try {
-                InputStream fi = uploadedFileFoto.getInputstream();
+                InputStream fi = uploadedFileFoto.getInputStream();
                 byte[] buffer = RedimensionadorImagenes.redimensionar(fi,800);
                 
                 ByteArrayInputStream bin = new ByteArrayInputStream(buffer);

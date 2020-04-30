@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author aranda
+ * @author Wilson Carvajal
  */
 @Entity
 @Table(name = "municipio", catalog = "hogardepasobd", schema = "")
@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Municipio.findAll", query = "SELECT m FROM Municipio m"),
     @NamedQuery(name = "Municipio.findByMunId", query = "SELECT m FROM Municipio m WHERE m.munId = :munId"),
-    @NamedQuery(name = "Municipio.findByDepartamento", query = "SELECT m FROM Municipio m WHERE m.departamentoId.depId = :departamentoId"),
+    @NamedQuery(name = "Municipio.findByDepartamento", query = "SELECT m FROM Municipio m WHERE m.departamentoId.depId = :departamentoId ORDER BY m.munNombre asc"),
     @NamedQuery(name = "Municipio.findByDepartamentoAndNombre", query = "SELECT m FROM Municipio m WHERE m.departamentoId.depId = :departamentoId AND LOWER(m.munNombre) LIKE :munNombre"),
     @NamedQuery(name = "Municipio.findByMunNombre", query = "SELECT m FROM Municipio m WHERE m.munNombre = :munNombre")})
 public class Municipio implements Serializable {
@@ -47,11 +47,15 @@ public class Municipio implements Serializable {
     @Basic(optional = false)
     @Column(name = "munNombre")
     private String munNombre;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "municipioId")
+    @OneToMany(mappedBy = "municipioId")
     private List<Persona> personaList;
     @JoinColumn(name = "departamentoId", referencedColumnName = "depId")
     @ManyToOne(optional = false)
     private Departamento departamentoId;
+    @OneToMany(mappedBy = "munExtraccionId")
+    private List<Ingreso> ingresoList;
+    @OneToMany(mappedBy = "munOcurrenciaId")
+    private List<Ingreso> ingresoList1;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "municipioId")
     private List<Vereda> veredaList;
 
@@ -98,6 +102,24 @@ public class Municipio implements Serializable {
 
     public void setDepartamentoId(Departamento departamentoId) {
         this.departamentoId = departamentoId;
+    }
+
+    @XmlTransient
+    public List<Ingreso> getIngresoList() {
+        return ingresoList;
+    }
+
+    public void setIngresoList(List<Ingreso> ingresoList) {
+        this.ingresoList = ingresoList;
+    }
+
+    @XmlTransient
+    public List<Ingreso> getIngresoList1() {
+        return ingresoList1;
+    }
+
+    public void setIngresoList1(List<Ingreso> ingresoList1) {
+        this.ingresoList1 = ingresoList1;
     }
 
     @XmlTransient
