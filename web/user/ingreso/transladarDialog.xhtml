@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition>
+        <h:form id="formTransladar">
+            <p:dialog  header="#{bundle.DireccionTerritorial}" widgetVar="transladar"
+                       resizable="false"
+                       >
+                <p:panelGrid id="panelTranladar">
+                    <p:messages globalOnly="true" closable="true"/>
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel style="text-align: left; color:red;" 
+                                           value="*"/>
+                            <h:outputLabel value=" #{bundle.CampoObligatorios}" />
+                        </p:column>                                
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <h:outputText value="#{bundle.Fecha}: " />
+                            <h:outputLabel style="text-align: left; color:red;" 
+                                           value="*"/>
+                        </p:column>
+                        <p:column>
+                            <p:calendar 
+                                pattern="dd/MM/yyyy"
+                                id="dateTransladar" value="#{ingresoController.dateTransladar}"
+                                maxdate="#{ingresoController.maxVisibleDate()}"
+                                readonlyInput="true" >
+                            </p:calendar>
+                        </p:column>
+                        <p:column>
+                            <p:message for="dateTransladar"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <h:outputText value="#{bundle.DireccionTerritorial}: " />
+                            <h:outputLabel style="text-align: left; color:red;" 
+                                           value="*"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu
+                                id="selectDireccionTerritorial"
+                                converter="selectManyCheckbox"
+                                value="#{ingresoController.direccionterritorialSelectedToTransladar}"
+                                >
+                                <f:selectItem itemLabel="#{bundle.Seleccione}.." />
+                                <f:selectItems var="direccionterritorial" 
+                                               value="#{ingresoController.direcctionterritorialList}"
+                                               itemLabel="#{direccionterritorial.dirterNombre}" itemValue="#{direccionterritorial}"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column>
+                            <p:message for="selectDireccionTerritorial"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="3" style="text-align: center;">
+                            <p:commandButton value="Aceptar"  
+                                             action="#{ingresoController.aceptarTransladar}"
+                                             onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"/>
+                            <p:commandButton value="Cancelar"
+                                             onclick="PF('transladar').hide()"
+                                             onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:dialog>
+        </h:form>
+    </ui:composition>
+</html>
+

@@ -2,21 +2,32 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"      
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <ui:composition>
-        <div class="tituloContenido">                           
-               Familias
-        </div>
-        <br/>
-        <h:form id="seleccionarOrden">
+
+    <body>
+
+        <ui:composition template="./../../../templates/template.xhtml">
+
+            <ui:define name="title">
+                #{bundle.Familia}
+            </ui:define>
+
+            
+
+            <ui:define name="content">
+                <div class="tituloContenido">                           
+                    Familias
+                </div>
+                <br/>
+                <h:form id="seleccionarOrden">
                     <h:panelGrid columns="3"> 
                         <p:outputLabel styleClass="CampoLabel" value="Seleccione Orden:" />                      
                         <p:selectOneMenu filter="true" filterMatchMode="startsWith"  id="tipoUsuario" style="width:150px;font-size: 15px;" required="true"
-                                          requiredMessage="Seleccione un Orden."
-                                          valueChangeListener="#{famController.changedOrden}"
-                                          >
+                                         requiredMessage="Seleccione un Orden."
+                                         valueChangeListener="#{famController.changedOrden}"
+                                         >
                             <f:selectItem itemLabel="Todo" itemValue="0" />
                             <f:selectItems value="#{famController.listaOrdens}"
                                            var="orden" itemLabel="#{orden.orNombre}" itemValue="#{orden.orId}"/>
@@ -25,50 +36,54 @@
                         </p:selectOneMenu>  
                     </h:panelGrid>
                 </h:form>
-        <br/>
-        <br/>
-        <h:form id="formTablaFamilias">
-            <h:panelGrid style="margin-bottom: 10px;" columns="3"
-                         rendered="#{famController.enabledTablaOrdens}">                      
-                <h:outputLabel class="CampoLabel" value="Buscar familia:" />
-                <p:inputText style="width: 240px;" value="#{famController.nombreFamilia}"  >
-                    <p:ajax event="keyup" update="tablaFamilias" listener="#{famController.searchByOrdenAndNombreFamilia()}" />                                
-                </p:inputText>
-                <p:commandButton  value="Agregar familia" class="botonAzul" style="margin-left: 395px;"
-                                  action="#{agregarFamiliaController.abrirVentanaAgregarFamilia(famController.ordenIdSelected)}"
+                <br/>
+                <br/>
+                <h:form id="formTablaFamilias">
+                    <h:panelGrid style="margin-bottom: 10px;" columns="3"
+                                 rendered="#{famController.enabledTablaOrdens}">                      
+                        <h:outputLabel class="CampoLabel" value="Buscar familia:" />
+                        <p:inputText style="width: 240px;" value="#{famController.nombreFamilia}"  >
+                            <p:ajax event="keyup" update="tablaFamilias" listener="#{famController.searchByOrdenAndNombreFamilia()}" />                                
+                        </p:inputText>
+                        <p:commandButton  value="Agregar familia" class="botonAzul" style="margin-left: 395px;"
+                                          action="#{agregarFamiliaController.abrirVentanaAgregarFamilia(famController.ordenIdSelected)}"
                                           onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
                                           update="formTablaFamilias :form:panel :formConOrden:panelConOrden"/>
-            </h:panelGrid>
-            <p:panel id="tablaFamilias" rendered="#{famController.enabledTablaOrdens}">                                            
-                <p:dataTable  value="#{famController.listaFamilias}"
-                              var="familia" 
-                              paginator="true" rows="10"  
-                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
-                              >
-                    <p:column headerText="Familia" style="text-align: center">
+                    </h:panelGrid>
+                    <p:panel id="tablaFamilias" rendered="#{famController.enabledTablaOrdens}">                                            
+                        <p:dataTable  value="#{famController.listaFamilias}"
+                                      var="familia" 
+                                      paginator="true" rows="10"  
+                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                                      >
+                            <p:column headerText="Familia" style="text-align: center">
                         #{familia.faNombre}
-                    </p:column>
-                     <p:column headerText="Orden" style="text-align: center">
+                            </p:column>
+                            <p:column headerText="Orden" style="text-align: center">
                         #{familia.orId.orNombre}
-                    </p:column>
-                    <p:column headerText="Descripción" style="text-align: center">
+                            </p:column>
+                            <p:column headerText="Descripción" style="text-align: center">
                         #{familia.faDescripcion}
-                    </p:column>
-                    <p:column headerText="Acciones" width="150" style="text-align: center">                               
-                        <p:commandLink update=":formularioTituloVerFamilia :formularioFamilia" title="Ver o Editar"   style="text-decoration: none;" action="#{verEditarFamiliaController.familiaSeleccionado(familia,famController)}">                                    
-                            <p:graphicImage style="width:25px;margin-left: 5px;" library="imagenesAplicacion/usuarios" name="ver.png"
-                                            />
-                        </p:commandLink>                             
-                        <p:commandLink id="eliminar" style="text-decoration: none;margin-left: 5px; " title="Eliminar" action="#{eliminarFamiliaController.ventanaEliminarFamilia(familia, famController)}">                                    
-                            <p:graphicImage style="width:20px; " library="imagenesAplicacion/usuarios" name="eliminar.png"/>
-                        </p:commandLink>
-                    </p:column>
-                </p:dataTable>
-            </p:panel>                   
-           
-        </h:form>
-        <ui:include src="registrarFamilia.xhtml"/>
-        <ui:include src="verEditarFamilia.xhtml"/>
-        <ui:include src="eliminarFamilia.xhtml"/>
-    </ui:composition>
+                            </p:column>
+                            <p:column headerText="Acciones" width="150" style="text-align: center">                               
+                                <p:commandLink update=":formularioTituloVerFamilia :formularioFamilia" title="Ver o Editar"   style="text-decoration: none;" action="#{verEditarFamiliaController.familiaSeleccionado(familia,famController)}">                                    
+                                    <p:graphicImage style="width:25px;margin-left: 5px;" library="imagenesAplicacion/usuarios" name="ver.png"
+                                                    />
+                                </p:commandLink>                             
+                                <p:commandLink id="eliminar" style="text-decoration: none;margin-left: 5px; " title="Eliminar" action="#{eliminarFamiliaController.ventanaEliminarFamilia(familia, famController)}">                                    
+                                    <p:graphicImage style="width:20px; " library="imagenesAplicacion/usuarios" name="eliminar.png"/>
+                                </p:commandLink>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>                   
+
+                </h:form>
+                <ui:include src="registrarFamilia.xhtml"/>
+                <ui:include src="verEditarFamilia.xhtml"/>
+                <ui:include src="eliminarFamilia.xhtml"/>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
 </html>

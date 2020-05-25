@@ -34,6 +34,7 @@ public class LugardecomisoentregavoluntariaFacade extends AbstractFacade<Lugarde
     @Override
     public List<Lugardecomisoentregavoluntaria> findAll() {
         Query query = getEntityManager().createNamedQuery("Lugardecomisoentregavoluntaria.findAll");
+        query.setHint("eclipselink.refresh", true);
         List<Lugardecomisoentregavoluntaria> resultList = query.getResultList();
         return resultList;
     }

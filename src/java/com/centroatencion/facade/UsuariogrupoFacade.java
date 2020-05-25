@@ -34,6 +34,7 @@ public class UsuariogrupoFacade extends AbstractFacade<Usuariogrupo> {
     public Usuariogrupo findByNombreusuario(String nombreusuario)
     {
         Query query = getEntityManager().createNamedQuery("Usuariogrupo.findByNombreusuario");
+        query.setHint("eclipselink.refresh", true);
         query.setParameter("nombreusuario",nombreusuario);
         List<Usuariogrupo> resultList = query.getResultList();
         return (resultList!= null && !resultList.isEmpty())?resultList.get(0):null;

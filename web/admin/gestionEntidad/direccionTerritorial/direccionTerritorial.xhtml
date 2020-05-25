@@ -5,13 +5,21 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"      
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <ui:composition>
+    <body>
+
+        <ui:composition template="./../../../templates/template.xhtml">
+
+            <ui:define name="title">
+                #{bundle.Animal}
+            </ui:define>
+            
+            <ui:define name="content">
         <div class="tituloContenido">                           
                Dirección territorial
         </div>
         <h:form id="formTablaDireccionTerritoriales">
             <h:panelGrid style="margin-bottom: 10px;" columns="3">  
-                <p:commandButton  value="Registrar orden" class="botonAzul" style="margin-left: 695px;"
+                <p:commandButton  value="Registrar Dirección" class="botonAzul" style="margin-left: 695px;"
                                   action="#{agregarDireccionTerritorialController.abrirVentanaAgregarDireccionTerritorial()}"
                                           onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
                                           update="formTablaDireccionTerritoriales :form:panel"/>
@@ -49,6 +57,11 @@
         <ui:include src="registrarDireccionTerritorial.xhtml"/>
         <ui:include src="verEditarDireccionTerritorial.xhtml"/>
         <ui:include src="eliminarDireccionTerritorial.xhtml"/>
+        </ui:define>
+            <ui:define name="bottom">
+                
+            </ui:define>
     </ui:composition>
+    </body>
 </html>
 

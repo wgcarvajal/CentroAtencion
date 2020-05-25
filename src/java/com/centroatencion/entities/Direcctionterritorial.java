@@ -30,6 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Direcctionterritorial.findAll", query = "SELECT d FROM Direcctionterritorial d"),
+    @NamedQuery(name = "Direcctionterritorial.findAllWithoutCurrentDireccionterritorial", query = "SELECT d FROM Direcctionterritorial d WHERE d.dirterId != :dirterId"),
     @NamedQuery(name = "Direcctionterritorial.findByDirterId", query = "SELECT d FROM Direcctionterritorial d WHERE d.dirterId = :dirterId"),
     @NamedQuery(name = "Direcctionterritorial.findByDirterNombre", query = "SELECT d FROM Direcctionterritorial d WHERE d.dirterNombre = :dirterNombre"),
     @NamedQuery(name = "Direcctionterritorial.findByDirterAbreviatura", query = "SELECT d FROM Direcctionterritorial d WHERE d.dirterAbreviatura = :dirterAbreviatura")})
@@ -49,6 +50,8 @@ public class Direcctionterritorial implements Serializable {
     private String dirterAbreviatura;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "dirterId")
     private List<Ingreso> ingresoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "dirterId")
+    private List<Entidadterritorial> entidadterritorialList;
 
     public Direcctionterritorial() {
     }
@@ -94,6 +97,15 @@ public class Direcctionterritorial implements Serializable {
 
     public void setIngresoList(List<Ingreso> ingresoList) {
         this.ingresoList = ingresoList;
+    }
+
+    @XmlTransient
+    public List<Entidadterritorial> getEntidadterritorialList() {
+        return entidadterritorialList;
+    }
+
+    public void setEntidadterritorialList(List<Entidadterritorial> entidadterritorialList) {
+        this.entidadterritorialList = entidadterritorialList;
     }
 
     @Override

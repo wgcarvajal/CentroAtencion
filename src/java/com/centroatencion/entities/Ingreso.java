@@ -35,12 +35,15 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "ingreso", catalog = "hogardepasobd", schema = "")
 @XmlRootElement
 @NamedQueries({
+    @NamedQuery(name = "Ingreso.findAllIngresos", query = "SELECT i,a,f,e.estado FROM Ingreso i INNER JOIN i.animalId a INNER JOIN i.funcionarioId f INNER JOIN Estado e Where e.ingId.ingId = i.ingId AND e.estadoFecha = (Select Max(ee.estadoFecha) From Estado ee WHERE ee.ingId.ingId = i.ingId) ORDER BY i.ingFecha DESC"),
     @NamedQuery(name = "Ingreso.findAll", query = "SELECT i FROM Ingreso i"),
-    @NamedQuery(name = "Ingreso.findByIngId", query = "SELECT i FROM Ingreso i WHERE i.ingId = :ingId"),
+    @NamedQuery(name = "Ingreso.findIngresoByIngId", query = "SELECT i,a,fa,o,g,f,d,e.estado FROM Ingreso i INNER JOIN i.animalId a INNER JOIN i.funcionarioId f INNER JOIN i.dirterId d INNER JOIN a.faId fa INNER JOIN a.grupotaxonomicoId g INNER JOIN fa.orId o INNER JOIN Estado e WHERE i.ingId = :ingId AND e.estadoFecha = (Select Min(ee.estadoFecha) From Estado ee WHERE ee.ingId.ingId = i.ingId) ORDER BY i.ingFecha DESC"),
+    @NamedQuery(name = "Ingreso.findTransladosByIngId", query = "SELECT i FROM Ingreso i WHERE i.ingTranslado.ingId = :ingId ORDER BY i.ingFecha ASC"),
     @NamedQuery(name = "Ingreso.findByIngNumeroRadicado", query = "SELECT i FROM Ingreso i WHERE i.ingRadicado = :ingRadicado"),
     @NamedQuery(name = "Ingreso.findByIngFecha", query = "SELECT i FROM Ingreso i WHERE i.ingFecha = :ingFecha"),
     @NamedQuery(name = "Ingreso.findMaxConsecutivo",query = "SELECT MAX(i.ingConsecutivo) FROM Ingreso i"),
-    @NamedQuery(name = "Ingreso.findByIngNumeroUCTFF", query = "SELECT i FROM Ingreso i WHERE i.ingAUCTFF = :ingAUCTFF")})
+    @NamedQuery(name = "Ingreso.findByIngNumeroUCTFF", query = "SELECT i FROM Ingreso i WHERE i.ingAUCTFF = :ingAUCTFF"),
+    @NamedQuery(name = "Ingreso.findSubproductos",query = "SELECT s FROM Ingreso i INNER JOIN Ingresosubproducto ingsub INNER JOIN ingsub.subprodId s WHERE i.ingId = :ingId AND i.ingId = ingsub.ingId.ingId")})
 public class Ingreso implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -59,8 +62,6 @@ public class Ingreso implements Serializable {
     private String ingAUCTFF;
     @Column(name = "ingConsecutivo")
     private long ingConsecutivo;
-    @Column(name = "ingEstado")
-    private Integer ingEstado;
     @Column(name = "ingCausa")
     private String ingCausa;
     @Lob
@@ -69,48 +70,57 @@ public class Ingreso implements Serializable {
     @Column(name = "ingEstadoSalud")
     private String ingEstadoSalud;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "ingId")
+    private List<Estado> estadoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ingId")
     private List<Ingresosubproducto> ingresosubproductoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "ingId")
+    private List<Ubicar> ubicarList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ingId")
     private List<Responsableingreso> responsableingresoList;
-    @JoinColumn(name = "dirterId", referencedColumnName = "dirterId")
-    @ManyToOne(optional = false)
-    private Direcctionterritorial dirterId;
-    @JoinColumn(name = "animalId", referencedColumnName = "anId")
-    @ManyToOne(optional = false)
-    private Animal animalId;
     @JoinColumn(name = "depExtraccionId", referencedColumnName = "depId")
     @ManyToOne
     private Departamento depExtraccionId;
+    @JoinColumn(name = "animalId", referencedColumnName = "anId")
+    @ManyToOne
+    private Animal animalId;
     @JoinColumn(name = "depOcurrenciaId", referencedColumnName = "depId")
     @ManyToOne
     private Departamento depOcurrenciaId;
     @JoinColumn(name = "desbioId", referencedColumnName = "desbioId")
     @ManyToOne
     private Desarrollobiologico desbioId;
+    @JoinColumn(name = "verExtraccionId", referencedColumnName = "verId")
+    @ManyToOne
+    private Vereda verExtraccionId;
+    @JoinColumn(name = "verOcurrenciaId", referencedColumnName = "verId")
+    @ManyToOne
+    private Vereda verOcurrenciaId;
+    @JoinColumn(name = "dirterId", referencedColumnName = "dirterId")
+    @ManyToOne(optional = false)
+    private Direcctionterritorial dirterId;
+    @JoinColumn(name = "munOcurrenciaId", referencedColumnName = "munId")
+    @ManyToOne
+    private Municipio munOcurrenciaId;
     @JoinColumn(name = "donanteinfractorId", referencedColumnName = "doninId")
     @ManyToOne
     private Donanteinfractor donanteinfractorId;
     @JoinColumn(name = "funcionarioId", referencedColumnName = "perId")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Persona funcionarioId;
     @JoinColumn(name = "genId", referencedColumnName = "genId")
     @ManyToOne
     private Genero genId;
+    @OneToMany(mappedBy = "ingTranslado")
+    private List<Ingreso> ingresoList;
+    @JoinColumn(name = "ingTranslado", referencedColumnName = "ingId")
+    @ManyToOne
+    private Ingreso ingTranslado;
     @JoinColumn(name = "lugardecomisoentregavoluntariaId", referencedColumnName = "lugDecEntVoId")
     @ManyToOne
     private Lugardecomisoentregavoluntaria lugardecomisoentregavoluntariaId;
     @JoinColumn(name = "munExtraccionId", referencedColumnName = "munId")
     @ManyToOne
     private Municipio munExtraccionId;
-    @JoinColumn(name = "verOcurrenciaId", referencedColumnName = "verId")
-    @ManyToOne
-    private Vereda verOcurrenciaId;
-    @JoinColumn(name = "verExtraccionId", referencedColumnName = "verId")
-    @ManyToOne
-    private Vereda verExtraccionId;
-    @JoinColumn(name = "munOcurrenciaId", referencedColumnName = "munId")
-    @ManyToOne
-    private Municipio munOcurrenciaId;
 
     public Ingreso() {
     }
@@ -164,14 +174,6 @@ public class Ingreso implements Serializable {
         this.ingConsecutivo = ingConsecutivo;
     }
 
-    public Integer getIngEstado() {
-        return ingEstado;
-    }
-
-    public void setIngEstado(Integer ingEstado) {
-        this.ingEstado = ingEstado;
-    }
-
     public String getIngCausa() {
         return ingCausa;
     }
@@ -197,12 +199,30 @@ public class Ingreso implements Serializable {
     }
 
     @XmlTransient
+    public List<Estado> getEstadoList() {
+        return estadoList;
+    }
+
+    public void setEstadoList(List<Estado> estadoList) {
+        this.estadoList = estadoList;
+    }
+
+    @XmlTransient
     public List<Ingresosubproducto> getIngresosubproductoList() {
         return ingresosubproductoList;
     }
 
     public void setIngresosubproductoList(List<Ingresosubproducto> ingresosubproductoList) {
         this.ingresosubproductoList = ingresosubproductoList;
+    }
+
+    @XmlTransient
+    public List<Ubicar> getUbicarList() {
+        return ubicarList;
+    }
+
+    public void setUbicarList(List<Ubicar> ubicarList) {
+        this.ubicarList = ubicarList;
     }
 
     @XmlTransient
@@ -214,12 +234,12 @@ public class Ingreso implements Serializable {
         this.responsableingresoList = responsableingresoList;
     }
 
-    public Direcctionterritorial getDirterId() {
-        return dirterId;
+    public Departamento getDepExtraccionId() {
+        return depExtraccionId;
     }
 
-    public void setDirterId(Direcctionterritorial dirterId) {
-        this.dirterId = dirterId;
+    public void setDepExtraccionId(Departamento depExtraccionId) {
+        this.depExtraccionId = depExtraccionId;
     }
 
     public Animal getAnimalId() {
@@ -228,14 +248,6 @@ public class Ingreso implements Serializable {
 
     public void setAnimalId(Animal animalId) {
         this.animalId = animalId;
-    }
-
-    public Departamento getDepExtraccionId() {
-        return depExtraccionId;
-    }
-
-    public void setDepExtraccionId(Departamento depExtraccionId) {
-        this.depExtraccionId = depExtraccionId;
     }
 
     public Departamento getDepOcurrenciaId() {
@@ -252,6 +264,38 @@ public class Ingreso implements Serializable {
 
     public void setDesbioId(Desarrollobiologico desbioId) {
         this.desbioId = desbioId;
+    }
+
+    public Vereda getVerExtraccionId() {
+        return verExtraccionId;
+    }
+
+    public void setVerExtraccionId(Vereda verExtraccionId) {
+        this.verExtraccionId = verExtraccionId;
+    }
+
+    public Vereda getVerOcurrenciaId() {
+        return verOcurrenciaId;
+    }
+
+    public void setVerOcurrenciaId(Vereda verOcurrenciaId) {
+        this.verOcurrenciaId = verOcurrenciaId;
+    }
+
+    public Direcctionterritorial getDirterId() {
+        return dirterId;
+    }
+
+    public void setDirterId(Direcctionterritorial dirterId) {
+        this.dirterId = dirterId;
+    }
+
+    public Municipio getMunOcurrenciaId() {
+        return munOcurrenciaId;
+    }
+
+    public void setMunOcurrenciaId(Municipio munOcurrenciaId) {
+        this.munOcurrenciaId = munOcurrenciaId;
     }
 
     public Donanteinfractor getDonanteinfractorId() {
@@ -278,6 +322,23 @@ public class Ingreso implements Serializable {
         this.genId = genId;
     }
 
+    @XmlTransient
+    public List<Ingreso> getIngresoList() {
+        return ingresoList;
+    }
+
+    public void setIngresoList(List<Ingreso> ingresoList) {
+        this.ingresoList = ingresoList;
+    }
+
+    public Ingreso getIngTranslado() {
+        return ingTranslado;
+    }
+
+    public void setIngTranslado(Ingreso ingTranslado) {
+        this.ingTranslado = ingTranslado;
+    }
+
     public Lugardecomisoentregavoluntaria getLugardecomisoentregavoluntariaId() {
         return lugardecomisoentregavoluntariaId;
     }
@@ -292,30 +353,6 @@ public class Ingreso implements Serializable {
 
     public void setMunExtraccionId(Municipio munExtraccionId) {
         this.munExtraccionId = munExtraccionId;
-    }
-
-    public Vereda getVerOcurrenciaId() {
-        return verOcurrenciaId;
-    }
-
-    public void setVerOcurrenciaId(Vereda verOcurrenciaId) {
-        this.verOcurrenciaId = verOcurrenciaId;
-    }
-
-    public Vereda getVerExtraccionId() {
-        return verExtraccionId;
-    }
-
-    public void setVerExtraccionId(Vereda verExtraccionId) {
-        this.verExtraccionId = verExtraccionId;
-    }
-
-    public Municipio getMunOcurrenciaId() {
-        return munOcurrenciaId;
-    }
-
-    public void setMunOcurrenciaId(Municipio munOcurrenciaId) {
-        this.munOcurrenciaId = munOcurrenciaId;
     }
 
     @Override

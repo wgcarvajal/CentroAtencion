@@ -100,9 +100,9 @@ public class SessionController implements Serializable {
     {
         Usuariogrupo usuarioGrupo =usuarioGrupoEJB.findByNombreusuario(nombreDeUsuario);
         if(usuarioGrupo.getNombreusuario().equalsIgnoreCase("admin"))   
-          FacesContext.getCurrentInstance().getExternalContext().redirect("faces/admin/main.xhtml");
+          FacesContext.getCurrentInstance().getExternalContext().redirect("/CentroAtencion/admin/main.xhtml");
         else
-          FacesContext.getCurrentInstance().getExternalContext().redirect("faces/user/main.xhtml");
+          FacesContext.getCurrentInstance().getExternalContext().redirect("/CentroAtencion/user/ingreso/ingresos.xhtml");
     }
     
     public void logout() throws IOException, ServletException 

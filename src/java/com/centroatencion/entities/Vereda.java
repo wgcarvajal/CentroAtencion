@@ -32,6 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Vereda.findAll", query = "SELECT v FROM Vereda v"),
     @NamedQuery(name = "Vereda.findByVerId", query = "SELECT v FROM Vereda v WHERE v.verId = :verId"),
+    @NamedQuery(name = "Vereda.findMuncipioDepartamentoById", query = "SELECT m,d from Vereda v INNER JOIN v.municipioId m INNER JOIN m.departamentoId d WHERE v.verId = :verId"),
     @NamedQuery(name = "Vereda.findByMunicipio", query = "SELECT v FROM Vereda v WHERE v.municipioId.munId = :municipioId ORDER BY v.verNombre asc"),
     @NamedQuery(name = "Vereda.findByMunicipioAndNombre", query = "SELECT v FROM Vereda v WHERE v.municipioId.munId = :municipioId AND LOWER(v.verNombre) LIKE :verNombre"),
     @NamedQuery(name = "Vereda.findByVerNombre", query = "SELECT v FROM Vereda v WHERE v.verNombre = :verNombre")})

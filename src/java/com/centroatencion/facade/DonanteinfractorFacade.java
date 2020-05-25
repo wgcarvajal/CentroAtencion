@@ -33,6 +33,7 @@ public class DonanteinfractorFacade extends AbstractFacade<Donanteinfractor> {
     public Donanteinfractor findByDoninIdentifiacion(String doninIdentifiacion)
     {
         Query query = getEntityManager().createNamedQuery("Donanteinfractor.findByDoninIdentifiacion");
+        query.setHint("eclipselink.refresh", true);
         query.setParameter("doninIdentifiacion", doninIdentifiacion);
         Donanteinfractor object = (Donanteinfractor)query.getSingleResult();
         return object;

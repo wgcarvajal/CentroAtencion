@@ -33,6 +33,7 @@ public class FotoanimalFacade extends AbstractFacade<Fotoanimal> {
     public List<Fotoanimal>findByIdAnimal(Long anId)
     {
         Query query = getEntityManager().createNamedQuery("Fotoanimal.findByAnimalId");
+        query.setHint("eclipselink.refresh", true);
         query.setParameter("anId", anId);
         List<Fotoanimal> resultList = query.getResultList();
         return resultList;

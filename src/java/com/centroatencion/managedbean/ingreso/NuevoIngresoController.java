@@ -10,6 +10,7 @@ import com.centroatencion.entities.Departamento;
 import com.centroatencion.entities.Desarrollobiologico;
 import com.centroatencion.entities.Direcctionterritorial;
 import com.centroatencion.entities.Donanteinfractor;
+import com.centroatencion.entities.Estado;
 import com.centroatencion.entities.Familia;
 import com.centroatencion.entities.Genero;
 import com.centroatencion.entities.Ingreso;
@@ -27,6 +28,7 @@ import com.centroatencion.facade.DepartamentoFacade;
 import com.centroatencion.facade.DesarrollobiologicoFacade;
 import com.centroatencion.facade.DirecctionterritorialFacade;
 import com.centroatencion.facade.DonanteinfractorFacade;
+import com.centroatencion.facade.EstadoFacade;
 import com.centroatencion.facade.GeneroFacade;
 import com.centroatencion.facade.IngresoFacade;
 import com.centroatencion.facade.IngresosubproductoFacade;
@@ -91,6 +93,8 @@ public class NuevoIngresoController implements Serializable
     private IngresosubproductoFacade ingresosubproductoEJB;
     @EJB
     private IngresoFacade ingresoEJB;
+    @EJB
+    private EstadoFacade estadoEJB;
     private Date date;
     private Direcctionterritorial direcctionterritorial;
     private List<Direcctionterritorial>listDirTerritorial;
@@ -769,210 +773,7 @@ public class NuevoIngresoController implements Serializable
             {
                 if(producto!=0)
                 {
-                    Ingreso ingreso = new Ingreso();
-                    ingreso.setIngFecha(date);
-                    ingreso.setDirterId(direcctionterritorial);
-                    if(noRadicado!=null && !noRadicado.isEmpty())
-                    {
-                        ingreso.setIngRadicado(noRadicado);
-                    }
-                    if(noAUCTFF!=null && !noAUCTFF.isEmpty())
-                    {
-                        ingreso.setIngAUCTFF(noAUCTFF);
-                    }
-                    ingreso.setAnimalId(animalSelected);
-                    ingreso.setIngCausa(causaIngreso);
-                    boolean actualizarDonante = false;
-                    Donanteinfractor donanteinfractor=null;
-                    if(identificacion!=null && !identificacion.isEmpty())
-                    {
-                        donanteinfractor = donanteinfractorEJB.findByDoninIdentifiacion(identificacion);
-                        if(donanteinfractor!=null)
-                        {
-                            if(nombres!=null && !nombres.isEmpty())
-                            {
-                                nombres = Util.formatText(nombres);
-                                if(!nombres.equals(donanteinfractor.getDoninNombres()))
-                                {
-                                    actualizarDonante = true;
-                                    donanteinfractor.setDoninNombres(nombres);
-                                }
-                            }
-                            
-                            if(apellidos!=null && !apellidos.isEmpty())
-                            {
-                                apellidos = Util.formatText(apellidos);
-                                if(!apellidos.equals(donanteinfractor.getDoninApellidos()))
-                                {
-                                    actualizarDonante = true;
-                                    donanteinfractor.setDoninApellidos(apellidos);
-                                }
-                            }
-                            
-                            if(telefono!=null && !telefono.isEmpty())
-                            {
-                                if(!telefono.equals(donanteinfractor.getDoninTelefono()))
-                                {
-                                    actualizarDonante = true;
-                                    donanteinfractor.setDoninTelefono(telefono);
-                                }
-                            }
-                            
-                            if(direccion!=null && !direccion.isEmpty())
-                            {
-                                direccion = Util.formatText(direccion);
-                                if(!direccion.equals(donanteinfractor.getDoninDireccion()))
-                                {
-                                    actualizarDonante = true;
-                                    donanteinfractor.setDoninDireccion(direccion);
-                                }
-                            }
-                            
-                            if(actualizarDonante)
-                            {
-                                donanteinfractorEJB.edit(donanteinfractor);
-                            }
-                            
-                        }
-                        else
-                        {
-                            donanteinfractor = new Donanteinfractor();
-                            donanteinfractor.setDoninIdentifiacion(identificacion);
-                            if(nombres!=null && !nombres.isEmpty())
-                            {
-                                nombres = Util.formatText(nombres);
-                                donanteinfractor.setDoninNombres(nombres);
-                            }
-                            if(apellidos!=null && !apellidos.isEmpty())
-                            {
-                                apellidos = Util.formatText(apellidos);
-                                donanteinfractor.setDoninApellidos(apellidos);
-                            }
-                            
-                            if(telefono!=null && !telefono.isEmpty())
-                            {
-                                donanteinfractor.setDoninTelefono(telefono);
-                            }
-                            
-                            if(direccion!=null && !direccion.isEmpty())
-                            {
-                                direccion = Util.formatText(direccion);
-                                donanteinfractor.setDoninDireccion(direccion);
-                            }
-                            donanteinfractorEJB.create(donanteinfractor);
-                        }
-                    }
-                    else if(nombres!=null && !nombres.isEmpty())
-                    {
-                        nombres = Util.formatText(nombres);
-                        donanteinfractor = new Donanteinfractor();
-                        donanteinfractor.setDoninNombres(nombres);
-                        if (apellidos != null && !apellidos.isEmpty()) {
-                            apellidos = Util.formatText(apellidos);
-                            donanteinfractor.setDoninApellidos(apellidos);
-                        }
-
-                        if (telefono != null && !telefono.isEmpty()) {
-                            donanteinfractor.setDoninTelefono(telefono);
-                        }
-
-                        if (direccion != null && !direccion.isEmpty()) {
-                            direccion = Util.formatText(direccion);
-                            donanteinfractor.setDoninDireccion(direccion);
-                        }
-                        donanteinfractorEJB.create(donanteinfractor);
-                    }
-                    if(donanteinfractor!=null)
-                    {
-                        ingreso.setDonanteinfractorId(donanteinfractor);
-                    }
-                    
-                    if(veredaOcurrenciaSelected!=null)
-                    {
-                        ingreso.setVerOcurrenciaId(veredaOcurrenciaSelected);
-                    }
-                    else if(municipioOcurrenciaSelected!=null)
-                    {
-                        ingreso.setMunOcurrenciaId(municipioOcurrenciaSelected);
-                    }
-                    else if(departamentoOcurrenciaSelected!=null)
-                    {
-                        ingreso.setDepOcurrenciaId(departamentoOcurrenciaSelected);
-                    }
-                    
-                    if(lugardecomisoentregavoluntariaSelected!=null)
-                    {
-                        ingreso.setLugardecomisoentregavoluntariaId(lugardecomisoentregavoluntariaSelected);
-                    }
-                    
-                    if(veredaSelected!=null)
-                    {
-                        ingreso.setVerExtraccionId(veredaSelected);
-                    }
-                    else if(municipioSelected!=null)
-                    {
-                        ingreso.setMunExtraccionId(municipioSelected);
-                    }
-                    else if(departamentoSelected!=null)
-                    {
-                        ingreso.setDepExtraccionId(departamentoSelected);
-                    }
-                    
-                    if(generoSelected!=null)
-                    {
-                        ingreso.setGenId(generoSelected);
-                    }
-                    
-                    if(desarrollobiologicoSelected!=null)
-                    {
-                        ingreso.setDesbioId(desarrollobiologicoSelected);
-                    }
-                    
-                    if(observaciones!=null && !observaciones.isEmpty())
-                    {
-                        ingreso.setIngObservaciones(observaciones);
-                    }
-                    
-                    ingreso.setIngEstado(estado);
-                    if(estado==1)
-                    {
-                        if(estadoSalud!=null && !estadoSalud.isEmpty())
-                        {
-                            ingreso.setIngEstadoSalud(estadoSalud);
-                        }
-                    }
-                    
-                    FacesContext fc = FacesContext.getCurrentInstance();
-                    HttpServletRequest req = (HttpServletRequest) fc.getExternalContext().getRequest();       
-                    Persona p = personaEJB.findPersonaByNombreUsuario(req.getUserPrincipal().getName());
-                    ingreso.setFuncionarioId(p);
-                    
-                    long consecutivo = ingresoEJB.findMaxConsecutivo();
-                    consecutivo = consecutivo +1;
-                    ingreso.setIngConsecutivo(consecutivo);
-                    ingresoEJB.create(ingreso);
-                    
-                    if(responsablesSelected!=null && responsablesSelected.length>0)
-                    {
-                        for(Responsable r: responsablesSelected)
-                        {
-                            Responsableingreso responsableingreso = new Responsableingreso();
-                            responsableingreso.setRespId(r);
-                            responsableingreso.setIngId(ingreso);
-                            responsableingresoEJB.create(responsableingreso);
-                        }
-                    }
-                    
-                    if(listaSubproductoSelected!=null && listaSubproductoSelected.length>0)
-                    {
-                        for(Subproducto insub:listaSubproductoSelected)
-                        {
-                            Ingresosubproducto ingresosubproducto = new Ingresosubproducto();
-                            ingresosubproducto.setSubprodId(insub);
-                            ingresosubproducto.setIngId(ingreso);
-                            ingresosubproductoEJB.create(ingresosubproducto);
-                        }
-                    }
+                    guardarIngreso();
                     
                 }
                 else{
@@ -981,6 +782,10 @@ public class NuevoIngresoController implements Serializable
                         new FacesMessage(FacesMessage.SEVERITY_ERROR,
                                 "Campo requerido","Campo requerido"));
                 }
+            }
+            else if(estado == 1)
+            {
+                guardarIngreso();
             }
         }
         else
@@ -992,4 +797,172 @@ public class NuevoIngresoController implements Serializable
         }
     }
     
+    public void guardarIngreso() {
+        Ingreso ingreso = new Ingreso();
+        ingreso.setIngFecha(date);
+        ingreso.setDirterId(direcctionterritorial);
+        if (noRadicado != null && !noRadicado.isEmpty()) {
+            ingreso.setIngRadicado(noRadicado);
+        }
+        if (noAUCTFF != null && !noAUCTFF.isEmpty()) {
+            ingreso.setIngAUCTFF(noAUCTFF);
+        }
+        ingreso.setAnimalId(animalSelected);
+        ingreso.setIngCausa(causaIngreso);
+        boolean actualizarDonante = false;
+        Donanteinfractor donanteinfractor = null;
+        if (identificacion != null && !identificacion.isEmpty()) {
+            donanteinfractor = donanteinfractorEJB.findByDoninIdentifiacion(identificacion);
+            if (donanteinfractor != null) {
+                if (nombres != null && !nombres.isEmpty()) {
+                    nombres = Util.formatText(nombres);
+                    if (!nombres.equals(donanteinfractor.getDoninNombres())) {
+                        actualizarDonante = true;
+                        donanteinfractor.setDoninNombres(nombres);
+                    }
+                }
+
+                if (apellidos != null && !apellidos.isEmpty()) {
+                    apellidos = Util.formatText(apellidos);
+                    if (!apellidos.equals(donanteinfractor.getDoninApellidos())) {
+                        actualizarDonante = true;
+                        donanteinfractor.setDoninApellidos(apellidos);
+                    }
+                }
+
+                if (telefono != null && !telefono.isEmpty()) {
+                    if (!telefono.equals(donanteinfractor.getDoninTelefono())) {
+                        actualizarDonante = true;
+                        donanteinfractor.setDoninTelefono(telefono);
+                    }
+                }
+
+                if (direccion != null && !direccion.isEmpty()) {
+                    direccion = Util.formatText(direccion);
+                    if (!direccion.equals(donanteinfractor.getDoninDireccion())) {
+                        actualizarDonante = true;
+                        donanteinfractor.setDoninDireccion(direccion);
+                    }
+                }
+
+                if (actualizarDonante) {
+                    donanteinfractorEJB.edit(donanteinfractor);
+                }
+
+            } else {
+                donanteinfractor = new Donanteinfractor();
+                donanteinfractor.setDoninIdentifiacion(identificacion);
+                if (nombres != null && !nombres.isEmpty()) {
+                    nombres = Util.formatText(nombres);
+                    donanteinfractor.setDoninNombres(nombres);
+                }
+                if (apellidos != null && !apellidos.isEmpty()) {
+                    apellidos = Util.formatText(apellidos);
+                    donanteinfractor.setDoninApellidos(apellidos);
+                }
+
+                if (telefono != null && !telefono.isEmpty()) {
+                    donanteinfractor.setDoninTelefono(telefono);
+                }
+
+                if (direccion != null && !direccion.isEmpty()) {
+                    direccion = Util.formatText(direccion);
+                    donanteinfractor.setDoninDireccion(direccion);
+                }
+                donanteinfractorEJB.create(donanteinfractor);
+            }
+        } else if (nombres != null && !nombres.isEmpty()) {
+            nombres = Util.formatText(nombres);
+            donanteinfractor = new Donanteinfractor();
+            donanteinfractor.setDoninNombres(nombres);
+            if (apellidos != null && !apellidos.isEmpty()) {
+                apellidos = Util.formatText(apellidos);
+                donanteinfractor.setDoninApellidos(apellidos);
+            }
+
+            if (telefono != null && !telefono.isEmpty()) {
+                donanteinfractor.setDoninTelefono(telefono);
+            }
+
+            if (direccion != null && !direccion.isEmpty()) {
+                direccion = Util.formatText(direccion);
+                donanteinfractor.setDoninDireccion(direccion);
+            }
+            donanteinfractorEJB.create(donanteinfractor);
+        }
+        if (donanteinfractor != null) {
+            ingreso.setDonanteinfractorId(donanteinfractor);
+        }
+
+        if (veredaOcurrenciaSelected != null) {
+            ingreso.setVerOcurrenciaId(veredaOcurrenciaSelected);
+        } else if (municipioOcurrenciaSelected != null) {
+            ingreso.setMunOcurrenciaId(municipioOcurrenciaSelected);
+        } else if (departamentoOcurrenciaSelected != null) {
+            ingreso.setDepOcurrenciaId(departamentoOcurrenciaSelected);
+        }
+
+        if (lugardecomisoentregavoluntariaSelected != null) {
+            ingreso.setLugardecomisoentregavoluntariaId(lugardecomisoentregavoluntariaSelected);
+        }
+
+        if (veredaSelected != null) {
+            ingreso.setVerExtraccionId(veredaSelected);
+        } else if (municipioSelected != null) {
+            ingreso.setMunExtraccionId(municipioSelected);
+        } else if (departamentoSelected != null) {
+            ingreso.setDepExtraccionId(departamentoSelected);
+        }
+
+        if (generoSelected != null) {
+            ingreso.setGenId(generoSelected);
+        }
+
+        if (desarrollobiologicoSelected != null) {
+            ingreso.setDesbioId(desarrollobiologicoSelected);
+        }
+
+        if (observaciones != null && !observaciones.isEmpty()) {
+            ingreso.setIngObservaciones(observaciones);
+        }
+
+        if (estado == 1) {
+            if (estadoSalud != null && !estadoSalud.isEmpty()) {
+                ingreso.setIngEstadoSalud(estadoSalud);
+            }
+        }
+
+        FacesContext fc = FacesContext.getCurrentInstance();
+        HttpServletRequest req = (HttpServletRequest) fc.getExternalContext().getRequest();
+        Persona p = personaEJB.findPersonaByNombreUsuario(req.getUserPrincipal().getName());
+        ingreso.setFuncionarioId(p);
+
+        long consecutivo = ingresoEJB.findMaxConsecutivo();
+        consecutivo = consecutivo + 1;
+        ingreso.setIngConsecutivo(consecutivo);
+        ingresoEJB.create(ingreso);
+
+        if (responsablesSelected != null && responsablesSelected.length > 0) {
+            for (Responsable r : responsablesSelected) {
+                Responsableingreso responsableingreso = new Responsableingreso();
+                responsableingreso.setRespId(r);
+                responsableingreso.setIngId(ingreso);
+                responsableingresoEJB.create(responsableingreso);
+            }
+        }
+
+        if (listaSubproductoSelected != null && listaSubproductoSelected.length > 0) {
+            for (Subproducto insub : listaSubproductoSelected) {
+                Ingresosubproducto ingresosubproducto = new Ingresosubproducto();
+                ingresosubproducto.setSubprodId(insub);
+                ingresosubproducto.setIngId(ingreso);
+                ingresosubproductoEJB.create(ingresosubproducto);
+            }
+        }
+        Estado e = new Estado();
+        e.setIngId(ingreso);
+        e.setEstado(estado);
+        e.setEstadoFecha(date);
+        estadoEJB.create(e);
+    }
 }

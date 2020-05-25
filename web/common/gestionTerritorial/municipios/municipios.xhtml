@@ -2,21 +2,30 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"      
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <ui:composition>
-        <div class="tituloContenido">                           
-               Municipios
-        </div>
-        <br/>
-        <h:form id="seleccionarDepartamento">
+
+    <body>
+
+        <ui:composition template="./../../../templates/template.xhtml">
+
+            <ui:define name="title">
+                #{bundle.Municipio}
+            </ui:define>
+
+            <ui:define name="content">
+                <div class="tituloContenido">                           
+                    Municipios
+                </div>
+                <br/>
+                <h:form id="seleccionarDepartamento">
                     <h:panelGrid columns="3"> 
                         <p:outputLabel styleClass="CampoLabel" value="Seleccione Departamento:" />                      
                         <p:selectOneMenu filter="true" filterMatchMode="startsWith"  id="tipoUsuario" style="width:150px;font-size: 15px;" required="true"
-                                          requiredMessage="Seleccione un Departamento."
-                                          valueChangeListener="#{munController.changedDepartamento}"
-                                          >
+                                         requiredMessage="Seleccione un Departamento."
+                                         valueChangeListener="#{munController.changedDepartamento}"
+                                         >
                             <f:selectItem itemLabel="Seleccione.." itemValue="0" />
                             <f:selectItems value="#{munController.listaDepartamentos}"
                                            var="departamento" itemLabel="#{departamento.depNombre}" itemValue="#{departamento.depId}"/>
@@ -25,44 +34,48 @@
                         </p:selectOneMenu>  
                     </h:panelGrid>
                 </h:form>
-        <br/>
-        <br/>
-        <h:form id="formTablaMunicipios">
-            <h:panelGrid style="margin-bottom: 10px;" columns="3"
-                         rendered="#{munController.enabledTablaDepartamentos}">                      
-                <h:outputLabel class="CampoLabel" value="Buscar municipio:" />
-                <p:inputText style="width: 240px;" value="#{munController.nombreMunicipio}"  >
-                    <p:ajax event="keyup" update="tablaMunicipios" listener="#{munController.searchByDepartamentoAndNombreMunicipio()}" />                                
-                </p:inputText>
-                <p:commandButton  value="Agregar municipio" class="botonAzul" style="margin-left: 395px;"
-                                  action="#{agregarMunicipioController.abrirVentanaAgregarMunicipio(munController.departamentoIdSelected)}"
+                <br/>
+                <br/>
+                <h:form id="formTablaMunicipios">
+                    <h:panelGrid style="margin-bottom: 10px;" columns="3"
+                                 rendered="#{munController.enabledTablaDepartamentos}">                      
+                        <h:outputLabel class="CampoLabel" value="Buscar municipio:" />
+                        <p:inputText style="width: 240px;" value="#{munController.nombreMunicipio}"  >
+                            <p:ajax event="keyup" update="tablaMunicipios" listener="#{munController.searchByDepartamentoAndNombreMunicipio()}" />                                
+                        </p:inputText>
+                        <p:commandButton  value="Agregar municipio" class="botonAzul" style="margin-left: 395px;"
+                                          action="#{agregarMunicipioController.abrirVentanaAgregarMunicipio(munController.departamentoIdSelected)}"
                                           onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
                                           update="formTablaMunicipios :form:panel"/>
-            </h:panelGrid>
-            <p:panel id="tablaMunicipios" rendered="#{munController.enabledTablaDepartamentos}">                                            
-                <p:dataTable  value="#{munController.listaMunicipios}"
-                              var="municipio" 
-                              paginator="true" rows="10"  
-                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
-                              >
-                    <p:column headerText="Nombre" style="text-align: center">
+                    </h:panelGrid>
+                    <p:panel id="tablaMunicipios" rendered="#{munController.enabledTablaDepartamentos}">                                            
+                        <p:dataTable  value="#{munController.listaMunicipios}"
+                                      var="municipio" 
+                                      paginator="true" rows="10"  
+                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                                      >
+                            <p:column headerText="Nombre" style="text-align: center">
                         #{municipio.munNombre}
-                    </p:column>
-                    <p:column headerText="Acciones" width="150" style="text-align: center">                               
-                        <p:commandLink update=":formularioTituloVerMunicipio :formularioMunicipio" title="Ver o Editar"   style="text-decoration: none;" action="#{verEditarMunicipioController.municipioSeleccionado(municipio,munController)}">                                    
-                            <p:graphicImage style="width:25px;margin-left: 5px;" library="imagenesAplicacion/usuarios" name="ver.png"
-                                            />
-                        </p:commandLink>                             
-                        <p:commandLink id="eliminar" style="text-decoration: none;margin-left: 5px; " title="Eliminar" action="#{eliminarMunicipioController.ventanaEliminarMunicipio(municipio, munController)}">                                    
-                            <p:graphicImage style="width:20px; " library="imagenesAplicacion/usuarios" name="eliminar.png"/>
-                        </p:commandLink>
-                    </p:column>
-                </p:dataTable>
-            </p:panel>                   
-           
-        </h:form>
-        <ui:include src="registrarMunicipio.xhtml"/>
-        <ui:include src="verEditarMunicipio.xhtml"/>
-        <ui:include src="eliminarMunicipio.xhtml"/>
-    </ui:composition>
+                            </p:column>
+                            <p:column headerText="Acciones" width="150" style="text-align: center">                               
+                                <p:commandLink update=":formularioTituloVerMunicipio :formularioMunicipio" title="Ver o Editar"   style="text-decoration: none;" action="#{verEditarMunicipioController.municipioSeleccionado(municipio,munController)}">                                    
+                                    <p:graphicImage style="width:25px;margin-left: 5px;" library="imagenesAplicacion/usuarios" name="ver.png"
+                                                    />
+                                </p:commandLink>                             
+                                <p:commandLink id="eliminar" style="text-decoration: none;margin-left: 5px; " title="Eliminar" action="#{eliminarMunicipioController.ventanaEliminarMunicipio(municipio, munController)}">                                    
+                                    <p:graphicImage style="width:20px; " library="imagenesAplicacion/usuarios" name="eliminar.png"/>
+                                </p:commandLink>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>                   
+
+                </h:form>
+                <ui:include src="registrarMunicipio.xhtml"/>
+                <ui:include src="verEditarMunicipio.xhtml"/>
+                <ui:include src="eliminarMunicipio.xhtml"/>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
 </html>

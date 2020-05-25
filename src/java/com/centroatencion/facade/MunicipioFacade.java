@@ -35,6 +35,7 @@ public class MunicipioFacade extends AbstractFacade<Municipio> {
     
     public List<Municipio> findByDepartamento(Long departamentoId) {
         Query query = getEntityManager().createNamedQuery("Municipio.findByDepartamento");
+        query.setHint("eclipselink.refresh", true);
         query.setParameter("departamentoId", departamentoId);
         List<Municipio> resultList = query.getResultList();
         return resultList;
@@ -42,10 +43,19 @@ public class MunicipioFacade extends AbstractFacade<Municipio> {
     
     public List<Municipio> findByDepartamentoAndNombre(Long departamentoId,String munNombre) {
         Query query = getEntityManager().createNamedQuery("Municipio.findByDepartamentoAndNombre");
+        query.setHint("eclipselink.refresh", true);
         query.setParameter("departamentoId", departamentoId);
         query.setParameter("munNombre", "%" + munNombre + "%");
         List<Municipio> resultList = query.getResultList();
         return resultList;
+    }
+    
+    public Departamento findDepartamentoById(Long munId) {
+        Query query = getEntityManager().createNamedQuery("Municipio.findDepartamentoById");
+        query.setHint("eclipselink.refresh", true);
+        query.setParameter("munId", munId);
+        Departamento departamento = (Departamento)query.getSingleResult();
+        return departamento;
     }
     
 }

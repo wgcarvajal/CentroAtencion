@@ -6,7 +6,7 @@
 }
 
 body{
-    background-image: url(./imagenesAplicacion/fondoazul.jpg);
+    background-image: url(./imagenesAplicacion/fondoazul.jpg.xhtml);
 }
 
 
@@ -111,7 +111,7 @@ body{
 {
     margin: 0 auto;
     width: 600px;
-    background: url(./imagenesAplicacion/fondoNaranja.jpg) no-repeat;
+    background: url(./imagenesAplicacion/fondoNaranja.jpg.xhtml) no-repeat;
     background-size: 600px;
     padding-top: 80px;
     height: 500px;

@@ -34,6 +34,7 @@ public class IngresosubproductoFacade extends AbstractFacade<Ingresosubproducto>
     @Override
     public List<Ingresosubproducto> findAll() {
        Query query = getEntityManager().createNamedQuery("Ingresosubproducto.findAll");
+       query.setHint("eclipselink.refresh", true);
         List<Ingresosubproducto> resultList = query.getResultList();
         return resultList;
     }

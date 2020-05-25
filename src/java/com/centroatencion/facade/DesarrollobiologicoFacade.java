@@ -35,8 +35,9 @@ public class DesarrollobiologicoFacade extends AbstractFacade<Desarrollobiologic
     @Override
     public List<Desarrollobiologico> findAll() {
        Query query = getEntityManager().createNamedQuery("Desarrollobiologico.findAll");
-        List<Desarrollobiologico> resultList = query.getResultList();
-        return resultList;
+       query.setHint("eclipselink.refresh", true);
+       List<Desarrollobiologico> resultList = query.getResultList();
+       return resultList;
     }
     
 }

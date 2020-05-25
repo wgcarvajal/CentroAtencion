@@ -33,6 +33,7 @@ public class FamiliaFacade extends AbstractFacade<Familia> {
     
     public List<Familia> findByOrden(int orId) {
         Query query = getEntityManager().createNamedQuery("Familia.findByOrden");
+        query.setHint("eclipselink.refresh", true);
         query.setParameter("orId", orId);
         List<Familia> resultList = query.getResultList();
         return resultList;
@@ -51,6 +52,7 @@ public class FamiliaFacade extends AbstractFacade<Familia> {
         }
        
         query.setParameter("faNombre", "%" + faNombre + "%");
+        query.setHint("eclipselink.refresh", true);
         List<Familia> resultList = query.getResultList();
         return resultList;
     }
@@ -58,12 +60,14 @@ public class FamiliaFacade extends AbstractFacade<Familia> {
     @Override
     public List<Familia> findAll() {
        Query query = getEntityManager().createNamedQuery("Familia.findAll");
+       query.setHint("eclipselink.refresh", true);
         List<Familia> resultList = query.getResultList();
         return resultList;
     }
     
     public List findByIdInnerJoinOrden(Integer faId) {
         Query query = getEntityManager().createNamedQuery("Familia.findByIdInnerJoinOrden");
+        query.setHint("eclipselink.refresh", true);
         query.setParameter("faId", faId);
         List resultList = query.getResultList();
         return resultList;
@@ -72,6 +76,7 @@ public class FamiliaFacade extends AbstractFacade<Familia> {
     public boolean existeNombre(String faNombre)
     {
         Query query = getEntityManager().createNamedQuery("Familia.findByFaNombre");
+        query.setHint("eclipselink.refresh", true);
         query.setParameter("faNombre",  faNombre);
         List<Familia> resultList = query.getResultList();
         return resultList!=null && resultList.size()>0;

@@ -34,6 +34,7 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
     public Object findByUsuNombreUsuario(String usuNombreUsuario)
     {
         Query query = getEntityManager().createNamedQuery("Usuario.findByUsuNombreUsuario");
+        query.setHint("eclipselink.refresh", true);
         query.setParameter("usuNombreUsuario", usuNombreUsuario);
         Object object = query.getSingleResult();
         return object;

@@ -33,13 +33,23 @@ public class VeredaFacade extends AbstractFacade<Vereda> {
     
     public List<Vereda> findByMunicipio(Long municipioId) {
         Query query = getEntityManager().createNamedQuery("Vereda.findByMunicipio");
+        query.setHint("eclipselink.refresh", true);
         query.setParameter("municipioId", municipioId);
         List<Vereda> resultList = query.getResultList();
         return resultList;
     }
     
+    public Object[] findMuncipioDepartamentoById(Long verId) {
+        Query query = getEntityManager().createNamedQuery("Vereda.findMuncipioDepartamentoById");
+        query.setHint("eclipselink.refresh", true);
+        query.setParameter("verId", verId);
+        Object[] object = (Object[])query.getSingleResult();
+        return object;
+    }
+    
     public List<Vereda> findByMunicipioAndNombre(Long municipioId,String verNombre) {
         Query query = getEntityManager().createNamedQuery("Vereda.findByMunicipioAndNombre");
+        query.setHint("eclipselink.refresh", true);
         query.setParameter("municipioId", municipioId);
         query.setParameter("verNombre", "%" + verNombre + "%");
         List<Vereda> resultList = query.getResultList();

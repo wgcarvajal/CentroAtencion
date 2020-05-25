@@ -5,19 +5,17 @@
  */
 package com.centroatencion.facade;
 
-import com.centroatencion.entities.Genero;
-import java.util.List;
+import com.centroatencion.entities.Estado;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 /**
  *
  * @author Wilson Carvajal
  */
 @Stateless
-public class GeneroFacade extends AbstractFacade<Genero> {
+public class EstadoFacade extends AbstractFacade<Estado> {
 
     @PersistenceContext(unitName = "CentroAtencionPU")
     private EntityManager em;
@@ -27,16 +25,8 @@ public class GeneroFacade extends AbstractFacade<Genero> {
         return em;
     }
 
-    public GeneroFacade() {
-        super(Genero.class);
-    }
-    
-    @Override
-    public List<Genero> findAll() {
-       Query query = getEntityManager().createNamedQuery("Genero.findAll");
-       query.setHint("eclipselink.refresh", true);
-       List<Genero> resultList = query.getResultList();
-       return resultList;
+    public EstadoFacade() {
+        super(Estado.class);
     }
     
 }

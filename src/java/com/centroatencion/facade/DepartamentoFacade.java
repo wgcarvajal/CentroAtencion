@@ -33,6 +33,7 @@ public class DepartamentoFacade extends AbstractFacade<Departamento> {
     
     public List<Departamento> searchByNombreDepartamento(String depNombre) {
         Query query = getEntityManager().createNamedQuery("Departamento.findByNombreDepartamento");
+        query.setHint("eclipselink.refresh", true);
         query.setParameter("depNombre", "%" + depNombre + "%");
         List<Departamento> resultList = query.getResultList();
         return resultList;
@@ -41,6 +42,7 @@ public class DepartamentoFacade extends AbstractFacade<Departamento> {
     @Override
     public List<Departamento> findAll() {
         Query query = getEntityManager().createNamedQuery("Departamento.findAll");
+        query.setHint("eclipselink.refresh", true);
         List<Departamento> resultList = query.getResultList();
         return resultList; 
     }

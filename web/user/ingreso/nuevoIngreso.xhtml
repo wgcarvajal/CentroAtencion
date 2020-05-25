@@ -2,11 +2,19 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"      
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <ui:composition>
-        <div class="tituloContenido">                           
+
+    <body>
+
+        <ui:composition template="./../../templates/template.xhtml">
+
+            <ui:define name="title">
+                #{bundle.NuevoIngreso}
+            </ui:define>
+            <ui:define name="content">
+                <div class="tituloContenido">                           
                #{bundle.NuevoIngreso}
         </div>
         <br/>
@@ -51,6 +59,7 @@
                                 <p:column>
                                     <p:selectOneMenu
                                         id="dirTerritorial"
+                                        converter="selectManyCheckbox"
                                         value="#{nuevoIngresoController.direcctionterritorial}"
                                         required="true" requiredMessage="#{bundle.CampoRequerido}"            
                                                      >
@@ -107,6 +116,7 @@
                                 <p:column>
                                     <p:selectOneMenu
                                         id="seleccionEspecie"
+                                        converter="selectManyCheckbox"
                                         filter="true"
                                         filterMatchMode="contains"
                                         valueChangeListener="#{nuevoIngresoController.changedAnimal}"
@@ -265,6 +275,7 @@
                                     </p:column>
                                     <p:column>
                                         <p:selectOneMenu
+                                            converter="selectManyCheckbox"
                                             filter="true"
                                             filterMatchMode="contains"
                                             value="#{nuevoIngresoController.departamentoOcurrenciaSelected}"
@@ -303,6 +314,7 @@
                                         <p:selectOneMenu
                                             filter="true"
                                             filterMatchMode="contains"
+                                            converter="selectManyCheckbox"
                                             value="#{nuevoIngresoController.municipioOcurrenciaSelected}"
                                             valueChangeListener="#{nuevoIngresoController.changedMunicipioOcurrencia}"
                                             >
@@ -339,6 +351,7 @@
                                         <p:selectOneMenu
                                             filter="true"
                                             filterMatchMode="contains"
+                                            converter="selectManyCheckbox"
                                             value="#{nuevoIngresoController.veredaOcurrenciaSelected}"
                                             >
                                             <f:selectItem itemLabel="#{bundle.SinDatos}.." />
@@ -428,6 +441,7 @@
                                 <p:column>
                                     <p:selectOneMenu
                                         filter="true"
+                                        converter="selectManyCheckbox"
                                         filterMatchMode="contains"
                                         value="#{nuevoIngresoController.departamentoSelected}"
                                         valueChangeListener="#{nuevoIngresoController.changedDepartamento}"
@@ -464,6 +478,7 @@
                                 </p:column>
                                 <p:column>
                                     <p:selectOneMenu
+                                        converter="selectManyCheckbox"
                                         filter="true"
                                         filterMatchMode="contains"
                                         value="#{nuevoIngresoController.municipioSelected}"
@@ -501,6 +516,7 @@
                                 </p:column>
                                 <p:column>
                                     <p:selectOneMenu
+                                        converter="selectManyCheckbox"
                                         filter="true"
                                         filterMatchMode="contains"
                                         value="#{nuevoIngresoController.veredaSelected}"
@@ -690,5 +706,8 @@
                 </p:tab>
             </p:wizard>
         </h:form>
-    </ui:composition>
+            </ui:define>
+        </ui:composition>
+
+    </body>
 </html>

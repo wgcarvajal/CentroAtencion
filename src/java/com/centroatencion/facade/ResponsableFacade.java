@@ -34,6 +34,7 @@ public class ResponsableFacade extends AbstractFacade<Responsable> {
     @Override
     public List<Responsable> findAll() {
         Query query = getEntityManager().createNamedQuery("Responsable.findAll");
+        query.setHint("eclipselink.refresh", true);
         List<Responsable> resultList = query.getResultList();
         return resultList;
     }

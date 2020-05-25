@@ -36,7 +36,7 @@ body {
     float: left;
     margin-top: 8px;
     margin-left: 13px;
-    background: url(../img/logoapp.png) no-repeat;
+    background: url(../img/logoapp.png.xhtml) no-repeat;
 }
 
 .notificaciones
@@ -187,17 +187,17 @@ body {
 
 .ui-tieredmenu
 {
-    background: url(../imagenesAplicacion/fondoNaranja.jpg) !important;
+    background: url(../imagenesAplicacion/fondoNaranja.jpg.xhtml) !important;
 }
 
 .ui-menu-child
 {
-    background: url(../imagenesAplicacion/fondoNaranja.jpg) !important;
+    background: url(../imagenesAplicacion/fondoNaranja.jpg.xhtml) !important;
 }
 
 .ui-widget-header
 {
-    background: url(../imagenesAplicacion/fondoNaranja.jpg) no-repeat !important;
+    background: url(../imagenesAplicacion/fondoNaranja.jpg.xhtml) no-repeat !important;
     background-size: cover !important;
 }
 

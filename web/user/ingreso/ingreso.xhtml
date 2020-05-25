@@ -1,0 +1,497 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <body>
+
+        <ui:composition template="./../../templates/template.xhtml">
+
+            <ui:define name="title">
+                #{bundle.Ingreso}
+            </ui:define>
+
+            <ui:define name="content">
+                <div class="tituloContenido">                           
+                    #{bundle.Ingreso}
+                </div>
+                <br />
+                <h:form style="z-index: 1;position: fixed !important; margin-left: 65%;">
+                    <p:menubar>
+                        <p:submenu label="#{bundle.Accion}" icon="pi pi-cog">
+                            <p:menuitem value="#{bundle.Ubicar}" action="#{ingresoController.openUbicarDialog}"/>
+                            <p:menuitem value="#{bundle.Transladar}" action="#{ingresoController.openTransladarDialog}" />
+                            <p:submenu label="#{bundle.Destinofinal}">
+                                <p:menuitem value="#{bundle.Reubicar}" url="#" />
+                                <p:menuitem value="#{bundle.Incinerar}" url="#" />
+                            </p:submenu>
+                        </p:submenu>
+                    </p:menubar>
+                </h:form>
+                <h:form id="form">
+                    <p:panelGrid>
+                        <p:row>
+                            <p:column style="font-weight: bold;">
+                                <p:outputLabel value="#{bundle.Animal}: " /> 
+                            </p:column>
+                            <p:column>
+                                #{ingresoController.animal.anNombre}
+                            </p:column>
+                            <p:column style="font-weight: bold;">
+                                <p:outputLabel value="#{bundle.Especie}: " /> 
+                            </p:column>
+                            <p:column>
+                                #{ingresoController.animal.anEspNombre}
+                            </p:column>
+                            <p:column style="font-weight: bold;">
+                                <p:outputLabel value="#{bundle.GrupoTaxonomico}: " /> 
+                            </p:column>
+                            <p:column>
+                                #{ingresoController.grupotaxonomico.gruptaxNombre}
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="font-weight: bold;">
+                                <p:outputLabel value="#{bundle.Familia}: " /> 
+                            </p:column>
+                            <p:column>
+                                #{ingresoController.familia.faNombre}
+                            </p:column>
+                            <p:column style="font-weight: bold;">
+                                <p:outputLabel value="#{bundle.Orden}: " /> 
+                            </p:column>
+                            <p:column colspan="3">
+                                #{ingresoController.orden.orNombre}
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    
+                    <br />
+                    
+                    <p:accordionPanel style="width:85% !important;" activeIndex="#{ingresoController.indexUtimoIngreso}">
+                        <p:tab title="Ingreso #{ingresoController.direccionterritorial.dirterNombre}">
+                            <p:accordionPanel  multiple="true" activeIndex="-1">
+                                <p:ajax event="tabChange" listener="#{ingresoController.onTabChangeIngreso}"
+                                        onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                        update="panelMovDT"
+                                        />
+                                <p:tab title="Datos de ingreso">
+                                    <p:panelGrid>
+                                        <p:row>
+                                            <p:column style="font-weight: bold;">
+                                                <p:outputLabel value="#{bundle.Fecha}: " /> 
+                                            </p:column>
+                                            <p:column colspan="5">
+                                #{ingresoController.formatFecha(ingresoController.ingreso.ingFecha)}
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column style="font-weight: bold;">
+                                                <p:outputLabel value="#{bundle.DireccionTerritorial}: " /> 
+                                            </p:column>
+                                            <p:column>
+                                #{ingresoController.direccionterritorial.dirterNombre}
+                                            </p:column>
+                                            <p:column style="font-weight: bold;">
+                                                <p:outputLabel value="#{bundle.Causa}: " /> 
+                                            </p:column>
+                                            <p:column colspan="3" rendered="#{ingresoController.ingreso.ingCausa.equals('EV')}">
+                                #{bundle.EntregaVoluntaria}
+                                            </p:column>
+                                            <p:column colspan="3" rendered="#{ingresoController.ingreso.ingCausa.equals('DC')}">
+                                #{bundle.Decomiso}
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column style="font-weight: bold;">
+                                                <p:outputLabel value="#{bundle.NumeroRadicado}: " /> 
+                                            </p:column>
+                                            <p:column>
+                                #{ingresoController.ingreso.ingRadicado}
+                                            </p:column>
+                                            <p:column style="font-weight: bold;">
+                                                <p:outputLabel value="#{bundle.NumeroAUCTFF}: " /> 
+                                                <p:outputLabel id="Auctff"><i  class="fa fa-fw fa-info-circle"></i></p:outputLabel>
+                                                <p:tooltip for="Auctff" value="#{bundle.DescripcionNumeroAUCTFF}" />
+                                            </p:column>
+                                            <p:column>
+                                #{ingresoController.ingreso.ingAUCTFF}
+                                            </p:column>
+                                            <p:column style="font-weight: bold;">
+                                                <p:outputLabel value="#{bundle.CNI}: " />
+                                                <p:outputLabel id="Cni"><i  class="fa fa-fw fa-info-circle"></i></p:outputLabel>
+                                                <p:tooltip for="Cni" value="#{bundle.CodigoNacionalIngreso}" />
+                                            </p:column>
+                                            <p:column>
+                                                <p:outputLabel id="ent" value="#{ingresoController.returnEnt()}"/>
+                                                <p:tooltip for="ent" value="#{bundle.NumeroIdentificaCar}" />
+                                                -
+                                                <p:outputLabel id="gtx" value="#{ingresoController.grupotaxonomico.grupotaxAbreviatura}"/>
+                                                <p:tooltip for="gtx" value="#{bundle.GrupoTaxonomico}" />
+                                                -
+                                                <p:outputLabel id="anio" value="#{ingresoController.returnAnio(ingresoController.ingreso.ingFecha)}"/>
+                                                <p:tooltip for="anio" value="#{bundle.AnioIngreso}" />
+                                                -
+                                                <p:outputLabel id="consecutivo" value="#{ingresoController.ingreso.ingConsecutivo}"/>
+                                                <p:tooltip for="consecutivo" value="#{bundle.ConsecutivoIngreso}" />
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column style="font-weight: bold;">
+                                                <p:outputLabel value="#{bundle.Responsable}: " /> 
+                                                <p:outputLabel id="responsable"><i  class="fa fa-fw fa-info-circle"></i></p:outputLabel>
+                                                <p:tooltip for="responsable" value="#{bundle.DescripcionResponsable}" />
+                                            </p:column>
+                                            <p:column colspan="5">
+                                                <p:outputLabel value="#{ingresoController.returnResponsables()}"/>
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column style="font-weight: bold;">
+                                                <p:outputLabel value="#{bundle.Funcionario}: " /> 
+                                            </p:column>
+                                            <p:column colspan="5">
+                                #{ingresoController.funcionario.perNombres} #{ingresoController.funcionario.perApellidos}
+                                            </p:column>
+
+                                        </p:row>
+                                    </p:panelGrid>
+                                    <br />
+                                    <p:panelGrid>
+                                        <p:row>
+                                            <p:column style="font-weight: bold;">
+                                                <p:outputLabel value="#{bundle.Animal}: " /> 
+                                            </p:column>
+                                            <p:column>
+                                #{ingresoController.animal.anNombre}
+                                            </p:column>
+                                            <p:column style="font-weight: bold;">
+                                                <p:outputLabel value="#{bundle.Especie}: " /> 
+                                            </p:column>
+                                            <p:column>
+                                #{ingresoController.animal.anEspNombre}
+                                            </p:column>
+                                            <p:column style="font-weight: bold;">
+                                                <p:outputLabel value="#{bundle.GrupoTaxonomico}: " /> 
+                                            </p:column>
+                                            <p:column>
+                                #{ingresoController.grupotaxonomico.gruptaxNombre}
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column style="font-weight: bold;">
+                                                <p:outputLabel value="#{bundle.Familia}: " /> 
+                                            </p:column>
+                                            <p:column>
+                                #{ingresoController.familia.faNombre}
+                                            </p:column>
+                                            <p:column style="font-weight: bold;">
+                                                <p:outputLabel value="#{bundle.Orden}: " /> 
+                                            </p:column>
+                                            <p:column colspan="3">
+                                #{ingresoController.orden.orNombre}
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column style="font-weight: bold;">
+                                                <p:outputLabel value="#{bundle.Genero}: " /> 
+                                            </p:column>
+                                            <p:column rendered="#{ingresoController.genero!=null}">
+                                #{ingresoController.genero.genNombre}
+                                            </p:column>
+                                            <p:column rendered="#{ingresoController.genero==null}">
+                                #{bundle.Indeterminado}
+                                            </p:column>
+                                            <p:column style="font-weight: bold;">
+                                                <p:outputLabel value="#{bundle.DesarrolloBiologico}: " /> 
+                                            </p:column>
+                                            <p:column colspan="3" rendered="#{ingresoController.desarrollobiologico!=null}">
+                                #{ingresoController.desarrollobiologico.desbioNombre}
+                                            </p:column>
+                                            <p:column colspan="3" rendered="#{ingresoController.desarrollobiologico==null}">
+                                #{bundle.Indeterminado}
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column style="font-weight: bold;">
+                                #{bundle.Estado}:
+                                            </p:column>
+                                            <p:column>
+                                #{ingresoController.returnEstado(ingresoController.estado)}
+                                            </p:column>
+                                            <p:column style="font-weight: bold;">
+                                #{bundle.Observaciones}:
+                                            </p:column>
+                                            <p:column colspan="3">
+                                                <p>
+                                    #{ingresoController.ingreso.ingObservaciones}
+                                                </p>
+                                            </p:column>
+                                        </p:row>
+                                        <p:row rendered="#{ingresoController.returnEsSubproducto()}">
+                                            <p:column style="font-weight: bold;">
+                                #{bundle.SubProducto}:
+                                            </p:column>
+                                            <p:column colspan="5">
+                                #{ingresoController.returnSubproducto()}
+                                            </p:column>
+                                        </p:row>
+                                        <p:row rendered="#{ingresoController.ingreso.ingEstadoSalud != null}">
+                                            <p:column style="font-weight: bold;">
+                                #{bundle.EstadoSalud}:
+                                            </p:column>
+                                            <p:column>
+                                #{ingresoController.returnEstadoSalud(ingresoController.ingreso.ingEstadoSalud)}
+                                            </p:column>
+                                        </p:row>
+                                    </p:panelGrid>
+                                    <br />
+                                    <p:panelGrid rendered="#{ingresoController.donanteInfractor != null}">
+                                        <p:row>
+                                            <p:column style="font-weight: bold;" rowspan="3"
+                                                      rendered="#{ingresoController.ingreso.ingCausa.equals('EV')}">
+                                #{bundle.Donante}:
+                                            </p:column>
+                                            <p:column style="font-weight: bold;" rowspan="3"
+                                                      rendered="#{ingresoController.ingreso.ingCausa.equals('DC')}">
+                                #{bundle.Infractor}:
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column style="font-weight: bold;"
+                                                      >
+                                #{bundle.NumeroIdentificacion}:
+                                            </p:column>
+                                            <p:column>
+                                #{ingresoController.donanteInfractor.doninIdentifiacion}
+                                            </p:column>
+                                            <p:column style="font-weight: bold;"
+                                                      >
+                                #{bundle.Nombres}:
+                                            </p:column>
+                                            <p:column>
+                                #{ingresoController.donanteInfractor.doninNombres} #{ingresoController.donanteInfractor.doninApellidos}
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column style="font-weight: bold;"
+                                                      >
+                                #{bundle.Direccion}:
+                                            </p:column>
+                                            <p:column>
+                                #{ingresoController.donanteInfractor.doninDireccion}
+                                            </p:column>
+                                            <p:column style="font-weight: bold;"
+                                                      >
+                                #{bundle.Telefono}:
+                                            </p:column>
+                                            <p:column>
+                                #{ingresoController.donanteInfractor.doninTelefono}
+                                            </p:column>
+                                        </p:row>
+                                    </p:panelGrid>
+                                    <p:panelGrid rendered="#{ingresoController.donanteInfractor == null}">
+                                        <p:row>
+                                            <p:column style="font-weight: bold;"
+                                                      rendered="#{ingresoController.ingreso.ingCausa.equals('EV')}">
+                                #{bundle.Donante}:
+                                            </p:column>
+                                            <p:column style="font-weight: bold;"
+                                                      rendered="#{ingresoController.ingreso.ingCausa.equals('DC')}">
+                                #{bundle.Infractor}:
+                                            </p:column>
+                                            <p:column>
+
+                                            </p:column>
+                                        </p:row>
+                                    </p:panelGrid>
+                                    <br />
+                                    <p:panelGrid rendered="#{ingresoController.lugardecomisoentregavoluntaria!=null 
+                                             || ingresoController.veredaOcurrencia!=null 
+                                             || ingresoController.municipioOcurrencia!=null
+                                             || ingresoController.departamentoOCurrencia!=null}">
+                                        <p:row>
+                                            <p:column style="font-weight: bold;"
+                                                      rowspan="3"
+                                                      >
+                                #{bundle.SitioOcurrencia}:
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column style="font-weight: bold;" rendered="#{ingresoController.departamentoOCurrencia!=null}">
+                                #{bundle.Departamento}:
+                                            </p:column>
+                                            <p:column rendered="#{ingresoController.departamentoOCurrencia!=null}">
+                                #{ingresoController.departamentoOCurrencia.depNombre}
+                                            </p:column>
+                                            <p:column style="font-weight: bold;" rendered="#{ingresoController.municipioOcurrencia!=null}">
+                                #{bundle.Municipio}:
+                                            </p:column>
+                                            <p:column rendered="#{ingresoController.municipioOcurrencia!=null}">
+                                #{ingresoController.municipioOcurrencia.munNombre}
+                                            </p:column>
+                                            <p:column style="font-weight: bold;" rendered="#{ingresoController.veredaOcurrencia!=null}">
+                                #{bundle.Vereda}:
+                                                <p:outputLabel id="veredaOcurrencia"><i  class="fa fa-fw fa-info-circle"></i></p:outputLabel>
+                                                <p:tooltip for="veredaOcurrencia" value="#{bundle.VeredaDescripcion}" />
+                                            </p:column>
+                                            <p:column rendered="#{ingresoController.veredaOcurrencia!=null}">
+                                #{ingresoController.veredaOcurrencia.verNombre}
+                                            </p:column>
+                                        </p:row>
+                                        <p:row rendered="#{ingresoController.lugardecomisoentregavoluntaria!=null}">
+                                            <p:column style="font-weight: bold;">
+                                #{bundle.Lugar}:
+                                                <p:outputLabel id="lugar"><i  class="fa fa-fw fa-info-circle"></i></p:outputLabel>
+                                                <p:tooltip for="lugar" value="#{bundle.LugarDescripcion}" />
+                                            </p:column>
+                                            <p:column>
+                                #{ingresoController.lugardecomisoentregavoluntaria.lugDecEntVoNombre}
+                                            </p:column>
+                                        </p:row>
+                                    </p:panelGrid>
+                                    <p:panelGrid rendered="#{ingresoController.lugardecomisoentregavoluntaria==null 
+                                             and ingresoController.veredaOcurrencia==null 
+                                             and ingresoController.municipioOcurrencia==null
+                                             and ingresoController.departamentoOCurrencia==null}">
+                                        <p:row>
+                                            <p:column style="font-weight: bold;"
+                                                      >
+                                #{bundle.SitioOcurrencia}:
+                                            </p:column>
+                                            <p:column>
+
+                                            </p:column>
+                                        </p:row>
+                                    </p:panelGrid>
+                                    <br />
+                                    <p:panelGrid rendered="#{ingresoController.veredaExtraccion!=null 
+                                             || ingresoController.municipioExtraccion!=null
+                                             || ingresoController.departamentoExtraccion!=null}">
+                                        <p:row>
+                                            <p:column style="font-weight: bold;"
+                                                      rowspan="2"
+                                                      >
+                                #{bundle.SitioExtraccion}:
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column style="font-weight: bold;" rendered="#{ingresoController.departamentoExtraccion!=null}">
+                                #{bundle.Departamento}:
+                                            </p:column>
+                                            <p:column rendered="#{ingresoController.departamentoExtraccion!=null}">
+                                #{ingresoController.departamentoExtraccion.depNombre}
+                                            </p:column>
+                                            <p:column style="font-weight: bold;" rendered="#{ingresoController.municipioExtraccion!=null}">
+                                #{bundle.Municipio}:
+                                            </p:column>
+                                            <p:column rendered="#{ingresoController.municipioExtraccion!=null}">
+                                #{ingresoController.municipioExtraccion.munNombre}
+                                            </p:column>
+                                            <p:column style="font-weight: bold;" rendered="#{ingresoController.veredaExtraccion!=null}">
+                                #{bundle.Vereda}:
+                                                <p:outputLabel id="veredaExtraccion"><i  class="fa fa-fw fa-info-circle"></i></p:outputLabel>
+                                                <p:tooltip for="veredaExtraccion" value="#{bundle.VeredaDescripcion}" />
+                                            </p:column>
+                                            <p:column rendered="#{ingresoController.veredaExtraccion!=null}">
+                                #{ingresoController.veredaExtraccion.verNombre}
+                                            </p:column>
+                                        </p:row>
+                                    </p:panelGrid>
+                                    <p:panelGrid rendered="#{ingresoController.veredaExtraccion==null 
+                                             and ingresoController.municipioExtraccion==null
+                                             and ingresoController.departamentoExtraccion==null}">
+                                        <p:row>
+                                            <p:column style="font-weight: bold;"
+                                                      >
+                                #{bundle.SitioExtraccion}:
+                                            </p:column>
+                                            <p:column>
+
+                                            </p:column>
+                                        </p:row>
+
+                                    </p:panelGrid>
+                                </p:tab>
+                                <p:tab titletip="MovDt" title="Movimientos dentro de la DT">
+                                    <p:panel  id="panelMovDT">
+                                        <p:dataTable rendered="#{ingresoController.renderedMovDt()}" 
+                                                     var="ubicar" value="#{ingresoController.ubicarList}"
+                                                     paginator="true" rows="5"  
+                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                                            <p:column headerText="#{bundle.Fecha}">
+                                                #{ingresoController.formatFecha(ubicar.ubFecha)}
+                                            </p:column>
+                                            <p:column headerText="#{bundle.UbicadoEn}">
+                                                #{ubicar.entterId.entterNombre}
+                                            </p:column>
+                                            <p:column headerText="#{bundle.Funcionario}">
+                                                #{ubicar.funcionarioId.perNombres} #{ubicar.funcionarioId.perApellidos}
+                                            </p:column>
+                                        </p:dataTable>
+                                        <p:outputLabel rendered="#{!ingresoController.renderedMovDt()}" value="#{bundle.NoHayDatos}" />
+                                    </p:panel>
+                                </p:tab>
+                            </p:accordionPanel>
+                        </p:tab>
+                        <br />
+                        <c:forEach var="ingreso" items="${ingresoController.ingresos}">
+                            <p:tab title="Translado a #{ingreso.dirterId.dirterNombre}">
+                                <p:panelGrid>
+                                        <p:row>
+                                            <p:column style="font-weight: bold;">
+                                                <p:outputLabel value="#{bundle.Fecha}: " /> 
+                                            </p:column>
+                                            <p:column>
+                                                #{ingresoController.formatFecha(ingreso.ingFecha)}
+                                            </p:column>
+                                            <p:column style="font-weight: bold;">
+                                                <p:outputLabel value="#{bundle.Funcionario}: " /> 
+                                            </p:column>
+                                            <p:column>
+                                                #{ingreso.funcionarioId.perNombres} #{ingreso.funcionarioId.perApellidos}
+                                            </p:column>
+                                        </p:row>
+                                </p:panelGrid>
+                                <br />
+                                <p:accordionPanel multiple="true" activeIndex="-1">
+                                    <p:ajax event="tabChange" listener="#{ingresoController.onTabChangeTranslado}"
+                                        onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
+                                        update="panelMovDT#{ingreso.ingId}"
+                                        />
+                                    <p:tab titletip="MovDT_#{ingreso.ingId}" title="Movimientos dentro de la DT">
+                                        <p:panel  id="panelMovDT#{ingreso.ingId}">
+                                            <p:dataTable rendered="#{ingresoController.renderedMovDt()}" 
+                                                         var="ubicar" value="#{ingresoController.ubicarList}"
+                                                         paginator="true" rows="5"  
+                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                         >
+                                                <p:column headerText="#{bundle.Fecha}">
+                                                    #{ingresoController.formatFecha(ubicar.ubFecha)}
+                                                </p:column>
+                                                <p:column headerText="#{bundle.UbicadoEn}">
+                                                    #{ubicar.entterId.entterNombre}
+                                                </p:column>
+                                                <p:column headerText="#{bundle.Funcionario}">
+                                                    #{ubicar.funcionarioId.perNombres} #{ubicar.funcionarioId.perApellidos}
+                                                </p:column>
+                                            </p:dataTable>
+                                            <p:outputLabel rendered="#{!ingresoController.renderedMovDt()}" value="#{bundle.NoHayDatos}" />
+                                        </p:panel>
+                                    </p:tab>
+                                </p:accordionPanel>
+                            </p:tab>
+                        </c:forEach>
+                    </p:accordionPanel>
+                </h:form>
+                <ui:include src="ubicarDialog.xhtml" />
+                <ui:include src="transladarDialog.xhtml" />
+            </ui:define>
+        </ui:composition>
+
+    </body>
+</html>

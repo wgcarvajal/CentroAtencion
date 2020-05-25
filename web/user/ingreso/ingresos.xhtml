@@ -2,22 +2,64 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"      
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <ui:composition>
-        <div class="tituloContenido">                           
-               Ingresos
-        </div>
-        <br/>
-        <h:form>
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../../templates/template.xhtml">
+
+            <ui:define name="title">
+                #{bundle.Ingresos}
+            </ui:define>
+
+            <ui:define name="content">
+                <div class="tituloContenido">                           
+                    Ingresos
+                </div>
+                <br/>
+                <h:form>
+                    <p:commandButton 
+                        class="botonAzul"
+                        value="Nuevo ingreso"
+                        action="#{routingController.goToNuevoIngreso(addNavegacionController)}"
+                        />
+                    <br/>
+                    <br/>
+                    <p:dataTable value="#{ingresosController.listaIngresos}"
+                                 var="ingreso"
+                                 >
+                        <p:column headerText="#{bundle.Fecha}">
+                           #{ingresosController.formatDate(ingreso[0].ingFecha)}
+                        </p:column>
+                        <p:column headerText="#{bundle.NumeroRadicado}">
+                       #{ingreso[0].ingRadicado}
+                        </p:column>
+                        <p:column headerText="#{bundle.Animal}">
+                       #{ingreso[1].anNombre}
+                        </p:column>
+                        <p:column headerText="#{bundle.Funcionario}">
+                       #{ingreso[2].perNombres}
+                        </p:column>
+                        <p:column headerText="#{bundle.Estado}">
+                      #{ingresosController.formatEstado(ingreso[3])}
+                        </p:column>
+                        <p:column headerText="#{bundle.Accion}" style="text-align: center;">
+                            <p:commandLink style="text-decoration:none !important;"
+                                           action="#{routingController.goToIngreso(addNavegacionController, ingreso[0].ingId)}"
+                                           >
+                                <i class="pi pi-search"></i>
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </ui:define>
             
-               <p:commandButton 
-                   class="botonAzul"
-                    value="Nuevo ingreso"
-                    action="#{routingController.goToNuevoIngreso(addNavegacionController)}"
-                    ajax="false"
-                   />
-        </h:form>
-    </ui:composition>
+            <ui:define name="bottom">
+                
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
 </html>

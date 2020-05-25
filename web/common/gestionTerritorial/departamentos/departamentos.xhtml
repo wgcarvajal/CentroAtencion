@@ -2,50 +2,62 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"      
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <ui:composition>
-        <div class="tituloContenido">                           
-               Departamentos
-        </div>
-        <h:form id="formTablaDepartamentos">
-            <h:panelGrid style="margin-bottom: 10px;" columns="3">                      
-                <h:outputLabel class="CampoLabel" value="Buscar departamento:" />
-                <p:inputText style="width: 240px;" value="#{departController.departamento}"  >
-                    <p:ajax event="keyup" update="tablaDepartamentos" listener="#{departController.searchByNombreDepartamento()}" />                                
-                </p:inputText> 
-                <p:commandButton  value="Registrar departamento" class="botonAzul" style="margin-left: 395px;"
-                                  action="#{agregarDepartamentoController.abrirVentanaAgregarDepartamento()}"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../../../templates/template.xhtml">
+
+            <ui:define name="title">
+                #{bundle.Departamento}
+            </ui:define>
+
+            <ui:define name="content">
+                <div class="tituloContenido">                           
+                    Departamentos
+                </div>
+                <h:form id="formTablaDepartamentos">
+                    <h:panelGrid style="margin-bottom: 10px;" columns="3">                      
+                        <h:outputLabel class="CampoLabel" value="Buscar departamento:" />
+                        <p:inputText style="width: 240px;" value="#{departController.departamento}"  >
+                            <p:ajax event="keyup" update="tablaDepartamentos" listener="#{departController.searchByNombreDepartamento()}" />                                
+                        </p:inputText> 
+                        <p:commandButton  value="Registrar departamento" class="botonAzul" style="margin-left: 395px;"
+                                          action="#{agregarDepartamentoController.abrirVentanaAgregarDepartamento()}"
                                           onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
                                           update="formTablaDepartamentos :form:panel"/>
-            </h:panelGrid>
-            
-            <p:panel id="tablaDepartamentos">                                            
-                <p:dataTable  value="#{departController.listaDepartamentos}"
-                              var="departamento" 
-                              paginator="true" rows="10"  
-                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
-                              >
-                    <p:column headerText="Nombre" style="text-align: center">
-                        #{departamento.depNombre}
-                    </p:column>
-                    <p:column headerText="Acciones" width="150" style="text-align: center">                               
-                        <p:commandLink update=":formularioTituloVerDepartamento :formularioDepartamento" title="Ver o Editar"   style="text-decoration: none;" action="#{verEditarDepartamentoController.departamentoSeleccionado(departamento,departController)}">                                    
-                            <p:graphicImage style="width:25px;margin-left: 5px;" library="imagenesAplicacion/usuarios" name="ver.png"
-                                            />
-                        </p:commandLink>                                
-                        <p:commandLink id="eliminar" style="text-decoration: none;margin-left: 5px; " title="Eliminar" action="#{eliminarDepartamentoController.ventanaEliminarDepartamento(departamento, departController)}">                                    
-                            <p:graphicImage style="width:20px; " library="imagenesAplicacion/usuarios" name="eliminar.png"/>
-                        </p:commandLink>
-                    </p:column>
-                </p:dataTable>
-            </p:panel>                   
-           
-        </h:form>
-        <ui:include src="registrarDepartamento.xhtml"/>
-        <ui:include src="verEditarDepartamento.xhtml"/>
-        <ui:include src="eliminarDepartamento.xhtml"/>
-    </ui:composition>
-</html>
+                    </h:panelGrid>
 
+                    <p:panel id="tablaDepartamentos">                                            
+                        <p:dataTable  value="#{departController.listaDepartamentos}"
+                                      var="departamento" 
+                                      paginator="true" rows="10"  
+                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                                      >
+                            <p:column headerText="Nombre" style="text-align: center">
+                        #{departamento.depNombre}
+                            </p:column>
+                            <p:column headerText="Acciones" width="150" style="text-align: center">                               
+                                <p:commandLink update=":formularioTituloVerDepartamento :formularioDepartamento" title="Ver o Editar"   style="text-decoration: none;" action="#{verEditarDepartamentoController.departamentoSeleccionado(departamento,departController)}">                                    
+                                    <p:graphicImage style="width:25px;margin-left: 5px;" library="imagenesAplicacion/usuarios" name="ver.png"
+                                                    />
+                                </p:commandLink>                                
+                                <p:commandLink id="eliminar" style="text-decoration: none;margin-left: 5px; " title="Eliminar" action="#{eliminarDepartamentoController.ventanaEliminarDepartamento(departamento, departController)}">                                    
+                                    <p:graphicImage style="width:20px; " library="imagenesAplicacion/usuarios" name="eliminar.png"/>
+                                </p:commandLink>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>                   
+
+                </h:form>
+                <ui:include src="registrarDepartamento.xhtml"/>
+                <ui:include src="verEditarDepartamento.xhtml"/>
+                <ui:include src="eliminarDepartamento.xhtml"/>
+            </ui:define>
+
+            
+        </ui:composition>
+
+    </body>
+</html>

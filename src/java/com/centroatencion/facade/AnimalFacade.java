@@ -34,6 +34,7 @@ public class AnimalFacade extends AbstractFacade<Animal> {
     
     public List<Animal> searchByNombreAnimal(String anNombre) {
         Query query = getEntityManager().createNamedQuery("Animal.searchByNombreAnimal");
+        query.setHint("eclipselink.refresh", true);
         query.setParameter("anNombre", "%" + anNombre + "%");
         List<Animal> resultList = query.getResultList();
         return resultList;
@@ -41,6 +42,7 @@ public class AnimalFacade extends AbstractFacade<Animal> {
     
     public List<Animal> searchByFamilia(String faNombre) {
         Query query = getEntityManager().createNamedQuery("Animal.searchByFamilia");
+        query.setHint("eclipselink.refresh", true);
         query.setParameter("faNombre", "%" + faNombre + "%");
         List<Animal> resultList = query.getResultList();
         return resultList;
@@ -48,6 +50,7 @@ public class AnimalFacade extends AbstractFacade<Animal> {
     
     public List<Animal> searchByGrupoTaxonomico(String gruptaxNombre) {
         Query query = getEntityManager().createNamedQuery("Animal.searchByGrupoTaxonomico");
+        query.setHint("eclipselink.refresh", true);
         query.setParameter("gruptaxNombre", "%" + gruptaxNombre + "%");
         List<Animal> resultList = query.getResultList();
         return resultList;
@@ -56,6 +59,7 @@ public class AnimalFacade extends AbstractFacade<Animal> {
     public boolean existeNombre(String anNombre)
     {
         Query query = getEntityManager().createNamedQuery("Animal.findByAnNombre");
+        query.setHint("eclipselink.refresh", true);
         query.setParameter("anNombre",  anNombre);
         List<Animal> resultList = query.getResultList();
         return resultList!=null && resultList.size()>0;
@@ -64,6 +68,7 @@ public class AnimalFacade extends AbstractFacade<Animal> {
     public boolean existeEspecie(String anEspNombre)
     {
         Query query = getEntityManager().createNamedQuery("Animal.findByAnEspNombre");
+        query.setHint("eclipselink.refresh", true);
         query.setParameter("anEspNombre",  anEspNombre);
         List<Animal> resultList = query.getResultList();
         return resultList!=null && resultList.size()>0;
@@ -72,12 +77,14 @@ public class AnimalFacade extends AbstractFacade<Animal> {
     @Override
     public List<Animal> findAll() {
        Query query = getEntityManager().createNamedQuery("Animal.findAll");
-        List<Animal> resultList = query.getResultList();
-        return resultList;
+       query.setHint("eclipselink.refresh", true);
+       List<Animal> resultList = query.getResultList();
+       return resultList;
     }
     
     public List<Animal> findByFamilia(Integer faId) {
         Query query = getEntityManager().createNamedQuery("Animal.findByFamilia");
+        query.setHint("eclipselink.refresh", true);
         query.setParameter("faId", faId);
         List<Animal> resultList = query.getResultList();
         return resultList;
@@ -86,6 +93,7 @@ public class AnimalFacade extends AbstractFacade<Animal> {
     public List<Object[]> findFamiliaJoinOrden(long anId)
     {
         Query query = getEntityManager().createNamedQuery("Animal.findFamiliaJoinOrden");
+        query.setHint("eclipselink.refresh", true);
         query.setParameter("anId", anId);
         List<Object[]> resultList = query.getResultList();
         return resultList;

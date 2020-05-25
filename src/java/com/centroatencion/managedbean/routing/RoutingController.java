@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package com.centroatencion.managedbean.routing;
+import java.io.IOException;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
@@ -30,10 +31,9 @@ public class RoutingController implements Serializable {
 
     }
 
-    public void goToHome(AddNavegacionController addNavegacionController) {
+    public void goToHome(AddNavegacionController addNavegacionController) throws IOException {
         addNavegacionController.addHome();
-        this.ruta = "";
-        resetViews();
+        FacesContext.getCurrentInstance().getExternalContext().redirect("/CentroAtencion/admin/main.xhtml");
     }
     
     private void resetViews()
@@ -46,18 +46,14 @@ public class RoutingController implements Serializable {
         context.renderResponse();
     }
     
-    public void goToDepartamentos(AddNavegacionController addNavegacionController) {
+    public void goToDepartamentos(AddNavegacionController addNavegacionController) throws IOException {
         addNavegacionController.addDepartamentos();
-        this.ruta = "../common/gestionTerritorial/departamentos/departamentos.xhtml";
-        resetViews();
-
+        FacesContext.getCurrentInstance().getExternalContext().redirect("/CentroAtencion/common/gestionTerritorial/departamentos/departamentos.xhtml");
     }
     
-    public void goToDireccionTerritorial(AddNavegacionController addNavegacionController) {
+    public void goToDireccionTerritorial(AddNavegacionController addNavegacionController) throws IOException {
         addNavegacionController.addDireccionTerritorial();
-        this.ruta = "gestionEntidad/direccionTerritorial/direccionTerritorial.xhtml";
-        resetViews();
-
+        FacesContext.getCurrentInstance().getExternalContext().redirect("/CentroAtencion/admin/gestionEntidad/direccionTerritorial/direccionTerritorial.xhtml");
     }
     
     public void goToGestionPersonas(AddNavegacionController addNavegacionController) {
@@ -67,17 +63,15 @@ public class RoutingController implements Serializable {
 
     }
     
-    public void goToOrden(AddNavegacionController addNavegacionController) {
+    public void goToOrden(AddNavegacionController addNavegacionController) throws IOException {
         addNavegacionController.addOrden();
-        this.ruta = "../common/gestionAnimal/orden/orden.xhtml";
-        resetViews();
+        FacesContext.getCurrentInstance().getExternalContext().redirect("/CentroAtencion/common/gestionAnimal/orden/orden.xhtml");
 
     }
     
-    public void goToMuncipios(AddNavegacionController addNavegacionController) {
+    public void goToMuncipios(AddNavegacionController addNavegacionController) throws IOException {
         addNavegacionController.addMunicipios();
-        this.ruta = "../common/gestionTerritorial/municipios/municipios.xhtml";
-        resetViews();
+        FacesContext.getCurrentInstance().getExternalContext().redirect("/CentroAtencion/common/gestionTerritorial/municipios/municipios.xhtml");
     }
     
     public void goToEntidades(AddNavegacionController addNavegacionController) {
@@ -93,46 +87,41 @@ public class RoutingController implements Serializable {
         resetViews();
     }
     
-    public void goToFamilias(AddNavegacionController addNavegacionController) {
+    public void goToFamilias(AddNavegacionController addNavegacionController) throws IOException {
         addNavegacionController.addFamilias();
-        this.ruta = "../common/gestionAnimal/familia/familias.xhtml";
-        resetViews();
+        FacesContext.getCurrentInstance().getExternalContext().redirect("/CentroAtencion/common/gestionAnimal/familia/familias.xhtml");
 
     }
     
-    public void goToVeredas(AddNavegacionController addNavegacionController) {
+    public void goToVeredas(AddNavegacionController addNavegacionController) throws IOException {
         addNavegacionController.addVeredas();
-        this.ruta = "../common/gestionTerritorial/veredas/veredas.xhtml";
-        resetViews();
-
+        FacesContext.getCurrentInstance().getExternalContext().redirect("/CentroAtencion/common/gestionTerritorial/veredas/veredas.xhtml");
     }
     
-    public void goToAnimal(AddNavegacionController addNavegacionController) {
+    public void goToAnimal(AddNavegacionController addNavegacionController) throws IOException {
         addNavegacionController.addAnimal();
-        this.ruta = "../common/gestionAnimal/animal/animales.xhtml";
-        resetViews();
-
+        FacesContext.getCurrentInstance().getExternalContext().redirect("/CentroAtencion/common/gestionAnimal/animal/animales.xhtml");
     }
     
-    public void goToGrupoTaxonomico(AddNavegacionController addNavegacionController) {
+    public void goToGrupoTaxonomico(AddNavegacionController addNavegacionController) throws IOException {
         addNavegacionController.addGrupoTaxonomico();
-        this.ruta = "../common/gestionAnimal/grupoTaxonomico/grupoTaxonomicos.xhtml";
-        resetViews();
-
+        FacesContext.getCurrentInstance().getExternalContext().redirect("/CentroAtencion/common/gestionAnimal/grupoTaxonomico/grupoTaxonomicos.xhtml");
     }
     
-    public void goToIngresos(AddNavegacionController addNavegacionController) {
-        addNavegacionController.addIngresos();
-        this.ruta = "../user/ingreso/ingresos.xhtml";
-        resetViews();
-
+    public void goToIngresos(AddNavegacionController addNavegacionController) throws IOException {
+       addNavegacionController.addIngresos();
+       FacesContext.getCurrentInstance().getExternalContext().redirect("/CentroAtencion/user/ingreso/ingresos.xhtml");
     }
     
-    public void goToNuevoIngreso(AddNavegacionController addNavegacionController) {
+    public void goToIngreso(AddNavegacionController addNavegacionController,long ingId) throws IOException
+    {
         addNavegacionController.addIngresos();
-        this.ruta = "../user/ingreso/nuevoIngreso.xhtml";
-        resetViews();
-
+        FacesContext.getCurrentInstance().getExternalContext().redirect("/CentroAtencion/user/ingreso/ingreso.xhtml?ingreso="+ingId);
+    }
+    
+    public void goToNuevoIngreso(AddNavegacionController addNavegacionController) throws IOException {
+        addNavegacionController.addIngresos();
+        FacesContext.getCurrentInstance().getExternalContext().redirect("/CentroAtencion/user/ingreso/nuevoIngreso.xhtml");
     }
     
     public void irRegistroPlcTu() {

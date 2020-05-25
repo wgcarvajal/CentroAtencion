@@ -76,6 +76,8 @@ public class Persona implements Serializable {
     @ManyToOne
     private Vereda veredaId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "funcionarioId")
+    private List<Ubicar> ubicarList;
+    @OneToMany(mappedBy = "funcionarioId")
     private List<Ingreso> ingresoList;
 
     public Persona() {
@@ -178,6 +180,15 @@ public class Persona implements Serializable {
 
     public void setVeredaId(Vereda veredaId) {
         this.veredaId = veredaId;
+    }
+
+    @XmlTransient
+    public List<Ubicar> getUbicarList() {
+        return ubicarList;
+    }
+
+    public void setUbicarList(List<Ubicar> ubicarList) {
+        this.ubicarList = ubicarList;
     }
 
     @XmlTransient

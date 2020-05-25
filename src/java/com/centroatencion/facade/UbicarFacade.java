@@ -5,7 +5,7 @@
  */
 package com.centroatencion.facade;
 
-import com.centroatencion.entities.Direcctionterritorial;
+import com.centroatencion.entities.Ubicar;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -14,10 +14,10 @@ import javax.persistence.Query;
 
 /**
  *
- * @author aranda
+ * @author Wilson Carvajal
  */
 @Stateless
-public class DirecctionterritorialFacade extends AbstractFacade<Direcctionterritorial> {
+public class UbicarFacade extends AbstractFacade<Ubicar> {
 
     @PersistenceContext(unitName = "CentroAtencionPU")
     private EntityManager em;
@@ -27,14 +27,21 @@ public class DirecctionterritorialFacade extends AbstractFacade<Direcctionterrit
         return em;
     }
 
-    public DirecctionterritorialFacade() {
-        super(Direcctionterritorial.class);
+    public UbicarFacade() {
+        super(Ubicar.class);
     }
     
-    public List<Direcctionterritorial> findAllWithoutCurrentDireccionterritorial(int dirterId) {
-        Query query = getEntityManager().createNamedQuery("Direcctionterritorial.findAllWithoutCurrentDireccionterritorial");
+    public List<Ubicar> searchByIngresoId(long ingId) {
+        Query query = getEntityManager().createNamedQuery("Ubicar.searchByIngresoId");
         query.setHint("eclipselink.refresh", true);
-        query.setParameter("dirterId", dirterId);
+        query.setParameter("ingId", ingId);
+        return query.getResultList();
+    }
+    
+    public List<Ubicar> searchByIngresoIdDesc(long ingId) {
+        Query query = getEntityManager().createNamedQuery("Ubicar.searchByIngresoIdDesc");
+        query.setHint("eclipselink.refresh", true);
+        query.setParameter("ingId", ingId);
         return query.getResultList();
     }
     

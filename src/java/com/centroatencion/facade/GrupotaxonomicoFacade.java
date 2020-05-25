@@ -33,6 +33,7 @@ public class GrupotaxonomicoFacade extends AbstractFacade<Grupotaxonomico> {
     
     public List<Grupotaxonomico> searchByNombreGrupoTaxonomico(String gruptaxNombre) {
         Query query = getEntityManager().createNamedQuery("Grupotaxonomico.searchByNombreGrupoTaxonomico");
+        query.setHint("eclipselink.refresh", true);
         query.setParameter("gruptaxNombre", "%" + gruptaxNombre + "%");
         List<Grupotaxonomico> resultList = query.getResultList();
         return resultList;
