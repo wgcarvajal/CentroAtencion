@@ -219,3 +219,8 @@ body {
 {
     vertical-align: middle;
 }
+
+
+.ui-fileupload-buttonbar{
+    background: none !important;
+}

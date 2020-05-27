@@ -5,7 +5,7 @@
  */
 package com.centroatencion.facade;
 
-import com.centroatencion.entities.Estado;
+import com.centroatencion.entities.Ingresofoto;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -17,7 +17,7 @@ import javax.persistence.Query;
  * @author Wilson Carvajal
  */
 @Stateless
-public class EstadoFacade extends AbstractFacade<Estado> {
+public class IngresofotoFacade extends AbstractFacade<Ingresofoto> {
 
     @PersistenceContext(unitName = "CentroAtencionPU")
     private EntityManager em;
@@ -27,16 +27,16 @@ public class EstadoFacade extends AbstractFacade<Estado> {
         return em;
     }
 
-    public EstadoFacade() {
-        super(Estado.class);
+    public IngresofotoFacade() {
+        super(Ingresofoto.class);
     }
     
-    public Estado findCurrentEstado(long ingId)
+    public List<Ingresofoto> findByIngId(long ingId)
     {
-        Query query = getEntityManager().createNamedQuery("Estado.findCurrentEstado");
+        Query query = getEntityManager().createNamedQuery("Ingresofoto.findByIngId");
+        query.setHint("eclipselink.refresh", true);
         query.setParameter("ingId", ingId);
-        List<Estado> estadoList = query.getResultList();
-        return estadoList!=null && !estadoList.isEmpty()?estadoList.get(0):null;
+        return query.getResultList();
+        
     }
-    
 }

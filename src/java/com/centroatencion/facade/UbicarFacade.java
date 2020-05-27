@@ -45,4 +45,12 @@ public class UbicarFacade extends AbstractFacade<Ubicar> {
         return query.getResultList();
     }
     
+    public boolean existByIngresoId(long ingId) {
+        Query query = getEntityManager().createNamedQuery("Ubicar.existByIngresoId");
+        query.setHint("eclipselink.refresh", true);
+        query.setParameter("ingId", ingId);
+        List result = query.getResultList();
+        return result!=null && !result.isEmpty();
+    }
+    
 }

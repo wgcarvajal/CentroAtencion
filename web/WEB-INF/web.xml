@@ -67,4 +67,13 @@
         <description>usuario</description>
         <role-name>user</role-name>
     </security-role>
+    
+    <servlet>
+	<servlet-name>FotoingresoServlet</servlet-name>
+	<servlet-class>com.centroatencion.servlet.FotoingresoServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+	<servlet-name>FotoingresoServlet</servlet-name>
+	<url-pattern>/fotoing</url-pattern>
+    </servlet-mapping>
 </web-app>

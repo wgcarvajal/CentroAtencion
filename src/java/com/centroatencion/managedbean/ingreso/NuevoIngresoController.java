@@ -951,18 +951,25 @@ public class NuevoIngresoController implements Serializable
             }
         }
 
+        Estado e = new Estado();
+        e.setIngId(ingreso);
+        e.setIngCurrentId(ingreso);
+        e.setEstado(estado);
+        e.setEstadoFecha(date);
         if (listaSubproductoSelected != null && listaSubproductoSelected.length > 0) {
+            e.setEstadoSubproducto(true);
             for (Subproducto insub : listaSubproductoSelected) {
                 Ingresosubproducto ingresosubproducto = new Ingresosubproducto();
                 ingresosubproducto.setSubprodId(insub);
                 ingresosubproducto.setIngId(ingreso);
                 ingresosubproductoEJB.create(ingresosubproducto);
             }
+        }else{
+            if(estado ==2)
+            {
+                e.setEstadoCausa(1);
+            }
         }
-        Estado e = new Estado();
-        e.setIngId(ingreso);
-        e.setEstado(estado);
-        e.setEstadoFecha(date);
         estadoEJB.create(e);
     }
 }

@@ -79,6 +79,8 @@ public class Persona implements Serializable {
     private List<Ubicar> ubicarList;
     @OneToMany(mappedBy = "funcionarioId")
     private List<Ingreso> ingresoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perId")
+    private List<Asignacargo> asignacargoList;
 
     public Persona() {
     }
@@ -198,6 +200,15 @@ public class Persona implements Serializable {
 
     public void setIngresoList(List<Ingreso> ingresoList) {
         this.ingresoList = ingresoList;
+    }
+
+    @XmlTransient
+    public List<Asignacargo> getAsignacargoList() {
+        return asignacargoList;
+    }
+
+    public void setAsignacargoList(List<Asignacargo> asignacargoList) {
+        this.asignacargoList = asignacargoList;
     }
 
     @Override

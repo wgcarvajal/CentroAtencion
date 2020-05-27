@@ -33,6 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Ubicar.findAll", query = "SELECT r FROM Ubicar r"),
     @NamedQuery(name = "Ubicar.searchByIngresoId", query = "SELECT r FROM Ubicar r WHERE r.ingId.ingId = :ingId ORDER BY r.ubFecha ASC"),
     @NamedQuery(name = "Ubicar.searchByIngresoIdDesc", query = "SELECT r FROM Ubicar r WHERE r.ingId.ingId = :ingId ORDER BY r.ubFecha DESC"),
+    @NamedQuery(name = "Ubicar.existByIngresoId", query = "SELECT r FROM Ubicar r WHERE r.ingId.ingId = :ingId"),
     @NamedQuery(name = "Ubicar.findByReubId", query = "SELECT r FROM Ubicar r WHERE r.ubId = :ubId"),
     @NamedQuery(name = "Ubicar.findByReubFecha", query = "SELECT r FROM Ubicar r WHERE r.ubFecha = :ubFecha")})
 public class Ubicar implements Serializable {

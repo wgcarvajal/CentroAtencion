@@ -6,15 +6,19 @@
 package com.centroatencion.managedbean.ingreso;
 
 import com.centroatencion.entities.Animal;
+import com.centroatencion.entities.Cargo;
 import com.centroatencion.entities.Departamento;
 import com.centroatencion.entities.Desarrollobiologico;
 import com.centroatencion.entities.Direcctionterritorial;
 import com.centroatencion.entities.Donanteinfractor;
 import com.centroatencion.entities.Entidadterritorial;
+import com.centroatencion.entities.Estado;
 import com.centroatencion.entities.Familia;
 import com.centroatencion.entities.Genero;
 import com.centroatencion.entities.Grupotaxonomico;
 import com.centroatencion.entities.Ingreso;
+import com.centroatencion.entities.Ingresodocumento;
+import com.centroatencion.entities.Ingresofoto;
 import com.centroatencion.entities.Lugardecomisoentregavoluntaria;
 import com.centroatencion.entities.Municipio;
 import com.centroatencion.entities.Orden;
@@ -23,16 +27,26 @@ import com.centroatencion.entities.Responsable;
 import com.centroatencion.entities.Ubicar;
 import com.centroatencion.entities.Subproducto;
 import com.centroatencion.entities.Vereda;
+import com.centroatencion.facade.AsignacargoFacade;
 import com.centroatencion.facade.DepartamentoFacade;
 import com.centroatencion.facade.DirecctionterritorialFacade;
 import com.centroatencion.facade.EntidadterritorialFacade;
+import com.centroatencion.facade.EstadoFacade;
 import com.centroatencion.facade.IngresoFacade;
+import com.centroatencion.facade.IngresodocumentoFacade;
+import com.centroatencion.facade.IngresofotoFacade;
 import com.centroatencion.facade.MunicipioFacade;
 import com.centroatencion.facade.PersonaFacade;
 import com.centroatencion.facade.UbicarFacade;
 import com.centroatencion.facade.VeredaFacade;
 import com.centroatencion.managedbean.util.Util;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
@@ -40,15 +54,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import org.primefaces.PrimeFaces;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.TabChangeEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 /**
  *
@@ -74,6 +94,14 @@ public class IngresoController implements Serializable{
     private DirecctionterritorialFacade direcctionterritorialEJB;
     @EJB
     private PersonaFacade personaEJB;
+    @EJB
+    private EstadoFacade estadoEJB;
+    @EJB
+    private AsignacargoFacade asignacargoEJB;
+    @EJB
+    private IngresofotoFacade ingresofotoEJB;
+    @EJB
+    private IngresodocumentoFacade ingresodocumentoEJB;
     private Object[] ingresoObject;
     private Persona funcionario;
     private Donanteinfractor donanteInfractor;
@@ -104,6 +132,15 @@ public class IngresoController implements Serializable{
     private Direcctionterritorial direccionterritorialSelectedToTransladar;
     private Date dateTransladar;
     private List<Ubicar> ubicarList;
+    private Estado currentEstado;
+    private List<Ingresofoto> ingresofotoList;
+    private List<Ingresodocumento> ingresodocumentoList;
+    
+    private Persona currentFuncionario;
+    private Cargo currentFuncionarioCargo;
+    private StreamedContent document;
+    private int indexUtimoIngreso;
+    private int indexIngresoImageSelected;
     
     @PostConstruct
     public void init()
@@ -123,6 +160,7 @@ public class IngresoController implements Serializable{
                 else{
                     ingreso = (Ingreso)ingresoObject[0];
                     ingresos = ingresoEJB.findTransladosByIngId(id);
+                    currentEstado = estadoEJB.findCurrentEstado(id);
                     if(ingresos!=null && !ingresos.isEmpty())
                     {
                         currentIngreso = ingresos.get(ingresos.size()-1);
@@ -180,6 +218,10 @@ public class IngresoController implements Serializable{
                     {
                         departamentoExtraccion = ingreso.getDepExtraccionId();
                     }
+                    FacesContext fc = FacesContext.getCurrentInstance();
+                    HttpServletRequest req = (HttpServletRequest) fc.getExternalContext().getRequest();
+                    currentFuncionario = personaEJB.findPersonaByNombreUsuario(req.getUserPrincipal().getName());
+                    currentFuncionarioCargo = asignacargoEJB.currentCargo(currentFuncionario.getPerId());
                 }
                 
             } catch (NumberFormatException e) {
@@ -355,6 +397,32 @@ public class IngresoController implements Serializable{
     public List<Ubicar> getUbicarList() {
         return ubicarList;
     }
+
+    public List<Ingresofoto> getIngresofotoList() {
+        if(ingresofotoList == null)
+        {
+            ingresofotoList = ingresofotoEJB.findByIngId(ingreso.getIngId());
+        }
+        return ingresofotoList;
+    }
+
+    public List<Ingresodocumento> getIngresodocumentoList() {
+        if(ingresodocumentoList == null)
+        {
+            ingresodocumentoList = ingresodocumentoEJB.findByIngId(ingreso.getIngId());
+        }
+        return ingresodocumentoList;
+    }
+    
+    
+
+    public StreamedContent getDocument() {
+        return document;
+    }
+
+    public int getIndexIngresoImageSelected() {
+        return indexIngresoImageSelected;
+    }
     
     public String returnEstado(Integer estado)
     {
@@ -435,6 +503,85 @@ public class IngresoController implements Serializable{
         return calendar.getTime();
     }
     
+    
+    public void cargarImagen(FileUploadEvent event) {
+        try {
+            String folderPaht = Util.RUTAFOTOSINGRESO + ingreso.getIngId();
+            String[] split = event.getFile().getFileName().split(Pattern.quote("."));
+            int indice = split.length - 1;
+            System.out.println("indice:" + indice);
+            String extension = split[indice];
+
+            Ingresofoto ingfoto = new Ingresofoto();
+            ingfoto.setIngId(ingreso);
+            
+            ingresofotoEJB.create(ingfoto);
+
+            String filePath = folderPaht + File.separator + ingfoto.getIngfotoId()+ "." + extension;
+            ingfoto.setIngFotoNombre(ingreso.getIngId()+ File.separator + ingfoto.getIngfotoId()+ "." + extension);
+            ingresofotoEJB.edit(ingfoto);
+            if(copyFile(folderPaht, filePath,event.getFile().getInputStream()))
+            {
+                ingresofotoList = null;
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(IngresoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void cargarDocumento(FileUploadEvent event) {
+        try {
+            String folderPath = Util.RUTADOCUMENTOSINGRESO + ingreso.getIngId();
+
+            Ingresodocumento ingDocumento = new Ingresodocumento();
+            ingDocumento.setIngId(ingreso);
+            String filePath = folderPath + File.separator+ event.getFile().getFileName();
+            ingDocumento.setIngDocNombre(event.getFile().getFileName());
+            if(copyFile(folderPath, filePath,event.getFile().getInputStream()))
+            {
+                ingresodocumentoEJB.create(ingDocumento);
+                ingresodocumentoList = null;
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(IngresoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public boolean copyFile(String folderPath,String filePath,InputStream in) {
+        try {
+
+            
+            File file = new File(folderPath);
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+            // write the inputStream to a FileOutputStream
+            OutputStream out = new FileOutputStream(new File(filePath));
+
+            int read = 0;
+            byte[] bytes = new byte[1024];
+
+            while ((read = in.read(bytes)) != -1) {
+                out.write(bytes, 0, read);
+            }
+            in.close();
+            out.flush();
+            out.close();
+            return true;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+    
+    public void prepDocumentoDownload(Ingreso ingreso, String fileName) throws Exception {
+        File file = new File(Util.RUTADOCUMENTOSINGRESO+ingreso.getIngId()+File.separator+fileName);
+        InputStream input = new FileInputStream(file);
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        document = new DefaultStreamedContent(input, externalContext.getMimeType(file.getName()), file.getName());
+        System.out.println("PREP = " + document.getName());
+    }
+    
     public void openUbicarDialog()
     {
         PrimeFaces pf = PrimeFaces.current();
@@ -481,10 +628,7 @@ public class IngresoController implements Serializable{
             ubicar.setIngId(currentIngreso);
             ubicar.setEntterId(entidadterritorialSelectedToUbicar);
             ubicar.setUbFecha(dateUbicar);
-            FacesContext fc = FacesContext.getCurrentInstance();
-            HttpServletRequest req = (HttpServletRequest) fc.getExternalContext().getRequest();
-            Persona p = personaEJB.findPersonaByNombreUsuario(req.getUserPrincipal().getName());
-            ubicar.setFuncionarioId(p);
+            ubicar.setFuncionarioId(currentFuncionario);
             ubicarEJB.create(ubicar);
             entidadterritorialSelectedToUbicar = null;
             dateUbicar = null;
@@ -534,10 +678,7 @@ public class IngresoController implements Serializable{
             transladar.setIngTranslado(ingreso);
             transladar.setIngFecha(dateTransladar);
             transladar.setDirterId(direccionterritorialSelectedToTransladar);
-            FacesContext fc = FacesContext.getCurrentInstance();
-            HttpServletRequest req = (HttpServletRequest) fc.getExternalContext().getRequest();
-            Persona p = personaEJB.findPersonaByNombreUsuario(req.getUserPrincipal().getName());
-            transladar.setFuncionarioId(p);
+            transladar.setFuncionarioId(currentFuncionario);
             ingresoEJB.create(transladar);
             ingresos = ingresoEJB.findTransladosByIngId(ingreso.getIngId());
             if(ingresos!=null && !ingresos.isEmpty())
@@ -556,6 +697,10 @@ public class IngresoController implements Serializable{
                                 "Operación exitosa","Operación exitosa"));
         }
         pf.ajax().update("formTransladar:panelTranladar");
+    }
+    
+    public void setIndexUtimoIngreso(int IndexUtimoIngreso){
+        
     }
     
     public int getIndexUtimoIngreso()
@@ -591,9 +736,101 @@ public class IngresoController implements Serializable{
         
     }
     
-    public boolean renderedMovDt()
+    public boolean renderedMovDt(long ingId)
     {
-        return ubicarList!=null && !ubicarList.isEmpty();
+        return ubicarEJB.existByIngresoId(ingId);
     }
     
+    public boolean showAccion(String accion)
+    {
+        int est = currentEstado.getEstado();
+        if(estado == 1)
+        {
+            switch(accion)
+            {
+                case "ubicar":
+                case "transladar":
+                case "reubicar":
+                case "fallecimiento":
+                case "valoracion":
+                    return true;
+                default:
+                    return false;
+            }
+        }
+        else
+        {
+            switch(accion)
+            {
+                case "ubicar":
+                case "transladar":
+                case "reubicar":
+                case "incinerar":
+                    return true;
+                case "necropsia":
+                    return currentEstado.getEstadoCausa()!=null && currentEstado.getEstadoCausa()==1;
+                default:
+                    return false;
+            }
+        }
+    }
+    
+    
+    public boolean disabledAccion(String accion)
+    {
+        switch(accion)
+        {
+            case "BIO":
+                return !currentFuncionarioCargo.getCargoAbrevitura().equals("BIO");
+            case "VET":
+                return !currentFuncionarioCargo.getCargoAbrevitura().equals("VET");
+            case "NUT":
+                return !(currentFuncionarioCargo.getCargoAbrevitura().equals("BIO") ||
+                        currentFuncionarioCargo.getCargoAbrevitura().equals("VET"));
+            case "NEC":
+                return !currentFuncionarioCargo.getCargoAbrevitura().equals("VET");
+        }
+        return true;
+    }
+    
+    public void openfotosIngresoDialog(Ingresofoto ingresofoto)
+    {
+        indexIngresoImageSelected = ingresofotoList.indexOf(ingresofoto);
+        PrimeFaces pf = PrimeFaces.current();
+        pf.ajax().update(":formIngresoFoto:panelIngresoFoto");
+        pf.executeScript("PF('ingresoFoto').show()");
+    }
+    
+    
+    public int getWidthIngresoImagen(String imageName)
+    {
+        BufferedImage bimg;
+        try {
+            bimg = ImageIO.read(new File(Util.RUTAFOTOSINGRESO+imageName));
+            if(bimg.getWidth()<= 600){
+                return bimg.getWidth();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(IngresoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 600;
+    }
+    
+    public int getHeightIngresoImagen(String imageName)
+    {
+        BufferedImage bimg;
+        try {
+            bimg = ImageIO.read(new File(Util.RUTAFOTOSINGRESO+imageName));
+            if(bimg.getWidth()<= 600){
+                return bimg.getHeight();
+            }
+            else
+            {
+                return ((600 * bimg.getHeight())/bimg.getWidth());
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(IngresoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
 }

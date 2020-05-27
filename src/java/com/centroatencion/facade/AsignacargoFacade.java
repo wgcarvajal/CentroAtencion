@@ -5,7 +5,8 @@
  */
 package com.centroatencion.facade;
 
-import com.centroatencion.entities.Estado;
+import com.centroatencion.entities.Asignacargo;
+import com.centroatencion.entities.Cargo;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -17,7 +18,7 @@ import javax.persistence.Query;
  * @author Wilson Carvajal
  */
 @Stateless
-public class EstadoFacade extends AbstractFacade<Estado> {
+public class AsignacargoFacade extends AbstractFacade<Asignacargo> {
 
     @PersistenceContext(unitName = "CentroAtencionPU")
     private EntityManager em;
@@ -27,16 +28,17 @@ public class EstadoFacade extends AbstractFacade<Estado> {
         return em;
     }
 
-    public EstadoFacade() {
-        super(Estado.class);
+    public AsignacargoFacade() {
+        super(Asignacargo.class);
     }
     
-    public Estado findCurrentEstado(long ingId)
-    {
-        Query query = getEntityManager().createNamedQuery("Estado.findCurrentEstado");
-        query.setParameter("ingId", ingId);
-        List<Estado> estadoList = query.getResultList();
-        return estadoList!=null && !estadoList.isEmpty()?estadoList.get(0):null;
+    public Cargo currentCargo(long perId) {
+        Query query = getEntityManager().createNamedQuery("Asignacargo.currentCargo");
+        query.setHint("eclipselink.refresh", true);
+        query.setParameter("perId", perId);
+        List<Cargo> resultList = query.getResultList();
+        return resultList!=null && !resultList.isEmpty()?resultList.get(0):null;
     }
+    
     
 }

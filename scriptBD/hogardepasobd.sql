@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 25, 2020 at 04:58 AM
+-- Generation Time: May 27, 2020 at 08:23 PM
 -- Server version: 5.7.28
 -- PHP Version: 7.3.11
 
@@ -141,6 +141,47 @@ INSERT INTO `animal` (`anId`, `anNombre`, `anEspNombre`, `anDescripcion`, `faId`
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `asignacargo`
+--
+
+CREATE TABLE `asignacargo` (
+  `asigCargoId` bigint(20) NOT NULL,
+  `perId` bigint(20) NOT NULL,
+  `cargoId` int(11) NOT NULL,
+  `asigCargoFechaInicial` datetime NOT NULL,
+  `asigCargoFechaFinal` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `asignacargo`
+--
+
+INSERT INTO `asignacargo` (`asigCargoId`, `perId`, `cargoId`, `asigCargoFechaInicial`, `asigCargoFechaFinal`) VALUES
+(1, 1, 1, '2019-10-01 00:00:00', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cargo`
+--
+
+CREATE TABLE `cargo` (
+  `cargoId` int(11) NOT NULL,
+  `cargoNombre` varchar(100) NOT NULL,
+  `cargoAbrevitura` varchar(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `cargo`
+--
+
+INSERT INTO `cargo` (`cargoId`, `cargoNombre`, `cargoAbrevitura`) VALUES
+(1, 'Biólogo', 'BIO'),
+(2, 'Medico Veterinario', 'VET');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `departamento`
 --
 
@@ -252,17 +293,22 @@ INSERT INTO `entidadterritorial` (`entterId`, `entterNombre`, `dirterId`) VALUES
 CREATE TABLE `estado` (
   `estadoId` bigint(20) NOT NULL,
   `ingId` bigint(20) NOT NULL,
+  `ingCurrentId` bigint(20) NOT NULL,
   `estado` int(11) NOT NULL COMMENT 'vivo= 1 muerto = 2',
-  `estadoFecha` datetime NOT NULL
+  `estadoFecha` datetime NOT NULL,
+  `estadoCausa` int(11) DEFAULT NULL COMMENT '1:natural, 2: eutanasia',
+  `estadoSubproducto` tinyint(1) DEFAULT NULL,
+  `estadoCausaDescripcion` text
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `estado`
 --
 
-INSERT INTO `estado` (`estadoId`, `ingId`, `estado`, `estadoFecha`) VALUES
-(1, 1, 2, '2020-04-06 00:00:00'),
-(2, 2, 1, '2020-05-14 00:00:00');
+INSERT INTO `estado` (`estadoId`, `ingId`, `ingCurrentId`, `estado`, `estadoFecha`, `estadoCausa`, `estadoSubproducto`, `estadoCausaDescripcion`) VALUES
+(1, 1, 1, 2, '2020-04-06 00:00:00', NULL, 1, NULL),
+(2, 2, 2, 1, '2020-05-14 00:00:00', NULL, NULL, NULL),
+(3, 4, 4, 2, '2020-05-25 00:00:00', 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -448,9 +494,46 @@ CREATE TABLE `ingreso` (
 INSERT INTO `ingreso` (`ingId`, `ingTranslado`, `ingFecha`, `ingRadicado`, `ingAUCTFF`, `dirterId`, `animalId`, `funcionarioId`, `donanteinfractorId`, `ingConsecutivo`, `ingCausa`, `lugardecomisoentregavoluntariaId`, `genId`, `desbioId`, `ingObservaciones`, `ingEstadoSalud`, `depOcurrenciaId`, `depExtraccionId`, `munOcurrenciaId`, `munExtraccionId`, `verOcurrenciaId`, `verExtraccionId`) VALUES
 (1, NULL, '2020-04-06 00:00:00', '465767', '32545645', 2, 20, 1, 1, 1, 'EV', 10, 1, 4, 'kdlkfklds', NULL, 1, NULL, NULL, 2, NULL, NULL),
 (2, NULL, '2020-05-14 00:00:00', NULL, NULL, 2, 2, 1, NULL, 2, 'DC', NULL, NULL, NULL, NULL, 'B', NULL, NULL, NULL, NULL, NULL, NULL),
-(3, 1, '2020-05-12 00:00:00', NULL, NULL, 1, NULL, 1, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(4, 1, '2020-05-22 00:00:00', NULL, NULL, 4, NULL, 1, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(5, 1, '2020-05-24 00:00:00', NULL, NULL, 2, NULL, 1, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+(3, 2, '2020-05-26 00:00:00', NULL, NULL, 1, NULL, 1, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(4, NULL, '2020-05-25 00:00:00', '435436', '454667', 2, 24, 1, 1, 3, 'EV', 9, 1, 4, NULL, NULL, 1, 1, NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ingresodocumento`
+--
+
+CREATE TABLE `ingresodocumento` (
+  `ingDocId` bigint(20) NOT NULL,
+  `ingDocNombre` varchar(100) NOT NULL,
+  `ingId` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `ingresodocumento`
+--
+
+INSERT INTO `ingresodocumento` (`ingDocId`, `ingDocNombre`, `ingId`) VALUES
+(4, 'tablas de error.xlsx', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ingresofoto`
+--
+
+CREATE TABLE `ingresofoto` (
+  `ingfotoId` bigint(20) NOT NULL,
+  `ingFotoNombre` varchar(100) DEFAULT NULL,
+  `ingId` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `ingresofoto`
+--
+
+INSERT INTO `ingresofoto` (`ingfotoId`, `ingFotoNombre`, `ingId`) VALUES
+(5, '2/5.jpg', 2);
 
 -- --------------------------------------------------------
 
@@ -631,7 +714,8 @@ CREATE TABLE `responsableingreso` (
 INSERT INTO `responsableingreso` (`respingId`, `ingId`, `respId`) VALUES
 (1, 1, 2),
 (2, 1, 1),
-(3, 2, 1);
+(3, 2, 1),
+(4, 4, 1);
 
 -- --------------------------------------------------------
 
@@ -688,9 +772,8 @@ CREATE TABLE `ubicar` (
 --
 
 INSERT INTO `ubicar` (`ubId`, `ingId`, `entterId`, `funcionarioId`, `ubFecha`) VALUES
-(3, 1, 1, 1, '2020-05-12 00:00:00'),
-(4, 3, 2, 1, '2020-05-24 00:00:00'),
-(5, 5, 1, 1, '2020-05-24 00:00:00');
+(1, 2, 1, 1, '2020-05-04 00:00:00'),
+(2, 3, 2, 1, '2020-05-26 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -766,6 +849,20 @@ ALTER TABLE `animal`
   ADD KEY `fk_animal_grupotaxonomico` (`grupotaxonomicoId`);
 
 --
+-- Indexes for table `asignacargo`
+--
+ALTER TABLE `asignacargo`
+  ADD PRIMARY KEY (`asigCargoId`),
+  ADD KEY `fk_asignacargo_persona` (`perId`),
+  ADD KEY `fk_asignacargo_cargo` (`cargoId`);
+
+--
+-- Indexes for table `cargo`
+--
+ALTER TABLE `cargo`
+  ADD PRIMARY KEY (`cargoId`);
+
+--
 -- Indexes for table `departamento`
 --
 ALTER TABLE `departamento`
@@ -801,7 +898,8 @@ ALTER TABLE `entidadterritorial`
 --
 ALTER TABLE `estado`
   ADD PRIMARY KEY (`estadoId`),
-  ADD KEY `fk_estado_ingreso` (`ingId`);
+  ADD KEY `fk_estado_ingreso` (`ingId`),
+  ADD KEY `fk_estado_ingresocurrent` (`ingCurrentId`);
 
 --
 -- Indexes for table `familia`
@@ -854,6 +952,20 @@ ALTER TABLE `ingreso`
   ADD KEY `fk_ingreso_veredaextraccion` (`verExtraccionId`),
   ADD KEY `fk_ingreso_veredaocurrencia` (`verOcurrenciaId`),
   ADD KEY `fk_ingreso_ingresotranslado` (`ingTranslado`);
+
+--
+-- Indexes for table `ingresodocumento`
+--
+ALTER TABLE `ingresodocumento`
+  ADD PRIMARY KEY (`ingDocId`),
+  ADD KEY `fk_ingresodocumento_ingreso` (`ingId`);
+
+--
+-- Indexes for table `ingresofoto`
+--
+ALTER TABLE `ingresofoto`
+  ADD PRIMARY KEY (`ingfotoId`),
+  ADD KEY `fk_ingresofoto_ingreso` (`ingId`);
 
 --
 -- Indexes for table `ingresosubproducto`
@@ -958,6 +1070,18 @@ ALTER TABLE `animal`
   MODIFY `anId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
 
 --
+-- AUTO_INCREMENT for table `asignacargo`
+--
+ALTER TABLE `asignacargo`
+  MODIFY `asigCargoId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `cargo`
+--
+ALTER TABLE `cargo`
+  MODIFY `cargoId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `departamento`
 --
 ALTER TABLE `departamento`
@@ -991,7 +1115,7 @@ ALTER TABLE `entidadterritorial`
 -- AUTO_INCREMENT for table `estado`
 --
 ALTER TABLE `estado`
-  MODIFY `estadoId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `estadoId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `familia`
@@ -1021,7 +1145,19 @@ ALTER TABLE `grupotaxonomico`
 -- AUTO_INCREMENT for table `ingreso`
 --
 ALTER TABLE `ingreso`
-  MODIFY `ingId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `ingId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `ingresodocumento`
+--
+ALTER TABLE `ingresodocumento`
+  MODIFY `ingDocId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `ingresofoto`
+--
+ALTER TABLE `ingresofoto`
+  MODIFY `ingfotoId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `ingresosubproducto`
@@ -1063,7 +1199,7 @@ ALTER TABLE `responsable`
 -- AUTO_INCREMENT for table `responsableingreso`
 --
 ALTER TABLE `responsableingreso`
-  MODIFY `respingId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `respingId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `subproducto`
@@ -1081,7 +1217,7 @@ ALTER TABLE `tipoidentificacion`
 -- AUTO_INCREMENT for table `ubicar`
 --
 ALTER TABLE `ubicar`
-  MODIFY `ubId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `ubId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `usuario`
@@ -1107,6 +1243,13 @@ ALTER TABLE `animal`
   ADD CONSTRAINT `fk_animal_grupotaxonomico` FOREIGN KEY (`grupotaxonomicoId`) REFERENCES `grupotaxonomico` (`gruptaxId`);
 
 --
+-- Constraints for table `asignacargo`
+--
+ALTER TABLE `asignacargo`
+  ADD CONSTRAINT `fk_asignacargo_cargo` FOREIGN KEY (`cargoId`) REFERENCES `cargo` (`cargoId`),
+  ADD CONSTRAINT `fk_asignacargo_persona` FOREIGN KEY (`perId`) REFERENCES `persona` (`perId`);
+
+--
 -- Constraints for table `entidadterritorial`
 --
 ALTER TABLE `entidadterritorial`
@@ -1116,7 +1259,8 @@ ALTER TABLE `entidadterritorial`
 -- Constraints for table `estado`
 --
 ALTER TABLE `estado`
-  ADD CONSTRAINT `fk_estado_ingreso` FOREIGN KEY (`ingId`) REFERENCES `ingreso` (`ingId`);
+  ADD CONSTRAINT `fk_estado_ingreso` FOREIGN KEY (`ingId`) REFERENCES `ingreso` (`ingId`),
+  ADD CONSTRAINT `fk_estado_ingresocurrent` FOREIGN KEY (`ingCurrentId`) REFERENCES `ingreso` (`ingId`);
 
 --
 -- Constraints for table `familia`
@@ -1148,6 +1292,18 @@ ALTER TABLE `ingreso`
   ADD CONSTRAINT `fk_ingreso_municipioocurrencia` FOREIGN KEY (`munOcurrenciaId`) REFERENCES `municipio` (`munId`),
   ADD CONSTRAINT `fk_ingreso_veredaextraccion` FOREIGN KEY (`verExtraccionId`) REFERENCES `vereda` (`verId`),
   ADD CONSTRAINT `fk_ingreso_veredaocurrencia` FOREIGN KEY (`verOcurrenciaId`) REFERENCES `vereda` (`verId`);
+
+--
+-- Constraints for table `ingresodocumento`
+--
+ALTER TABLE `ingresodocumento`
+  ADD CONSTRAINT `fk_ingresodocumento_ingreso` FOREIGN KEY (`ingId`) REFERENCES `ingreso` (`ingId`);
+
+--
+-- Constraints for table `ingresofoto`
+--
+ALTER TABLE `ingresofoto`
+  ADD CONSTRAINT `fk_ingresofoto_ingreso` FOREIGN KEY (`ingId`) REFERENCES `ingreso` (`ingId`);
 
 --
 -- Constraints for table `ingresosubproducto`

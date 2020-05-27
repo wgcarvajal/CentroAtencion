@@ -71,45 +71,44 @@ public class Ingreso implements Serializable {
     private String ingEstadoSalud;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "ingId")
     private List<Estado> estadoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ingCurrentId")
+    private List<Estado> estadoList1;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "ingId")
     private List<Ingresosubproducto> ingresosubproductoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "ingId")
     private List<Ubicar> ubicarList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "ingId")
     private List<Responsableingreso> responsableingresoList;
-    @JoinColumn(name = "depExtraccionId", referencedColumnName = "depId")
-    @ManyToOne
-    private Departamento depExtraccionId;
-    @JoinColumn(name = "animalId", referencedColumnName = "anId")
-    @ManyToOne
-    private Animal animalId;
-    @JoinColumn(name = "depOcurrenciaId", referencedColumnName = "depId")
-    @ManyToOne
-    private Departamento depOcurrenciaId;
     @JoinColumn(name = "desbioId", referencedColumnName = "desbioId")
     @ManyToOne
     private Desarrollobiologico desbioId;
-    @JoinColumn(name = "verExtraccionId", referencedColumnName = "verId")
+    @JoinColumn(name = "animalId", referencedColumnName = "anId")
     @ManyToOne
-    private Vereda verExtraccionId;
-    @JoinColumn(name = "verOcurrenciaId", referencedColumnName = "verId")
+    private Animal animalId;
+    @JoinColumn(name = "depExtraccionId", referencedColumnName = "depId")
     @ManyToOne
-    private Vereda verOcurrenciaId;
+    private Departamento depExtraccionId;
+    @JoinColumn(name = "depOcurrenciaId", referencedColumnName = "depId")
+    @ManyToOne
+    private Departamento depOcurrenciaId;
     @JoinColumn(name = "dirterId", referencedColumnName = "dirterId")
     @ManyToOne(optional = false)
     private Direcctionterritorial dirterId;
-    @JoinColumn(name = "munOcurrenciaId", referencedColumnName = "munId")
-    @ManyToOne
-    private Municipio munOcurrenciaId;
     @JoinColumn(name = "donanteinfractorId", referencedColumnName = "doninId")
     @ManyToOne
     private Donanteinfractor donanteinfractorId;
     @JoinColumn(name = "funcionarioId", referencedColumnName = "perId")
     @ManyToOne
     private Persona funcionarioId;
+    @JoinColumn(name = "verExtraccionId", referencedColumnName = "verId")
+    @ManyToOne
+    private Vereda verExtraccionId;
     @JoinColumn(name = "genId", referencedColumnName = "genId")
     @ManyToOne
     private Genero genId;
+    @JoinColumn(name = "munOcurrenciaId", referencedColumnName = "munId")
+    @ManyToOne
+    private Municipio munOcurrenciaId;
     @OneToMany(mappedBy = "ingTranslado")
     private List<Ingreso> ingresoList;
     @JoinColumn(name = "ingTranslado", referencedColumnName = "ingId")
@@ -121,6 +120,13 @@ public class Ingreso implements Serializable {
     @JoinColumn(name = "munExtraccionId", referencedColumnName = "munId")
     @ManyToOne
     private Municipio munExtraccionId;
+    @JoinColumn(name = "verOcurrenciaId", referencedColumnName = "verId")
+    @ManyToOne
+    private Vereda verOcurrenciaId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ingId")
+    private List<Ingresodocumento> ingresodocumentoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ingId")
+    private List<Ingresofoto> ingresofotoList;
 
     public Ingreso() {
     }
@@ -208,6 +214,15 @@ public class Ingreso implements Serializable {
     }
 
     @XmlTransient
+    public List<Estado> getEstadoList1() {
+        return estadoList1;
+    }
+
+    public void setEstadoList1(List<Estado> estadoList1) {
+        this.estadoList1 = estadoList1;
+    }
+
+    @XmlTransient
     public List<Ingresosubproducto> getIngresosubproductoList() {
         return ingresosubproductoList;
     }
@@ -234,12 +249,12 @@ public class Ingreso implements Serializable {
         this.responsableingresoList = responsableingresoList;
     }
 
-    public Departamento getDepExtraccionId() {
-        return depExtraccionId;
+    public Desarrollobiologico getDesbioId() {
+        return desbioId;
     }
 
-    public void setDepExtraccionId(Departamento depExtraccionId) {
-        this.depExtraccionId = depExtraccionId;
+    public void setDesbioId(Desarrollobiologico desbioId) {
+        this.desbioId = desbioId;
     }
 
     public Animal getAnimalId() {
@@ -250,6 +265,14 @@ public class Ingreso implements Serializable {
         this.animalId = animalId;
     }
 
+    public Departamento getDepExtraccionId() {
+        return depExtraccionId;
+    }
+
+    public void setDepExtraccionId(Departamento depExtraccionId) {
+        this.depExtraccionId = depExtraccionId;
+    }
+
     public Departamento getDepOcurrenciaId() {
         return depOcurrenciaId;
     }
@@ -258,44 +281,12 @@ public class Ingreso implements Serializable {
         this.depOcurrenciaId = depOcurrenciaId;
     }
 
-    public Desarrollobiologico getDesbioId() {
-        return desbioId;
-    }
-
-    public void setDesbioId(Desarrollobiologico desbioId) {
-        this.desbioId = desbioId;
-    }
-
-    public Vereda getVerExtraccionId() {
-        return verExtraccionId;
-    }
-
-    public void setVerExtraccionId(Vereda verExtraccionId) {
-        this.verExtraccionId = verExtraccionId;
-    }
-
-    public Vereda getVerOcurrenciaId() {
-        return verOcurrenciaId;
-    }
-
-    public void setVerOcurrenciaId(Vereda verOcurrenciaId) {
-        this.verOcurrenciaId = verOcurrenciaId;
-    }
-
     public Direcctionterritorial getDirterId() {
         return dirterId;
     }
 
     public void setDirterId(Direcctionterritorial dirterId) {
         this.dirterId = dirterId;
-    }
-
-    public Municipio getMunOcurrenciaId() {
-        return munOcurrenciaId;
-    }
-
-    public void setMunOcurrenciaId(Municipio munOcurrenciaId) {
-        this.munOcurrenciaId = munOcurrenciaId;
     }
 
     public Donanteinfractor getDonanteinfractorId() {
@@ -314,12 +305,28 @@ public class Ingreso implements Serializable {
         this.funcionarioId = funcionarioId;
     }
 
+    public Vereda getVerExtraccionId() {
+        return verExtraccionId;
+    }
+
+    public void setVerExtraccionId(Vereda verExtraccionId) {
+        this.verExtraccionId = verExtraccionId;
+    }
+
     public Genero getGenId() {
         return genId;
     }
 
     public void setGenId(Genero genId) {
         this.genId = genId;
+    }
+
+    public Municipio getMunOcurrenciaId() {
+        return munOcurrenciaId;
+    }
+
+    public void setMunOcurrenciaId(Municipio munOcurrenciaId) {
+        this.munOcurrenciaId = munOcurrenciaId;
     }
 
     @XmlTransient
@@ -353,6 +360,32 @@ public class Ingreso implements Serializable {
 
     public void setMunExtraccionId(Municipio munExtraccionId) {
         this.munExtraccionId = munExtraccionId;
+    }
+
+    public Vereda getVerOcurrenciaId() {
+        return verOcurrenciaId;
+    }
+
+    public void setVerOcurrenciaId(Vereda verOcurrenciaId) {
+        this.verOcurrenciaId = verOcurrenciaId;
+    }
+
+    @XmlTransient
+    public List<Ingresodocumento> getIngresodocumentoList() {
+        return ingresodocumentoList;
+    }
+
+    public void setIngresodocumentoList(List<Ingresodocumento> ingresodocumentoList) {
+        this.ingresodocumentoList = ingresodocumentoList;
+    }
+
+    @XmlTransient
+    public List<Ingresofoto> getIngresofotoList() {
+        return ingresofotoList;
+    }
+
+    public void setIngresofotoList(List<Ingresofoto> ingresofotoList) {
+        this.ingresofotoList = ingresofotoList;
     }
 
     @Override

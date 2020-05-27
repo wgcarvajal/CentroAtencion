@@ -20,14 +20,31 @@
                     #{bundle.Ingreso}
                 </div>
                 <br />
-                <h:form style="z-index: 1;position: fixed !important; margin-left: 65%;">
+                <h:form style="z-index: 1000;position: fixed !important; margin-left: 65%;">
                     <p:menubar>
                         <p:submenu label="#{bundle.Accion}" icon="pi pi-cog">
-                            <p:menuitem value="#{bundle.Ubicar}" action="#{ingresoController.openUbicarDialog}"/>
-                            <p:menuitem value="#{bundle.Transladar}" action="#{ingresoController.openTransladarDialog}" />
+                            <p:menuitem rendered="#{ingresoController.showAccion('ubicar')}" 
+                                        value="#{bundle.Ubicar}" action="#{ingresoController.openUbicarDialog}"/>
+                            <p:menuitem rendered="#{ingresoController.showAccion('transladar')}" 
+                                        value="#{bundle.Transladar}" action="#{ingresoController.openTransladarDialog}" />
+                            <p:submenu rendered="#{ingresoController.showAccion('valoracion')}" label="#{bundle.Valoracion}">
+                                <p:menuitem disabled="#{ingresoController.disabledAccion('BIO')}" 
+                                            value="#{bundle.Biologica}" url="#" />
+                                <p:menuitem disabled="#{ingresoController.disabledAccion('VET')}" 
+                                            value="#{bundle.Veterinaria}" url="#" />
+                                <p:menuitem disabled="#{ingresoController.disabledAccion('NUT')}"
+                                            value="#{bundle.Nutricional}" url="#" />
+                            </p:submenu>
+                            <p:menuitem rendered="#{ingresoController.showAccion('fallecimiento')}"
+                                        value="#{bundle.Fallecimiento}" url="#"/>
+                                
+                            <p:menuitem disabled="#{ingresoController.disabledAccion('NEC')}" rendered="#{ingresoController.showAccion('necropsia')}"
+                                            value="#{bundle.Necropsia}" url="#" />
                             <p:submenu label="#{bundle.Destinofinal}">
-                                <p:menuitem value="#{bundle.Reubicar}" url="#" />
-                                <p:menuitem value="#{bundle.Incinerar}" url="#" />
+                                <p:menuitem rendered="#{ingresoController.showAccion('reubicar')}" 
+                                            value="#{bundle.Reubicar}" url="#" />
+                                <p:menuitem rendered="#{ingresoController.showAccion('incinerar')}" 
+                                    value="#{bundle.Incinerar}" url="#" />
                             </p:submenu>
                         </p:submenu>
                     </p:menubar>
@@ -80,7 +97,7 @@
                                         update="panelMovDT"
                                         />
                                 <p:tab title="Datos de ingreso">
-                                    <p:panelGrid>
+                                    <p:panelGrid id="panelDatosIngreso">
                                         <p:row>
                                             <p:column style="font-weight: bold;">
                                                 <p:outputLabel value="#{bundle.Fecha}: " /> 
@@ -159,9 +176,39 @@
                                             </p:column>
 
                                         </p:row>
+                                        <p:row>
+                                            <p:column rowspan="2" style="font-weight: bold;">
+                                                #{bundle.Documentos}:
+                                            </p:column>
+                                            <p:column colspan="5">
+                                                <p:fileUpload
+                                                    mode="advanced"
+                                                    listener="#{ingresoController.cargarDocumento}"
+                                                    auto="true"
+                                                    multiple="false"
+                                                    dragDropSupport="false"
+                                                    label="#{bundle.Cargar}"
+                                                    update="panelDatosIngreso"
+                                                    sizeLimit="5242880"
+                                                    onstart="PF('efectoCarga').show()"  oncomplete="PF('efectoCarga').hide()"
+                                                />
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column colspan="5">
+                                                <c:forEach var="ingresodocumento" items="${ingresoController.ingresodocumentoList}">
+                                                    <p:commandLink value="#{ingresodocumento.ingDocNombre}" ajax="false"
+                                                                   actionListener="#{ingresoController.prepDocumentoDownload(ingresoController.ingreso,ingresodocumento.ingDocNombre)}"
+                                                                   >
+                                                        <p:fileDownload value="#{ingresoController.document}" />
+                                                    </p:commandLink>
+                                                    <p:outputLabel value=" "/>
+                                                </c:forEach>
+                                            </p:column>
+                                        </p:row>
                                     </p:panelGrid>
                                     <br />
-                                    <p:panelGrid>
+                                    <p:panelGrid id="panelDatosIngresoAnimal">
                                         <p:row>
                                             <p:column style="font-weight: bold;">
                                                 <p:outputLabel value="#{bundle.Animal}: " /> 
@@ -246,6 +293,37 @@
                                             </p:column>
                                             <p:column>
                                 #{ingresoController.returnEstadoSalud(ingresoController.ingreso.ingEstadoSalud)}
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column rowspan="2" style="font-weight: bold;">
+                                                #{bundle.Imagenes}:
+                                            </p:column>
+                                            <p:column style="text-align: center;" colspan="5">
+                                                <p:fileUpload
+                                                    mode="advanced"
+                                                    listener="#{ingresoController.cargarImagen}"
+                                                    auto="true"
+                                                    multiple="false"
+                                                    dragDropSupport="false"
+                                                    label="#{bundle.Cargar}"
+                                                    update="panelDatosIngresoAnimal"
+                                                    sizeLimit="5242880"
+                                                    allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                                                    onstart="PF('efectoCarga').show()"  oncomplete="PF('efectoCarga').hide()"
+                                                />
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column colspan="5">
+                                                <c:forEach var="ingresofoto" items="${ingresoController.ingresofotoList}">
+                                                    <p:commandLink action="#{ingresoController.openfotosIngresoDialog(ingresofoto)}">
+                                                        <p:graphicImage style="width: 50px;"
+                                                                        value="/fotoing?image=#{ingresofoto.ingFotoNombre}" 
+                                                            />
+                                                    </p:commandLink>
+                                                    <p:outputLabel value=" "/>
+                                                </c:forEach>
                                             </p:column>
                                         </p:row>
                                     </p:panelGrid>
@@ -417,10 +495,10 @@
 
                                     </p:panelGrid>
                                 </p:tab>
-                                <p:tab titletip="MovDt" title="Movimientos dentro de la DT">
-                                    <p:panel  id="panelMovDT">
-                                        <p:dataTable rendered="#{ingresoController.renderedMovDt()}" 
-                                                     var="ubicar" value="#{ingresoController.ubicarList}"
+                                <p:tab rendered="#{ingresoController.renderedMovDt(ingresoController.ingreso.ingId)}" titletip="MovDt" title="Movimientos dentro de la DT">
+                                    <p:panel 
+                                             id="panelMovDT">
+                                        <p:dataTable var="ubicar" value="#{ingresoController.ubicarList}"
                                                      paginator="true" rows="5"  
                                       paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
                                             <p:column headerText="#{bundle.Fecha}">
@@ -433,7 +511,6 @@
                                                 #{ubicar.funcionarioId.perNombres} #{ubicar.funcionarioId.perApellidos}
                                             </p:column>
                                         </p:dataTable>
-                                        <p:outputLabel rendered="#{!ingresoController.renderedMovDt()}" value="#{bundle.NoHayDatos}" />
                                     </p:panel>
                                 </p:tab>
                             </p:accordionPanel>
@@ -463,9 +540,9 @@
                                         onstart="PF('efectoCarga').show()"  onsuccess="PF('efectoCarga').hide()"
                                         update="panelMovDT#{ingreso.ingId}"
                                         />
-                                    <p:tab titletip="MovDT_#{ingreso.ingId}" title="Movimientos dentro de la DT">
+                                    <p:tab rendered="#{ingresoController.renderedMovDt(ingreso.ingId)}" titletip="MovDT_#{ingreso.ingId}" title="Movimientos dentro de la DT">
                                         <p:panel  id="panelMovDT#{ingreso.ingId}">
-                                            <p:dataTable rendered="#{ingresoController.renderedMovDt()}" 
+                                            <p:dataTable  
                                                          var="ubicar" value="#{ingresoController.ubicarList}"
                                                          paginator="true" rows="5"  
                                       paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -480,7 +557,6 @@
                                                     #{ubicar.funcionarioId.perNombres} #{ubicar.funcionarioId.perApellidos}
                                                 </p:column>
                                             </p:dataTable>
-                                            <p:outputLabel rendered="#{!ingresoController.renderedMovDt()}" value="#{bundle.NoHayDatos}" />
                                         </p:panel>
                                     </p:tab>
                                 </p:accordionPanel>
@@ -488,6 +564,7 @@
                         </c:forEach>
                     </p:accordionPanel>
                 </h:form>
+                <ui:include src="fotosIngresoDialog.xhtml" />
                 <ui:include src="ubicarDialog.xhtml" />
                 <ui:include src="transladarDialog.xhtml" />
             </ui:define>

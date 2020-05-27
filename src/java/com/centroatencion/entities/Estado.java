@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -31,6 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Estado.findAll", query = "SELECT e FROM Estado e"),
+    @NamedQuery(name = "Estado.findCurrentEstado", query = "SELECT e FROM Estado e WHERE e.ingId.ingId = :ingId ORDER BY e.estadoFecha DESC"),
     @NamedQuery(name = "Estado.findByEstadoId", query = "SELECT e FROM Estado e WHERE e.estadoId = :estadoId"),
     @NamedQuery(name = "Estado.findByEstado", query = "SELECT e FROM Estado e WHERE e.estado = :estado"),
     @NamedQuery(name = "Estado.findByEstadoFecha", query = "SELECT e FROM Estado e WHERE e.estadoFecha = :estadoFecha")})
@@ -49,9 +51,19 @@ public class Estado implements Serializable {
     @Column(name = "estadoFecha")
     @Temporal(TemporalType.TIMESTAMP)
     private Date estadoFecha;
+    @Column(name = "estadoCausa")
+    private Integer estadoCausa;
+    @Column(name = "estadoSubproducto")
+    private Boolean estadoSubproducto;
+    @Lob
+    @Column(name = "estadoCausaDescripcion")
+    private String estadoCausaDescripcion;
     @JoinColumn(name = "ingId", referencedColumnName = "ingId")
     @ManyToOne(optional = false)
     private Ingreso ingId;
+    @JoinColumn(name = "ingCurrentId", referencedColumnName = "ingId")
+    @ManyToOne(optional = false)
+    private Ingreso ingCurrentId;
 
     public Estado() {
     }
@@ -90,12 +102,44 @@ public class Estado implements Serializable {
         this.estadoFecha = estadoFecha;
     }
 
+    public Integer getEstadoCausa() {
+        return estadoCausa;
+    }
+
+    public void setEstadoCausa(Integer estadoCausa) {
+        this.estadoCausa = estadoCausa;
+    }
+
+    public Boolean getEstadoSubproducto() {
+        return estadoSubproducto;
+    }
+
+    public void setEstadoSubproducto(Boolean estadoSubproducto) {
+        this.estadoSubproducto = estadoSubproducto;
+    }
+
+    public String getEstadoCausaDescripcion() {
+        return estadoCausaDescripcion;
+    }
+
+    public void setEstadoCausaDescripcion(String estadoCausaDescripcion) {
+        this.estadoCausaDescripcion = estadoCausaDescripcion;
+    }
+
     public Ingreso getIngId() {
         return ingId;
     }
 
     public void setIngId(Ingreso ingId) {
         this.ingId = ingId;
+    }
+
+    public Ingreso getIngCurrentId() {
+        return ingCurrentId;
+    }
+
+    public void setIngCurrentId(Ingreso ingCurrentId) {
+        this.ingCurrentId = ingCurrentId;
     }
 
     @Override

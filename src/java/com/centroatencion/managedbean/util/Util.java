@@ -5,7 +5,6 @@
  */
 package com.centroatencion.managedbean.util;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -14,6 +13,9 @@ import java.util.Date;
  * @author Wilson Carvajal
  */
 public class Util {
+    
+    public static String RUTAFOTOSINGRESO = "/Users/aranda/centroatencion/ingreso/fotos/";
+    public static String RUTADOCUMENTOSINGRESO = "/Users/aranda/centroatencion/ingreso/documentos/";
     
     public static String formatText(String value)
     {
